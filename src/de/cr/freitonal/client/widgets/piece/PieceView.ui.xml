@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder
+ xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'
+ xmlns:base='urn:import:de.cr.freitonal.client.widgets.base'
+ xmlns:composer='urn:import:de.cr.freitonal.client.widgets.composer'
+ xmlns:catalog='urn:import:de.cr.freitonal.client.widgets.catalog'
+ xmlns:piecetype='urn:import:de.cr.freitonal.client.widgets.piecetype'
+ xmlns:instrumentation='urn:import:de.cr.freitonal.client.widgets.instrumentation'>
+  
+  <g:HTMLPanel>
+    <div id="pieceForms">
+      <span id="pieceReset" class="resetFormButton">
+        X
+      </span>
+      <composer:ComposerView ui:field="composer" labelText="Composer"/>
+      <catalog:CatalogView ui:field="catalog" labelText="Catalog"/>
+      <piecetype:PieceTypeView ui:field="pieceType" labelText="Type"/>
+      <instrumentation:InstrumentationView ui:field="instrumentations" labelText="Instrumentations"/>
+      <base:BaseView ui:field="subtitle" labelText="Subtitle"/>
+      <base:BaseView ui:field="ordinal" labelText="Ordinal"/>
+      <base:BaseView ui:field="key" labelText="Key"/>
+    </div>
+    <div id="pieceActions" class="formActions">
+      <button id="addPieceButton" class="fieldLabel">
+        St&uuml;ck hinzuf&uuml;gen
+      </button>
+    </div>
+  </g:HTMLPanel>
+</ui:UiBinder>

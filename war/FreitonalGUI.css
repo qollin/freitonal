@@ -1,0 +1,258 @@
+/** settings mostly for "perfect full page liquid layout"
+ * from http://matthewjamestaylor.com/blog/perfect-full-page.htm
+ * colors from http://colorschemedesigner.com/#0s31TsOsOK-K-0
+ */
+
+optgroup + optgroup { border-top: 1px solid black }
+
+body {
+    font-family: sans-serif;
+    background: #ffffff none repeat scroll 0 0;
+    border: 0 none;
+    font-size: 90%;
+    margin: 0;
+    min-width: 600px;
+    padding: 0;
+    width: 100%;
+}
+
+a {
+    color: /*mc1*/ #E67117;
+}
+
+a:hover {
+    background: /*mc1*/ #E67117 none repeat scroll 0 0;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+h1,h2,h3 {
+    margin: 0.8em 0 0.2em;
+    padding: 0;
+}
+
+p {
+    margin: 0.4em 0 0.8em;
+    padding: 0;
+}
+
+img {
+    margin: 10px 0 5px;
+}
+
+#header_wrapper {
+    clear: both;
+    float: left;
+    width: 100%;
+}
+
+#header {
+    background-color: /*mc2*/ #6D3103;
+    margin: 0.5em;
+    color: #fff;
+    padding: 10px;
+}
+
+.colmask {
+    clear: both;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.colright,.colmid,.colleft {
+    float: left;
+    position: relative;
+    width: 100%;
+}
+
+.col1,.col2,.col3 {
+    float: left;
+    overflow: hidden;
+    padding: 0 0 1em;
+    position: relative;
+}
+
+.fullpage {
+    background: #FFFFFF none repeat scroll 0 0;
+}
+
+.fullpage .col1 {
+    left: 1%;
+    width: 96%;
+}
+
+#footer_wrapper {
+    clear: both;
+    float: left;
+    width: 100%;
+}
+
+#footer {
+    background-color: /*mc2*/ #6D3103;
+    color: #fff;
+    margin: 0.5em;
+    padding: 10px;
+    font-size: small;
+}
+
+/** my own stuff */
+#content {
+    padding: 0.5em;
+}
+
+#header h1 {
+    font-family: serif;
+    font-style: italic;
+    margin: 0;
+}
+
+#header p {
+    font-size: small;
+}
+
+table {
+    border-collapse: collapse;
+    border-style: hidden;
+    margin: 0.5em;
+}
+
+th {
+    border: 1px dotted /*mc2*/   #6D3103;
+    background-image: url(/files/images/sort.png);
+    font-weight: bold;
+    color: /*mc2*/ #6D3103;
+    background-repeat: no-repeat;
+    background-position: right;
+    padding-right: 20px;
+}
+
+th.headerSortUp {
+    background-image: url(/files/images/up.png);
+}
+
+th.headerSortDown {
+    background-image: url(/files/images/down.png);
+}
+
+td {
+    border: 1px dotted /*mc2*/   #6D3103;
+    margin: 2px;
+}
+
+tr.odd td {
+    background: #ffffff;
+}
+
+tr.even td {
+    background: /*mc3*/ #F9AA6D;
+}
+
+tr.over td {
+    background: /*cc1*/ #A9BDE5;
+}
+
+/** alignment **/ /** left / middle / right */ /** fieldLabel / fieldContents */
+.left,.middle,.right {
+    float: left;
+    overflow: hidden;
+    padding: 0 0 1em;
+    position: relative;
+}
+
+.left {
+    left: 1%;
+    width: 33%;
+}
+
+.middle {
+    left: 1%;
+    width: 33%;
+}
+.right {
+    left: 1%;
+    width: 33%;
+}
+
+.fullwidth{
+    width: 100%;
+    position: relative;
+    float: left;
+    clear: both;    
+}
+
+.fieldLabel {
+    float: left;
+    font-weight: bold;
+    color: /*mc2*/ #6D3103;
+    width: 40%;
+	clear: both;
+}
+
+.fieldContents {
+    right: 10%;
+    width: 40%;
+    margin-left: auto;
+    float: right;
+    margin-right: 20%;
+}
+
+.fieldContentsViewMode {
+    right: 10%;
+    width: 40%;
+    margin-left: auto;
+    float: right;
+    margin-right: 20%;
+}
+
+.textField {
+    width: 38%;
+}
+
+.fieldWrapper {
+    clear: both;
+    padding: 0.3em 0 0 0;
+}
+
+.formActions {
+    clear: both;
+    padding: 0.3em 0 0 0;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+#debug-currentState {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+}
+
+.resetFormButton {
+    position: relative;
+    top: 0%;
+    right: 10%;
+    float: right;
+    display: none;
+}
+
+/* special fields */
+#piece-catalog-edit-1 {
+    float: none;
+    width: 60%;
+}
+
+#piece-catalog-edit-2 {
+    float: none;
+    width: 30%;
+}
+
+.singleSelect {
+    width: 100%;
+}

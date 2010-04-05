@@ -1,0 +1,15 @@
+<ui:UiBinder
+ xmlns:ui='urn:ui:com.google.gwt.uibinder'
+ xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+  
+  <g:HTMLPanel>
+    <div class="fieldWrapper">
+      <div class="fieldLabel">
+        <g:Label ui:field="label"/>
+      </div>
+      <div id="piece-instrumentation-instruments" class="fieldContents">
+      </div>
+      <g:Button ui:field="addInstrumentButton">+</g:Button>
+    </div>
+  </g:HTMLPanel>
+</ui:UiBinder>

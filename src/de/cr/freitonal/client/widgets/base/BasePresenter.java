@@ -3,9 +3,13 @@ package de.cr.freitonal.client.widgets.base;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.HasText;
 
+import de.cr.freitonal.client.event.DisplayMode;
+import de.cr.freitonal.client.event.SearchContext;
+import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.ItemSet;
+import de.cr.freitonal.client.widgets.Presenter;
 
-public class BasePresenter {
+public class BasePresenter implements Presenter {
 	private final ListBoxPresenter listBoxPresenter;
 
 	public interface View {
@@ -16,6 +20,7 @@ public class BasePresenter {
 
 	private View view;
 	private final HandlerManager eventBus;
+	private DisplayMode mode = DisplayMode.Select;
 
 	public BasePresenter(HandlerManager eventBus, View view) {
 		this.eventBus = eventBus;
@@ -27,8 +32,8 @@ public class BasePresenter {
 		this.view = view;
 	}
 
-	public void setItems(ItemSet items) {
-		listBoxPresenter.setItems(items);
+	public void setItems(ItemSet items, SearchContext searchContext) {
+		listBoxPresenter.setItems(items, searchContext);
 	}
 
 	public int getItemCount() {
@@ -40,5 +45,22 @@ public class BasePresenter {
 	 */
 	public ListBoxPresenter getListBoxPresenter() {
 		return listBoxPresenter;
+	}
+
+	public DisplayMode getDisplayMode() {
+		return mode;
+	}
+
+	public void setDisplayMode(DisplayMode mode) {
+		this.mode = mode;
+		listBoxPresenter.setDisplayMode(mode);
+	}
+
+	public Item getSelectedItem() {
+		return listBoxPresenter.getSelectedItem();
+	}
+
+	public void fireOnNewItemSelected_TEST(Item selectedItem) {
+		listBoxPresenter.fireOnNewItemSelected_TEST(selectedItem);
 	}
 }

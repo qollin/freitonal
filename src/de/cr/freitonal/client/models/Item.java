@@ -1,6 +1,7 @@
 package de.cr.freitonal.client.models;
 
 public class Item {
+	public static final Item Empty = new Item("", "");
 	public final String id;
 	public final String value;
 

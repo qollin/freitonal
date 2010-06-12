@@ -8,8 +8,4 @@ public class PieceTypePresenter extends BasePresenter {
 	public PieceTypePresenter(HandlerManager eventBus, View pieceTypeView) {
 		super(eventBus, pieceTypeView);
 	}
-
-	public interface View extends BasePresenter.View {
-
-	}
 }

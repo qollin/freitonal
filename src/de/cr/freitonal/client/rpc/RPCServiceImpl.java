@@ -9,18 +9,24 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.cr.freitonal.client.models.Piece;
+import de.cr.freitonal.client.rpc.dto.DTOParser;
+
 public class RPCServiceImpl implements RPCService {
 	private static final String JSON_URL = GWT.getHostPageBaseURL() + "classical";
 
-	protected final ModelFactory modelFactory = new ModelFactory();
-	protected final JSONFactory jsonFactory = new JSONFactory();
+	protected final ModelFactory modelFactory;
 
 	private RequestBuilderFactory requestBuilderFactory = new RequestBuilderFactory();
+
+	public RPCServiceImpl(DTOParser parser) {
+		modelFactory = new ModelFactory(parser);
+	}
 
 	public void search(final PieceSearchMask searchMask, final AsyncCallback<SearchResult> callback) {
 		String url = URL.encode(JSON_URL + "/search");
 		if (searchMask != null) {
-			url += jsonFactory.toHTTPParameters(searchMask);
+			url += new JSONFactory(searchMask).getHTTPParameters();
 		}
 
 		RequestBuilder builder = requestBuilderFactory.createRequestBuilder(RequestBuilder.GET, url);
@@ -63,5 +69,9 @@ public class RPCServiceImpl implements RPCService {
 	 */
 	public void setRequestBuilderFactory(RequestBuilderFactory requestBuilderFactory) {
 		this.requestBuilderFactory = requestBuilderFactory;
+	}
+
+	public void save(Piece piece) {
+		throw new IllegalStateException("not implemented yet");
 	}
 }

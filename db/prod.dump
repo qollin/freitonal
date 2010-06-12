@@ -1,0 +1,1120 @@
+-- MySQL dump 10.13  Distrib 5.1.37, for apple-darwin9.5.0 (i386)
+--
+-- Host: localhost    Database: freitonal
+-- ------------------------------------------------------
+-- Server version	5.1.37
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `auth_group`
+--
+
+DROP TABLE IF EXISTS `auth_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group`
+--
+
+LOCK TABLES `auth_group` WRITE;
+/*!40000 ALTER TABLE `auth_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_group_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_group_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_group_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_id` (`group_id`,`permission_id`),
+  KEY `permission_id_refs_id_5886d21f` (`permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group_permissions`
+--
+
+LOCK TABLES `auth_group_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_message`
+--
+
+DROP TABLE IF EXISTS `auth_message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `message` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `auth_message_user_id` (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_message`
+--
+
+LOCK TABLES `auth_message` WRITE;
+/*!40000 ALTER TABLE `auth_message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_permission`
+--
+
+DROP TABLE IF EXISTS `auth_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `content_type_id` int(11) NOT NULL,
+  `codename` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
+  KEY `auth_permission_content_type_id` (`content_type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_permission`
+--
+
+LOCK TABLES `auth_permission` WRITE;
+/*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
+INSERT INTO `auth_permission` VALUES (1,'Can add permission',1,'add_permission'),(2,'Can change permission',1,'change_permission'),(3,'Can delete permission',1,'delete_permission'),(4,'Can add group',2,'add_group'),(5,'Can change group',2,'change_group'),(6,'Can delete group',2,'delete_group'),(7,'Can add user',3,'add_user'),(8,'Can change user',3,'change_user'),(9,'Can delete user',3,'delete_user'),(10,'Can add message',4,'add_message'),(11,'Can change message',4,'change_message'),(12,'Can delete message',4,'delete_message'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add site',7,'add_site'),(20,'Can change site',7,'change_site'),(21,'Can delete site',7,'delete_site'),(22,'Can add composer',8,'add_composer'),(23,'Can change composer',8,'change_composer'),(24,'Can delete composer',8,'delete_composer'),(25,'Can add piece',9,'add_piece'),(26,'Can change piece',9,'change_piece'),(27,'Can delete piece',9,'delete_piece'),(28,'Can add log entry',10,'add_logentry'),(29,'Can change log entry',10,'change_logentry'),(30,'Can delete log entry',10,'delete_logentry'),(31,'Can add instrument',11,'add_instrument'),(32,'Can change instrument',11,'change_instrument'),(33,'Can delete instrument',11,'delete_instrument'),(34,'Can add performer',12,'add_performer'),(35,'Can change performer',12,'change_performer'),(36,'Can delete performer',12,'delete_performer'),(37,'Can add opera role',13,'add_operarole'),(38,'Can change opera role',13,'change_operarole'),(39,'Can delete opera role',13,'delete_operarole'),(40,'Can add instrumentation',14,'add_instrumentation'),(41,'Can change instrumentation',14,'change_instrumentation'),(42,'Can delete instrumentation',14,'delete_instrumentation'),(43,'Can add music key',15,'add_musickey'),(44,'Can change music key',15,'change_musickey'),(45,'Can delete music key',15,'delete_musickey'),(46,'Can add piece type',16,'add_piecetype'),(47,'Can change piece type',16,'change_piecetype'),(48,'Can delete piece type',16,'delete_piecetype'),(49,'Can add catalog',17,'add_catalog'),(50,'Can change catalog',17,'change_catalog'),(51,'Can delete catalog',17,'delete_catalog'),(52,'Can add type plus instrumentation',18,'add_typeplusinstrumentation'),(53,'Can change type plus instrumentation',18,'change_typeplusinstrumentation'),(54,'Can delete type plus instrumentation',18,'delete_typeplusinstrumentation'),(55,'Can add allocated instrument',19,'add_allocatedinstrument'),(56,'Can change allocated instrument',19,'change_allocatedinstrument'),(57,'Can delete allocated instrument',19,'delete_allocatedinstrument'),(58,'Can add allocated instrumentation',20,'add_allocatedinstrumentation'),(59,'Can change allocated instrumentation',20,'change_allocatedinstrumentation'),(60,'Can delete allocated instrumentation',20,'delete_allocatedinstrumentation'),(61,'Can add performance',21,'add_performance'),(62,'Can change performance',21,'change_performance'),(63,'Can delete performance',21,'delete_performance'),(64,'Can add record label',22,'add_recordlabel'),(65,'Can change record label',22,'change_recordlabel'),(66,'Can delete record label',22,'delete_recordlabel'),(67,'Can add record type',23,'add_recordtype'),(68,'Can change record type',23,'change_recordtype'),(69,'Can delete record type',23,'delete_recordtype'),(70,'Can add recording',24,'add_recording'),(71,'Can change recording',24,'change_recording'),(72,'Can delete recording',24,'delete_recording'),(73,'Can add synonym',25,'add_synonym'),(74,'Can change synonym',25,'change_synonym'),(75,'Can delete synonym',25,'delete_synonym'),(76,'Can add instrument role',26,'add_instrumentrole'),(77,'Can change instrument role',26,'change_instrumentrole'),(78,'Can delete instrument role',26,'delete_instrumentrole');
+/*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user`
+--
+
+DROP TABLE IF EXISTS `auth_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `email` varchar(75) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `last_login` datetime NOT NULL,
+  `date_joined` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user`
+--
+
+LOCK TABLES `auth_user` WRITE;
+/*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
+INSERT INTO `auth_user` VALUES (1,'lilith','Britta','Rogowski','silverymoon@gmail.com','sha1$1ec64$62a3a20ec2d34e2377c4b57500eeeb645a7d3bb9',1,1,1,'2009-07-01 15:25:31','2009-01-13 14:35:16'),(2,'qollin','Collin','Rogowski','qollin@gmail.com','sha1$f69b8$6eb8d419be19b68ac29a1356380ffc57a84dd105',1,1,1,'2010-01-08 21:06:53','2009-01-13 15:08:40');
+/*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_groups`
+--
+
+DROP TABLE IF EXISTS `auth_user_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`group_id`),
+  KEY `group_id_refs_id_f116770` (`group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user_groups`
+--
+
+LOCK TABLES `auth_user_groups` WRITE;
+/*!40000 ALTER TABLE `auth_user_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_user_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user_user_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`permission_id`),
+  KEY `permission_id_refs_id_67e79cb` (`permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user_user_permissions`
+--
+
+LOCK TABLES `auth_user_user_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_user_user_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user_user_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrument`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_allocatedinstrument_instrument_id` (`instrument_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrument`
+--
+
+LOCK TABLES `classical_allocatedinstrument` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrument` DISABLE KEYS */;
+INSERT INTO `classical_allocatedinstrument` VALUES (22,21),(24,19),(20,16),(5,4),(6,4),(9,4),(14,4),(13,4),(18,4),(1,4),(25,4),(3,4),(17,11),(4,11),(26,11),(16,11),(19,11),(28,11),(27,11),(21,15),(23,18),(15,1),(2,1),(10,1),(7,1),(11,2),(8,2),(12,2),(29,8),(30,10),(31,9);
+/*!40000 ALTER TABLE `classical_allocatedinstrument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrument_performers`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrument_performers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrument_performers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `allocatedinstrument_id` int(11) NOT NULL,
+  `performer_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `allocatedinstrument_id` (`allocatedinstrument_id`,`performer_id`),
+  KEY `performer_id_refs_id_15e8a7a6` (`performer_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=144 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrument_performers`
+--
+
+LOCK TABLES `classical_allocatedinstrument_performers` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrument_performers` DISABLE KEYS */;
+INSERT INTO `classical_allocatedinstrument_performers` VALUES (106,22,25),(107,24,27),(108,20,23),(115,5,6),(109,6,7),(111,9,10),(113,14,15),(116,13,14),(110,18,20),(112,1,1),(114,25,28),(117,3,3),(119,17,19),(118,17,18),(123,4,5),(122,4,4),(127,26,30),(126,26,29),(131,16,18),(130,16,17),(121,19,22),(120,19,21),(124,28,19),(125,28,5),(129,27,31),(128,27,5),(132,21,24),(133,23,26),(135,15,16),(136,2,2),(137,10,11),(134,7,8),(138,11,12),(139,8,9),(140,12,13),(141,29,32),(142,30,32),(143,31,32);
+/*!40000 ALTER TABLE `classical_allocatedinstrument_performers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrumentation`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrumentation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrumentation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrumentation`
+--
+
+LOCK TABLES `classical_allocatedinstrumentation` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation` DISABLE KEYS */;
+INSERT INTO `classical_allocatedinstrumentation` VALUES (1,''),(16,''),(2,''),(3,''),(4,''),(5,''),(7,''),(8,''),(9,''),(10,''),(11,''),(12,''),(13,''),(14,''),(15,''),(6,'Beaux Arts Trio'),(17,'');
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrumentation_allocated_instruments`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrumentation_allocated_instruments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrumentation_allocated_instruments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `allocatedinstrumentation_id` int(11) NOT NULL,
+  `allocatedinstrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `allocatedinstrumentation_id` (`allocatedinstrumentation_id`,`allocatedinstrument_id`),
+  KEY `allocatedinstrument_id_refs_id_4f2efe2` (`allocatedinstrument_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=116 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrumentation_allocated_instruments`
+--
+
+LOCK TABLES `classical_allocatedinstrumentation_allocated_instruments` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation_allocated_instruments` DISABLE KEYS */;
+INSERT INTO `classical_allocatedinstrumentation_allocated_instruments` VALUES (109,16,28),(108,2,3),(107,2,2),(106,3,4),(105,4,5),(102,5,8),(104,5,7),(103,5,6),(101,7,13),(100,7,12),(99,8,14),(97,9,16),(98,9,15),(96,10,17),(95,11,18),(94,12,19),(93,13,24),(92,13,23),(91,13,22),(90,13,21),(89,13,20),(88,13,19),(87,14,26),(86,14,25),(85,15,27),(112,6,11),(111,6,10),(110,6,9),(113,17,29),(114,17,30),(115,17,31);
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation_allocated_instruments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_catalog`
+--
+
+DROP TABLE IF EXISTS `classical_catalog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_catalog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ordinal` varchar(5) NOT NULL,
+  `sub_ordinal` varchar(5) NOT NULL,
+  `name_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name_id_refs_id_2b392415` (`name_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=332 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_catalog`
+--
+
+LOCK TABLES `classical_catalog` WRITE;
+/*!40000 ALTER TABLE `classical_catalog` DISABLE KEYS */;
+INSERT INTO `classical_catalog` VALUES (1,'','',1),(293,'A221','',2),(294,'45','b',2),(68,'1','1',1),(70,'1','3',1),(69,'1','2',1),(85,'10','2',1),(86,'10','3',1),(84,'10','1',1),(159,'100','',1),(160,'101','',1),(161,'102','1',1),(162,'102','2',1),(163,'103','',1),(164,'104','',1),(165,'105','',1),(166,'106','',1),(167,'107','',1),(168,'108','',1),(169,'109','',1),(87,'11','',1),(170,'110','',1),(171,'111','',1),(172,'112','',1),(173,'113','',1),(174,'114','',1),(175,'115','',1),(176,'116','',1),(177,'117','',1),(178,'118','',1),(179,'119','',1),(88,'12','1',1),(90,'12','3',1),(89,'12','2',1),(181,'120','',1),(183,'121','b',1),(182,'121','a',1),(184,'122','',1),(185,'123','',1),(186,'124','',1),(187,'125',' ',1),(188,'126','',1),(189,'127','',1),(190,'128','',1),(191,'129','',1),(91,'13','',1),(192,'130','',1),(193,'131','',1),(194,'132','',1),(195,'133','',1),(196,'134','',1),(197,'135','',1),(198,'136','',1),(199,'137','',1),(200,'138','',1),(93,'14','2',1),(92,'14','1',1),(94,'15','',1),(95,'16','',1),(96,'17','',1),(97,'18','2',1),(98,'18','3',1),(99,'18','4',1),(100,'18','5',1),(101,'18','6',1),(67,'18','1',1),(102,'19','',1),(71,'2','1',1),(73,'2','3',1),(72,'2','2',1),(103,'20','',1),(104,'21','',1),(105,'22','',1),(106,'23','',1),(107,'24','',1),(108,'25','',1),(109,'26','',1),(111,'27','2',1),(110,'27','1',1),(112,'28','',1),(113,'29','',1),(74,'3','',1),(116,'30','3',1),(115,'30','2',1),(114,'30','1',1),(119,'31','3',1),(118,'31','2',1),(117,'31','1',1),(120,'32','',1),(121,'33','',1),(122,'34','',1),(123,'35','',1),(124,'36','',1),(125,'37','',1),(126,'38','',1),(127,'39','',1),(75,'4','',1),(128,'40','',1),(129,'41','',1),(130,'42','',1),(131,'43','',1),(132,'44','',1),(133,'45','',1),(35,'46','',1),(36,'47','',1),(42,'48','6',1),(39,'48','3',1),(37,'48','1',1),(40,'48','4',1),(41,'48','5',1),(38,'48','2',1),(43,'49','1',1),(44,'49','2',1),(77,'5','2',1),(76,'5','1',1),(45,'50','',1),(46,'51','1',1),(47,'51','2',1),(51,'52','4',1),(50,'52','3',1),(49,'52','2',1),(53,'52','6',1),(54,'52','7',1),(55,'52','8',1),(48,'52','1',1),(52,'52','5',1),(56,'53','',1),(57,'54','',1),(58,'55','',1),(59,'56','',1),(60,'57','',1),(61,'58','',1),(63,'59','2',1),(62,'59','1',1),(64,'59','3',1),(78,'6','',1),(65,'60','',1),(66,'61','',1),(134,'62','',1),(135,'63','',1),(136,'64','',1),(137,'65','',1),(139,'66','',1),(140,'67','',1),(141,'68','',1),(142,'69','',1),(79,'7','',1),(143,'70','1',1),(144,'70','2',1),(145,'71','',1),(147,'72','b',1),(148,'72','c',1),(146,'72','a',1),(149,'73','',1),(150,'74','',1),(7,'75','6',1),(5,'75','4',1),(4,'75','3',1),(3,'75','2',1),(2,'75','1',1),(151,'75','',1),(6,'75','5',1),(8,'76','',1),(9,'77','',1),(10,'78','',1),(11,'79','',1),(80,'8','',1),(12,'80','',1),(13,'81','a',1),(14,'81','b',1),(15,'82','',1),(20,'82','5',1),(19,'82','4',1),(18,'82','3',1),(17,'82','2',1),(16,'82','1',1),(24,'83','3',1),(23,'83','2',1),(22,'83','1',1),(21,'83','',1),(25,'84','',1),(26,'85','',1),(27,'86','',1),(28,'87','',1),(29,'88','',1),(30,'89','',1),(83,'9','3',1),(82,'9','2',1),(81,'9','1',1),(31,'90','',1),(32,'91','',1),(33,'92','',1),(152,'93','',1),(153,'94','',1),(154,'95','',1),(155,'96','',1),(156,'97','',1),(157,'98','',1),(158,'99','',1),(201,'1','',2),(202,'1','a',2),(203,'1','b',2),(204,'1','c',2),(205,'1','d',2),(206,'1','e',2),(207,'1','f',2),(208,'2','',2),(209,'3','',2),(210,'4','',2),(211,'5','',2),(212,'5','a',2),(213,'6','',2),(214,'7','',2),(215,'8','',2),(216,'9','a',2),(292,'45','',2),(218,'17','',2),(219,'18','',2),(291,'19','a',2),(221,'22','',2),(222,'43','',2),(223,'46','d',2),(224,'48','',2),(225,'73','',2),(290,'19','',2),(227,'114','',2),(228,'128','',2),(229,'129','',2),(230,'130','',2),(231,'132','',2),(232,'133','',2),(233,'134','',2),(234,'301','',2),(235,'302','',2),(236,'303','',2),(237,'304','',2),(238,'305','',2),(239,'306','',2),(240,'319','',2),(241,'49','',2),(242,'37','',2),(243,'39','',2),(244,'40','',2),(245,'41','',2),(246,'156','',2),(247,'157','',2),(248,'158','',2),(249,'159','',2),(250,'160','',2),(251,'162','',2),(252,'168','',2),(253,'169','',2),(254,'170','',2),(255,'171','',2),(256,'172','',2),(257,'173','',2),(258,'174','',2),(259,'175','',2),(260,'199','',2),(261,'200','',2),(262,'201','',2),(263,'202','',2),(264,'279','',2),(265,'280','',2),(266,'281','',2),(267,'282','',2),(268,'283','',2),(269,'284','',2),(270,'309','',2),(271,'310','',2),(272,'311','',2),(273,'330','',2),(274,'332','',2),(275,'333','',2),(276,'376','',2),(277,'377','',2),(278,'378','',2),(279,'379','',2),(280,'380','',2),(281,'9','',2),(282,'26','',2),(283,'27','',2),(284,'28','',2),(285,'29','',2),(286,'30','',2),(287,'31','',2),(289,'16','',2),(295,'74','',2),(296,'75','',2),(297,'76','',2),(298,'81','',2),(299,'84','',2),(300,'95','',2),(301,'96','',2),(302,'97','',2),(303,'110','',2),(304,'112','',2),(305,'124','',2),(306,'182','',2),(307,'183','',2),(308,'184','',2),(309,'297','',2),(310,'425','',2),(311,'338','',2),(312,'385','',2),(313,'504','',2),(314,'543','',2),(315,'550','',2),(316,'551','',2),(317,'421','',2),(318,'428','',2),(319,'458','',2),(320,'465','',2),(321,'590','',2),(322,'406','',2),(323,'515','',2),(324,'516','',2),(325,'593','',2),(326,'614','',2),(327,'29','',3),(328,'29','',3),(329,'29','',3),(330,'29','',3),(331,'29','',3);
+/*!40000 ALTER TABLE `classical_catalog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_catalogtype`
+--
+
+DROP TABLE IF EXISTS `classical_catalogtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_catalogtype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_catalogtype`
+--
+
+LOCK TABLES `classical_catalogtype` WRITE;
+/*!40000 ALTER TABLE `classical_catalogtype` DISABLE KEYS */;
+INSERT INTO `classical_catalogtype` VALUES (1,'Opus'),(2,'KV'),(3,'W.o.O.');
+/*!40000 ALTER TABLE `classical_catalogtype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_composer`
+--
+
+DROP TABLE IF EXISTS `classical_composer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_composer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `middle_name` varchar(30) NOT NULL,
+  `last_name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_composer`
+--
+
+LOCK TABLES `classical_composer` WRITE;
+/*!40000 ALTER TABLE `classical_composer` DISABLE KEYS */;
+INSERT INTO `classical_composer` VALUES (3,'Anton','','Diabelli'),(2,'Wolfgang','Amadeus','Mozart'),(1,'Ludwig','','van Beethoven');
+/*!40000 ALTER TABLE `classical_composer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrument`
+--
+
+DROP TABLE IF EXISTS `classical_instrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrument`
+--
+
+LOCK TABLES `classical_instrument` WRITE;
+/*!40000 ALTER TABLE `classical_instrument` DISABLE KEYS */;
+INSERT INTO `classical_instrument` VALUES (21,'Alt'),(19,'Bass'),(16,'Chor'),(17,'Englisch-Horn'),(9,'Fagott'),(12,'Flöte'),(10,'Horn'),(8,'Klarinette'),(4,'Klavier'),(13,'Kontrabass'),(5,'Kontrabass'),(7,'Oboe'),(11,'Orchester'),(14,'Singstimme'),(20,'Solostimme'),(15,'Sopran'),(18,'Tenor'),(6,'vierhändiges Klavier'),(3,'Viola'),(1,'Violine'),(2,'Violoncello'),(22,'Cembalo');
+/*!40000 ALTER TABLE `classical_instrument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrument_instrument_roles`
+--
+
+DROP TABLE IF EXISTS `classical_instrument_instrument_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrument_instrument_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrument_id` int(11) NOT NULL,
+  `instrumentrole_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `instrument_id` (`instrument_id`,`instrumentrole_id`),
+  KEY `instrumentrole_id_refs_id_11eb81c4` (`instrumentrole_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrument_instrument_roles`
+--
+
+LOCK TABLES `classical_instrument_instrument_roles` WRITE;
+/*!40000 ALTER TABLE `classical_instrument_instrument_roles` DISABLE KEYS */;
+INSERT INTO `classical_instrument_instrument_roles` VALUES (1,11,1),(2,11,2);
+/*!40000 ALTER TABLE `classical_instrument_instrument_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentation`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(25) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentation`
+--
+
+LOCK TABLES `classical_instrumentation` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentation` DISABLE KEYS */;
+INSERT INTO `classical_instrumentation` VALUES (14,''),(21,''),(20,''),(19,''),(6,''),(7,''),(8,''),(9,''),(10,''),(13,''),(11,''),(18,''),(27,''),(16,''),(15,''),(41,''),(40,''),(39,''),(42,''),(22,''),(23,''),(24,''),(25,''),(26,''),(29,''),(30,''),(31,''),(32,''),(33,''),(35,''),(36,''),(37,''),(38,''),(34,'Bläseroktett'),(28,'Bläsersextett'),(3,'Klavier'),(12,'Klavier und Bläser'),(2,'Klaviertrio'),(1,'Streichquartett'),(17,'Streichquintett'),(5,'Streichquintett'),(4,'Streichtrio'),(45,''),(44,''),(46,''),(47,''),(48,''),(49,''),(50,''),(51,'');
+/*!40000 ALTER TABLE `classical_instrumentation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentation_instrument`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentation_instrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentation_instrument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrumentation_id` int(11) NOT NULL,
+  `instrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `instrumentation_id` (`instrumentation_id`,`instrument_id`),
+  KEY `instrument_id_refs_id_79d97d98` (`instrument_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentation_instrument`
+--
+
+LOCK TABLES `classical_instrumentation_instrument` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentation_instrument` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrumentation_instrument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentation_instruments`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentation_instruments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentation_instruments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrumentation_id` int(11) NOT NULL,
+  `instrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `instrumentation_id` (`instrumentation_id`,`instrument_id`),
+  KEY `instrument_id_refs_id_d5745de` (`instrument_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=498 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentation_instruments`
+--
+
+LOCK TABLES `classical_instrumentation_instruments` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentation_instruments` DISABLE KEYS */;
+INSERT INTO `classical_instrumentation_instruments` VALUES (424,14,10),(423,14,9),(422,14,8),(421,14,5),(420,14,3),(419,14,2),(418,14,1),(426,21,14),(425,21,4),(428,20,4),(427,20,3),(429,19,12),(430,19,4),(432,6,4),(431,6,2),(433,7,6),(435,8,4),(434,8,1),(438,9,10),(437,9,9),(436,9,8),(439,9,7),(440,10,1),(455,13,10),(456,13,4),(453,11,11),(454,11,4),(452,18,13),(451,18,4),(450,27,2),(449,16,12),(448,16,3),(447,16,1),(446,15,11),(441,41,16),(442,41,9),(443,41,10),(444,41,20),(445,41,8),(415,40,16),(417,40,15),(416,40,11),(412,39,16),(413,39,11),(414,39,20),(411,42,21),(410,42,19),(409,42,18),(408,42,16),(407,42,15),(406,42,11),(368,22,11),(369,22,4),(367,22,2),(366,22,1),(371,23,11),(370,23,1),(373,24,15),(372,24,11),(374,25,16),(375,26,16),(376,26,11),(378,29,10),(379,29,3),(380,29,2),(377,29,1),(382,30,14),(381,30,4),(383,31,16),(385,31,14),(384,31,11),(386,32,16),(388,32,14),(387,32,11),(389,33,17),(390,33,7),(394,35,14),(393,35,4),(392,35,2),(391,35,1),(395,36,19),(396,36,18),(398,36,15),(397,36,11),(400,37,14),(399,37,4),(404,38,14),(403,38,3),(402,38,2),(401,38,1),(459,34,10),(458,34,9),(457,34,8),(460,34,7),(463,28,10),(462,28,9),(461,28,8),(464,3,4),(467,12,10),(466,12,9),(465,12,8),(469,12,7),(468,12,4),(472,2,4),(471,2,2),(470,2,1),(475,1,3),(474,1,2),(473,1,1),(478,17,3),(477,17,2),(476,17,1),(482,5,5),(481,5,3),(480,5,2),(479,5,1),(485,4,3),(484,4,2),(483,4,1),(405,44,22),(365,45,22),(364,45,1),(486,47,8),(487,47,10),(488,47,9),(489,48,8),(490,48,10),(491,48,9),(492,49,8),(493,49,10),(494,49,9),(495,50,8),(496,50,10),(497,50,9);
+/*!40000 ALTER TABLE `classical_instrumentation_instruments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentationmember`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentationmember`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentationmember` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrumentation_id` int(11) NOT NULL,
+  `instrument_id` int(11) NOT NULL,
+  `numberOfInstruments` int(11) NOT NULL,
+  `ordinal` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `instrumentation_id_refs_id_3953275d` (`instrumentation_id`),
+  KEY `instrument_id_refs_id_368be09f` (`instrument_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=138 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentationmember`
+--
+
+LOCK TABLES `classical_instrumentationmember` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentationmember` DISABLE KEYS */;
+INSERT INTO `classical_instrumentationmember` VALUES (1,1,1,1,NULL),(2,1,2,1,NULL),(3,1,3,1,NULL),(4,2,1,1,NULL),(5,2,2,1,NULL),(6,2,4,1,NULL),(7,3,4,1,NULL),(8,4,1,1,NULL),(9,4,2,1,NULL),(10,4,3,1,NULL),(11,5,1,1,NULL),(12,5,2,1,NULL),(13,5,3,1,NULL),(14,5,5,1,NULL),(15,6,2,1,NULL),(16,6,4,1,NULL),(17,7,6,1,NULL),(18,8,1,1,NULL),(19,8,4,1,NULL),(20,9,7,1,NULL),(21,9,8,1,NULL),(22,9,9,1,NULL),(23,9,10,1,NULL),(24,10,1,1,NULL),(25,11,4,1,NULL),(26,11,11,1,NULL),(27,12,4,1,NULL),(28,12,7,1,NULL),(29,12,8,1,NULL),(30,12,9,1,NULL),(31,12,10,1,NULL),(32,13,4,1,NULL),(33,13,10,1,NULL),(34,14,1,1,NULL),(35,14,2,1,NULL),(36,14,3,1,NULL),(37,14,5,1,NULL),(38,14,8,1,NULL),(39,14,9,1,NULL),(40,14,10,1,NULL),(41,15,11,1,NULL),(42,16,1,1,NULL),(43,16,3,1,NULL),(44,16,12,1,NULL),(45,17,1,1,NULL),(46,17,2,1,NULL),(47,17,3,1,NULL),(48,18,4,1,NULL),(49,18,13,1,NULL),(50,19,4,1,NULL),(51,19,12,1,NULL),(52,20,3,1,NULL),(53,20,4,1,NULL),(54,21,4,1,NULL),(55,21,14,1,NULL),(56,22,1,1,NULL),(57,22,2,1,NULL),(58,22,4,1,NULL),(59,22,11,1,NULL),(60,23,1,1,NULL),(61,23,11,1,NULL),(62,24,11,1,NULL),(63,24,15,1,NULL),(64,25,16,1,NULL),(65,26,11,1,NULL),(66,26,16,1,NULL),(67,27,2,1,NULL),(68,28,8,1,NULL),(69,28,9,1,NULL),(70,28,10,1,NULL),(71,29,1,1,NULL),(72,29,2,1,NULL),(73,29,3,1,NULL),(74,29,10,1,NULL),(75,30,4,1,NULL),(76,30,14,1,NULL),(77,31,11,1,NULL),(78,31,14,1,NULL),(79,31,16,1,NULL),(80,32,11,1,NULL),(81,32,14,1,NULL),(82,32,16,1,NULL),(83,33,7,1,NULL),(84,33,17,1,NULL),(85,34,7,1,NULL),(86,34,8,1,NULL),(87,34,9,1,NULL),(88,34,10,1,NULL),(89,35,1,1,NULL),(90,35,2,1,NULL),(91,35,4,1,NULL),(92,35,14,1,NULL),(93,36,11,1,NULL),(94,36,15,1,NULL),(95,36,18,1,NULL),(96,36,19,1,NULL),(97,37,4,1,NULL),(98,37,14,1,NULL),(99,38,1,1,NULL),(100,38,2,1,NULL),(101,38,3,1,NULL),(102,38,14,1,NULL),(103,39,11,1,NULL),(104,39,16,1,NULL),(105,39,20,1,NULL),(106,40,11,1,NULL),(107,40,15,1,NULL),(108,40,16,1,NULL),(109,41,8,1,NULL),(110,41,9,1,NULL),(111,41,10,1,NULL),(112,41,16,1,NULL),(113,41,20,1,NULL),(114,42,11,1,NULL),(115,42,15,1,NULL),(116,42,16,1,NULL),(117,42,18,1,NULL),(118,42,19,1,NULL),(119,42,21,1,NULL),(120,44,22,1,NULL),(121,45,1,1,NULL),(122,45,22,1,NULL),(123,47,8,1,NULL),(124,47,9,1,NULL),(125,47,10,1,NULL),(126,48,8,1,NULL),(127,48,9,1,NULL),(128,48,10,1,NULL),(129,49,8,1,NULL),(130,49,9,1,NULL),(131,49,10,1,NULL),(132,50,8,1,NULL),(133,50,9,1,NULL),(134,50,10,1,NULL),(135,51,8,2,1),(136,51,10,2,2),(137,51,9,2,3);
+/*!40000 ALTER TABLE `classical_instrumentationmember` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentrole`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentrole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentrole` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentrole`
+--
+
+LOCK TABLES `classical_instrumentrole` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentrole` DISABLE KEYS */;
+INSERT INTO `classical_instrumentrole` VALUES (1,'Dirigent'),(2,'Orchester');
+/*!40000 ALTER TABLE `classical_instrumentrole` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_musickey`
+--
+
+DROP TABLE IF EXISTS `classical_musickey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_musickey` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `base` varchar(5) NOT NULL,
+  `note_sort_order` int(11) NOT NULL,
+  `note` varchar(6) NOT NULL,
+  `generated_title` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_musickey`
+--
+
+LOCK TABLES `classical_musickey` WRITE;
+/*!40000 ALTER TABLE `classical_musickey` DISABLE KEYS */;
+INSERT INTO `classical_musickey` VALUES (1,'major',1,'c','C-Dur'),(2,'minor',1,'c','c-moll'),(3,'major',2,'cis','Cis-Dur'),(4,'minor',2,'cis','cis-moll'),(5,'major',3,'des','Des-Dur'),(6,'minor',3,'des','des-moll'),(7,'major',4,'d','D-Dur'),(8,'minor',4,'d','d-moll'),(9,'major',5,'dis','Dis-Dur'),(10,'minor',5,'dis','dis-moll'),(11,'major',6,'es','Es-Dur'),(12,'minor',6,'es','es-moll'),(13,'major',7,'e','E-Dur'),(14,'minor',7,'e','e-moll'),(15,'major',8,'eis','Eis-Dur'),(16,'minor',8,'eis','eis-moll'),(17,'major',9,'fes','Fes-Dur'),(18,'minor',9,'fes','fes-moll'),(19,'major',10,'f','F-Dur'),(20,'minor',10,'f','f-moll'),(21,'major',11,'fis','Fis-Dur'),(22,'minor',11,'fis','fis-moll'),(23,'major',12,'ges','Ges-Dur'),(24,'minor',12,'ges','ges-moll'),(25,'major',13,'g','G-Dur'),(26,'minor',13,'g','g-moll'),(27,'major',14,'gis','Gis-Dur'),(28,'minor',14,'gis','gis-moll'),(29,'major',15,'as','As-Dur'),(30,'minor',15,'as','as-moll'),(31,'major',16,'a','A-Dur'),(32,'minor',16,'a','a-moll'),(33,'major',17,'ais','Ais-Dur'),(34,'minor',17,'ais','ais-moll'),(35,'major',18,'b','B-Dur'),(36,'minor',18,'b','b-moll'),(37,'major',19,'h','H-Dur'),(38,'minor',19,'h','h-moll'),(39,'major',20,'his','His-Dur'),(40,'minor',20,'his','his-moll'),(41,'major',21,'ces','Ces-Dur'),(42,'minor',21,'ces','ces-moll');
+/*!40000 ALTER TABLE `classical_musickey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_operarole`
+--
+
+DROP TABLE IF EXISTS `classical_operarole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_operarole` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `instrument_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_operarole_instrument_id` (`instrument_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_operarole`
+--
+
+LOCK TABLES `classical_operarole` WRITE;
+/*!40000 ALTER TABLE `classical_operarole` DISABLE KEYS */;
+INSERT INTO `classical_operarole` VALUES (1,'Jesus',NULL),(3,'Petrus',NULL),(2,'Seraph',NULL);
+/*!40000 ALTER TABLE `classical_operarole` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_performance`
+--
+
+DROP TABLE IF EXISTS `classical_performance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_performance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `instrumentation_id` int(11) NOT NULL,
+  `date` varchar(12) NOT NULL,
+  `location` varchar(30) NOT NULL,
+  `live` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_performance_piece_id` (`piece_id`),
+  KEY `classical_performance_instrumentation_id` (`instrumentation_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_performance`
+--
+
+LOCK TABLES `classical_performance` WRITE;
+/*!40000 ALTER TABLE `classical_performance` DISABLE KEYS */;
+INSERT INTO `classical_performance` VALUES (32,57,16,'','',0),(1,55,1,'2003','CongressCentrum Pforzheim',1),(2,165,1,'2003','CongressCentrum Pforzheim',1),(16,103,12,'unknown','',0),(4,35,2,'unknown','',0),(5,139,3,'unknown','',0),(6,90,4,'unknown','',0),(7,110,4,'unknown','',0),(8,142,5,'unknown','',0),(9,155,6,'unknown','',0),(10,161,7,'unknown','',0),(11,90,8,'unknown','',0),(12,44,9,'unknown','',0),(13,24,10,'unknown','',0),(14,90,11,'unknown','',0),(15,110,11,'unknown','',0),(18,57,12,'unknown','',0),(3,106,2,'unknown','',0),(19,64,12,'unknown','',0),(20,139,12,'unknown','',0),(21,140,12,'unknown','',0),(22,32,12,'unknown','',0),(23,151,12,'unknown','',0),(24,186,13,'unknown','',0),(25,93,14,'unknown','',0),(26,101,14,'unknown','',0),(27,124,14,'unknown','',0),(28,60,14,'unknown','',0),(29,148,14,'unknown','',0),(30,151,15,'unknown','',0),(31,186,15,'unknown','',0),(17,123,12,'unknown','',0),(33,31,15,'','',0),(34,329,17,'','-1',0);
+/*!40000 ALTER TABLE `classical_performance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_performer`
+--
+
+DROP TABLE IF EXISTS `classical_performer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_performer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `middle_name` varchar(30) NOT NULL,
+  `last_name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_performer`
+--
+
+LOCK TABLES `classical_performer` WRITE;
+/*!40000 ALTER TABLE `classical_performer` DISABLE KEYS */;
+INSERT INTO `classical_performer` VALUES (15,'Claudio','','Arrau'),(5,'','','Berliner Philharmoniker'),(21,'Leonard','','Bernstein'),(9,'Pablo','','Casals'),(30,'','','Cleveland Orchestra'),(11,'Isidore','','Cohen'),(18,'','','Concertgebouw-Orchester Amsterdam'),(28,'Leon','','Fleischer'),(4,'Ferenc','','Fricsay'),(20,'Walter','','Gieseking'),(12,'Bernard','','Greenhouse'),(16,'Arthur','','Grumiaux'),(17,'Bernard','','Haitink'),(7,'Mieczyslaw','','Horszowski'),(19,'Eugen','','Jochum'),(24,'Gwyneth','','Jones'),(6,'Wilhelm','','Kempff'),(26,'René','','Kollo'),(23,'','','Konzertvereinigung Wiener Staatsopernchor'),(1,'Michael','','Korstick'),(2,'Yehudi','','Menuhin'),(3,'Hephzia','','Menuhin'),(27,'Kurt','','Moll'),(10,'Menahem','','Pressler'),(14,'Sviatoslav','','Richter'),(13,'Mstislaw','','Rostropowitsch'),(25,'Hanna','','Schwarz'),(29,'Georg','','Szell'),(8,'Sandor','','Végh'),(31,'Herbert','','von Karajan'),(22,'','','Wiener Philharmoniker'),(32,'','','Bläser der Berliner Philharmoniker');
+/*!40000 ALTER TABLE `classical_performer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece`
+--
+
+DROP TABLE IF EXISTS `classical_piece`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `composer_id` int(11) NOT NULL,
+  `referenced_piece_id` int(11) DEFAULT NULL,
+  `type_adjective` varchar(40) NOT NULL,
+  `piece_type_id` int(11) DEFAULT NULL,
+  `type_ordinal` varchar(5) NOT NULL,
+  `catalog_id` int(11) NOT NULL,
+  `music_key_id` int(11) DEFAULT NULL,
+  `number_of_pieces` int(11) DEFAULT NULL,
+  `subtitle` varchar(100) NOT NULL,
+  `pub_date` varchar(12) DEFAULT NULL,
+  `generated_title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `referenced_piece_id` (`referenced_piece_id`),
+  KEY `classical_piece_composer_id` (`composer_id`),
+  KEY `classical_piece_piece_type_id` (`piece_type_id`),
+  KEY `classical_piece_catalog_id` (`catalog_id`),
+  KEY `classical_piece_music_key_id` (`music_key_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=330 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece`
+--
+
+LOCK TABLES `classical_piece` WRITE;
+/*!40000 ALTER TABLE `classical_piece` DISABLE KEYS */;
+INSERT INTO `classical_piece` VALUES (166,1,NULL,'',11,'',167,NULL,10,'','1820','10 Variationen für Flöte und Klavier über ein eigenes Thema'),(178,1,NULL,'neue',10,'',179,NULL,11,'','1822','11 Neue Bagatellen für Klavier'),(122,1,NULL,'',11,'',123,11,16,'','1802','16 Variationen für Klavier über ein eigenes Thema in Es-Dur'),(126,1,NULL,'',13,'',127,NULL,2,'','1789','2 Präludien für Klavier'),(167,1,NULL,'schottische',9,'',168,NULL,25,'','1818','25 Schottische Lieder für Klavier, Singstimme, Violine und Violoncello'),(20,1,NULL,'',9,'',21,NULL,3,'','1810','3 Lieder für Klavier und Singstimme'),(132,1,NULL,'',17,'',133,NULL,3,'','1803','3 Märsche für vierhändiges Klavier'),(180,1,NULL,'',11,'',181,NULL,33,'','1823','33 Variationen für Klavier über ein eigenes Thema'),(14,1,NULL,'',9,'',15,NULL,5,'','1809','5 Lieder für Klavier und Singstimme'),(187,1,NULL,'',10,'',188,NULL,6,'','1824','6 Bagatellen für Klavier'),(150,1,NULL,'',9,'',151,NULL,6,'','1809','6 Lieder für Klavier und Singstimme'),(164,1,NULL,'',11,'',165,NULL,6,'','1819','6 Variationen für Flöte und Klavier über ein eigenes Thema'),(7,1,NULL,'',11,'',8,7,6,'','1809','6 Variationen für Klavier über ein eigenes Thema in D-Dur'),(121,1,NULL,'',11,'',122,19,6,'','1802','6 Variationen für Klavier über ein eigenes Thema in F-Dur'),(120,1,NULL,'',10,'',121,NULL,7,'','1802','7 Bagatellen für Klavier'),(137,2,NULL,'',20,'',1,NULL,0,'Ein Mädchen oder Weibchen wünscht Papageno sich','','Arie - \"Ein Mädchen oder Weibchen wünscht Papageno sich\"'),(136,1,NULL,'',20,'',137,NULL,0,'Ah perfido!','1796','Arie für Orchester und Sopran - \"Ah perfido!\"'),(135,1,NULL,'',12,'',136,NULL,0,'','1807','Arrangement für Klavier und Violoncello'),(134,1,NULL,'',12,'',135,NULL,0,'','1806','Arrangement für Klaviertrio'),(125,1,NULL,'',12,'',126,11,0,'','1803','Arrangement für Klaviertrio in Es-Dur'),(163,1,NULL,'',12,'',164,NULL,0,'','1817','Arrangement für Streichquintett'),(195,1,NULL,'',12,'',196,35,0,'','1826','Arrangement für vierhändiges Klavier in B-Dur'),(130,1,NULL,'',16,'',131,NULL,0,'Prometheus','1801','Ballet für Orchester - \"Prometheus\"'),(162,1,NULL,'',28,'',163,11,0,'','1792','Bläseroktett in Es-Dur'),(17,1,NULL,'',24,'',18,NULL,0,'L\'amante impatiente','1809','Duett für Klavier und Singstimme - \"L\'amante impatiente\"'),(11,1,NULL,'',23,'',12,NULL,0,'','1808','Fantasie für Chor'),(8,1,NULL,'',23,'',9,NULL,0,'','1809','Fantasie für Klavier'),(194,1,NULL,'grosse',31,'',195,35,0,'','1826','Grosse Fuge für Streichquartett in B-Dur'),(95,1,NULL,'',3,'',96,19,0,'','1800','Hornsonate in F-Dur'),(197,1,NULL,'',32,'',198,NULL,0,'Der glorreiche Augenblick','1814','Kantate für Alt, Bass, Chor, Orchester, Sopran und Tenor - \"Der glorreiche Augenblick\"'),(93,1,NULL,'',6,'1',94,1,0,'','1795','Klavierkonzert Nr. 1 in C-Dur'),(101,1,NULL,'',6,'2',102,35,0,'','1795','Klavierkonzert Nr. 2 in B-Dur'),(124,1,NULL,'',6,'3',125,2,0,'','1803','Klavierkonzert Nr. 3 in c-moll'),(60,1,NULL,'',6,'4',61,25,0,'','1807','Klavierkonzert Nr. 4 in G-Dur'),(148,1,NULL,'',6,'5',149,11,0,'Emperor','1809','Klavierkonzert Nr. 5 in Es-Dur - \"Emperor\"'),(70,1,NULL,'',3,'1',71,20,0,'','1796','Klaviersonate Nr. 1 in f-moll'),(92,1,NULL,'',3,'10',93,25,0,'','1799','Klaviersonate Nr. 10 in G-Dur'),(104,1,NULL,'',3,'11',105,35,0,'','1800','Klaviersonate Nr. 11 in B-Dur'),(108,1,NULL,'',3,'12',109,29,0,'','1801','Klaviersonate Nr. 12 in As-Dur'),(109,1,NULL,'',3,'13',110,11,0,'','1801','Klaviersonate Nr. 13 in Es-Dur'),(110,1,NULL,'',3,'14',111,4,0,'Mondschein','1801','Klaviersonate Nr. 14 in cis-moll - \"Mondschein\"'),(111,1,NULL,'',3,'15',112,7,0,'','1801','Klaviersonate Nr. 15 in D-Dur'),(116,1,NULL,'',3,'16',117,25,0,'','1802','Klaviersonate Nr. 16 in G-Dur'),(117,1,NULL,'',3,'17',118,8,0,'','1802','Klaviersonate Nr. 17 in d-moll'),(118,1,NULL,'',3,'18',119,11,0,'','1802','Klaviersonate Nr. 18 in Es-Dur'),(42,1,NULL,'',3,'19',43,26,0,'','1792','Klaviersonate Nr. 19 in g-moll'),(71,1,NULL,'',3,'2',72,31,0,'','1796','Klaviersonate Nr. 2 in A-Dur'),(43,1,NULL,'',3,'20',44,25,0,'','1792','Klaviersonate Nr. 20 in G-Dur'),(55,1,NULL,'',3,'21',56,1,0,'Waldstein','1803','Klaviersonate Nr. 21 in C-Dur - \"Waldstein\"'),(56,1,NULL,'',3,'22',57,19,0,'','1804','Klaviersonate Nr. 22 in F-Dur'),(59,1,NULL,'',3,'23',60,20,0,'Appasionata','1805','Klaviersonate Nr. 23 in f-moll - \"Appasionata\"'),(9,1,NULL,'',3,'24',10,21,0,'','1809','Klaviersonate Nr. 24 in Fis-Dur'),(10,1,NULL,'',3,'25',11,25,0,'','1809','Klaviersonate Nr. 25 in G-Dur'),(12,1,NULL,'',3,'26',13,11,0,'Les Adieux','1809','Klaviersonate Nr. 26 in Es-Dur - \"Les Adieux\"'),(30,1,NULL,'',3,'27',31,14,0,'','1814','Klaviersonate Nr. 27 in e-moll'),(159,1,NULL,'',3,'28',160,31,0,'','1816','Klaviersonate Nr. 28 in A-Dur'),(165,1,NULL,'',3,'29',166,35,0,'Hammerklavier','1818','Klaviersonate Nr. 29 in B-Dur - \"Hammerklavier\"'),(72,1,NULL,'',3,'3',73,1,0,'','1796','Klaviersonate Nr. 3 in C-Dur'),(168,1,NULL,'',3,'30',169,13,0,'','1822','Klaviersonate Nr. 30 in E-Dur'),(169,1,NULL,'',3,'31',170,29,0,'','1822','Klaviersonate Nr. 31 in As-Dur'),(170,1,NULL,'',3,'32',171,2,0,'','1822','Klaviersonate Nr. 32 in c-moll'),(78,1,NULL,'',3,'4',79,11,0,'','1797','Klaviersonate Nr. 4 in Es-Dur'),(83,1,NULL,'',3,'5',84,2,0,'','1798','Klaviersonate Nr. 5 in c-moll'),(84,1,NULL,'',3,'6',85,19,0,'','1798','Klaviersonate Nr. 6 in F-Dur'),(85,1,NULL,'',3,'7',86,7,0,'','1798','Klaviersonate Nr. 7 in D-Dur'),(90,1,NULL,'',3,'8',91,2,0,'Pathétique','1799','Klaviersonate Nr. 8 in c-moll - \"Pathétique\"'),(91,1,NULL,'',3,'9',92,13,0,'','1799','Klaviersonate Nr. 9 in E-Dur'),(77,1,NULL,'',3,'',78,NULL,0,'','1797','Klaviersonate zu vier Händen'),(67,1,NULL,'',2,'1',68,11,0,'','1795','Klaviertrio Nr. 1 in Es-Dur'),(131,1,NULL,'',2,'10',132,11,0,'','1792','Klaviertrio Nr. 10 in Es-Dur'),(181,1,NULL,'',2,'11',182,NULL,0,'Variation über \'Ich bin der Schneider Kakadu\'','1803','Klaviertrio Nr. 11 - \"Variation über \'Ich bin der Schneider Kakadu\'\"'),(68,1,NULL,'',2,'2',69,25,0,'','1795','Klaviertrio Nr. 2 in G-Dur'),(69,1,NULL,'',2,'3',70,2,0,'','1795','Klaviertrio Nr. 3 in c-moll'),(86,1,NULL,'',2,'4',87,35,0,'','1798','Klaviertrio Nr. 4 in B-Dur'),(142,1,NULL,'',2,'5',143,7,0,'','1808','Klaviertrio Nr. 5 in D-Dur'),(143,1,NULL,'',2,'6',144,11,0,'','1808','Klaviertrio Nr. 6 in Es-Dur'),(155,1,NULL,'',2,'7',156,35,0,'','1811','Klaviertrio Nr. 7 in B-Dur'),(171,1,NULL,'',9,'',172,NULL,0,'Meeressttille und glückliche Fahrt','1815','Lied für Chor und Orchester - \"Meeressttille und glückliche Fahrt\"'),(183,1,NULL,'',9,'',184,NULL,0,'Bundeslied','1824','Lied für Chor, Fagott, Horn, Klarinette und Solostimme - \"Bundeslied\"'),(182,1,NULL,'',9,'',183,NULL,0,'Opferlied','1822','Lied für Chor, Orchester und Solostimme - \"Opferlied\"'),(119,1,NULL,'',9,'',120,NULL,0,'An die Hoffnung','1805','Lied für Klavier und Kontrabass - \"An die Hoffnung\"'),(36,1,NULL,'',9,'',37,NULL,0,'Bitten','1802','Lied für Klavier und Kontrabass - \"Bitten\"'),(41,1,NULL,'',9,'',42,NULL,0,'Bußlied','1802','Lied für Klavier und Kontrabass - \"Bußlied\"'),(39,1,NULL,'',9,'',40,NULL,0,'Die Ehre Gottes aus der Natur','1802','Lied für Klavier und Kontrabass - \"Die Ehre Gottes aus der Natur\"'),(37,1,NULL,'',9,'',38,NULL,0,'Die Liebe des Nächsten','1802','Lied für Klavier und Kontrabass - \"Die Liebe des Nächsten\"'),(40,1,NULL,'',9,'',41,NULL,0,'Gottes Macht und Vorsehung','1802','Lied für Klavier und Kontrabass - \"Gottes Macht und Vorsehung\"'),(38,1,NULL,'',9,'',39,NULL,0,'Vom Tode','1802','Lied für Klavier und Kontrabass - \"Vom Tode\"'),(34,1,NULL,'',9,'',35,NULL,0,'Adelaide','1795','Lied für Klavier und Singstimme - \"Adelaide\"'),(156,1,NULL,'',9,'',157,NULL,0,'An die ferne Geliebte','1816','Lied für Klavier und Singstimme - \"An die ferne Geliebte\"'),(5,1,NULL,'',9,'',6,NULL,0,'An die fernen Geliebten','','Lied für Klavier und Singstimme - \"An die fernen Geliebten\"'),(152,1,NULL,'',9,'',153,NULL,0,'An die Hoffnung','1815','Lied für Klavier und Singstimme - \"An die Hoffnung\"'),(3,1,NULL,'',9,'',4,NULL,0,'Aus Goethes Faust: Es war einmal ein König','','Lied für Klavier und Singstimme - \"Aus Goethes Faust: Es war einmal ein König\"'),(54,1,NULL,'',9,'',55,NULL,0,'Das Blümchen Wunderhold','1805','Lied für Klavier und Singstimme - \"Das Blümchen Wunderhold\"'),(28,1,NULL,'',9,'',29,NULL,0,'Das Glück der Freundschaft','1803','Lied für Klavier und Singstimme - \"Das Glück der Freundschaft\"'),(49,1,NULL,'',9,'',50,NULL,0,'Das Liedchen von der Ruhe','1805','Lied für Klavier und Singstimme - \"Das Liedchen von der Ruhe\"'),(189,1,NULL,'',9,'',190,NULL,0,'Der Kuss','1822','Lied für Klavier und Singstimme - \"Der Kuss\"'),(157,1,NULL,'',9,'',158,NULL,0,'Der Mann von Wort','1816','Lied für Klavier und Singstimme - \"Der Mann von Wort\"'),(6,1,NULL,'',9,'',7,NULL,0,'Der Zufriedene','','Lied für Klavier und Singstimme - \"Der Zufriedene\"'),(52,1,NULL,'',9,'',53,NULL,0,'Die Liebe','1805','Lied für Klavier und Singstimme - \"Die Liebe\"'),(177,1,NULL,'',9,'',178,NULL,0,'Elegischer Gesang','1814','Lied für Klavier und Singstimme - \"Elegischer Gesang\"'),(48,1,NULL,'',9,'',49,NULL,0,'Feuerfab','1805','Lied für Klavier und Singstimme - \"Feuerfab\"'),(4,1,NULL,'',9,'',5,NULL,0,'Gretels Warnung','','Lied für Klavier und Singstimme - \"Gretels Warnung\"'),(15,1,NULL,'',9,'',16,NULL,0,'Hoffnung','1809','Lied für Klavier und Singstimme - \"Hoffnung\"'),(18,1,NULL,'',9,'',19,NULL,0,'L\'amante impatiente','1809','Lied für Klavier und Singstimme - \"L\'amante impatiente\"'),(19,1,NULL,'',9,'',20,NULL,0,'Lebens-Genuss','1809','Lied für Klavier und Singstimme - \"Lebens-Genuss\"'),(16,1,NULL,'',9,'',17,NULL,0,'Liebes-Klage','1809','Lied für Klavier und Singstimme - \"Liebes-Klage\"'),(50,1,NULL,'',9,'',51,NULL,0,'Maigesang','1805','Lied für Klavier und Singstimme - \"Maigesang\"'),(53,1,NULL,'',9,'',54,NULL,0,'Marmotte','1805','Lied für Klavier und Singstimme - \"Marmotte\"'),(158,1,NULL,'',9,'',159,NULL,0,'Merkenstein','1814','Lied für Klavier und Singstimme - \"Merkenstein\"'),(1,1,NULL,'',9,'',2,NULL,0,'Mignon','','Lied für Klavier und Singstimme - \"Mignon\"'),(23,1,NULL,'',9,'',24,NULL,0,'Mit einem gemalten Band','1810','Lied für Klavier und Singstimme - \"Mit einem gemalten Band\"'),(51,1,NULL,'',9,'',52,NULL,0,'Mollys Abschied','1805','Lied für Klavier und Singstimme - \"Mollys Abschied\"'),(2,1,NULL,'',9,'',3,NULL,0,'Neue Liebe, neues Leben','','Lied für Klavier und Singstimme - \"Neue Liebe, neues Leben\"'),(22,1,NULL,'',9,'',23,NULL,0,'Sehnsucht','1810','Lied für Klavier und Singstimme - \"Sehnsucht\"'),(47,1,NULL,'',9,'',48,NULL,0,'Urians Reise um die Welt','1805','Lied für Klavier und Singstimme - \"Urians Reise um die Welt\"'),(21,1,NULL,'',9,'',22,NULL,0,'Wonne der Wehmut','1810','Lied für Klavier und Singstimme - \"Wonne der Wehmut\"'),(173,1,NULL,'',17,'',174,NULL,0,'Die Weihe des Hauses','1822','Marsch für Chor und Orchester - \"Die Weihe des Hauses\"'),(184,1,NULL,'',26,'',185,7,0,'Missa Solemnis','1822','Messe für Alt, Bass, Chor, Orchester, Sopran und Tenor in D-Dur - \"Missa Solemnis\"'),(26,1,NULL,'',26,'',27,1,0,'','1807','Messe für Chor, Orchester und Singstimme in C-Dur'),(129,1,NULL,'',15,'',130,7,0,'','1803','Notturno für Klavier und Viola in D-Dur'),(33,2,NULL,'',21,'',1,NULL,0,'Die Zauberflöte','1791','Oper für Chor und Orchester - \"Die Zauberflöte\"'),(147,1,NULL,'',21,'',148,NULL,0,'Fidelio','1814','Oper für Orchester - \"Fidelio\"'),(146,1,NULL,'',21,'',147,NULL,0,'Leonore','1806','Oper für Orchester - \"Leonore\"'),(145,1,NULL,'',21,'',146,NULL,0,'Leonore','1805','Oper für Orchester - \"Leonore\"'),(25,1,NULL,'',25,'',26,NULL,0,'Christus am Ölberge','1804','Oratorium für Chor, Orchester und Singstimme - \"Christus am Ölberge\"'),(172,1,NULL,'',19,'',173,NULL,0,'Die Ruinen von Athen','1811','Ouvertüre für Chor und Orchester - \"Die Ruinen von Athen\"'),(133,1,NULL,'',19,'',134,NULL,0,'Coriolan','1807','Ouvertüre für Orchester - \"Coriolan\"'),(185,1,NULL,'',19,'',186,NULL,0,'Die Weihe des Hauses','1822','Ouvertüre für Orchester - \"Die Weihe des Hauses\"'),(24,1,NULL,'',19,'',25,NULL,0,'Egmont','1810','Ouvertüre für Orchester - \"Egmont\"'),(174,1,NULL,'',19,'',175,1,0,'Zur Namensfeier','1815','Ouvertüre für Orchester in C-Dur - \"Zur Namensfeier\"'),(176,1,NULL,'',19,'',177,11,0,'König Stephan','1811','Ouvertüre für Orchester in Es-Dur - \"König Stephan\"'),(199,1,NULL,'',19,'1',200,NULL,0,'Leonore','1807','Ouvertüre für Orchester Nr. 1 - \"Leonore\"'),(29,1,NULL,'',27,'',30,1,0,'','1814','Polonaise für Klavier in C-Dur'),(94,1,NULL,'',4,'',95,NULL,0,'','1796','Quintett für Klavier und Bläser'),(44,1,NULL,'',14,'',45,19,0,'','1798','Romanze für Violine in F-Dur'),(127,1,NULL,'',14,'',128,25,0,'','1802','Romanze für Violine in G-Dur'),(45,1,NULL,'',18,'',46,1,0,'','1797','Rondo für Klavier in C-Dur'),(190,1,NULL,'',18,'',191,7,0,'Wut über den verlorenen Groschen','1795','Rondo für Klavier in D-Dur - \"Wut über den verlorenen Groschen\"'),(46,1,NULL,'',18,'',47,25,0,'','1798','Rondo für Klavier in G-Dur'),(102,1,NULL,'',7,'',103,11,0,'','1799','Septett für Fagott, Horn, Klarinette, Kontrabass, Viola, Violine und Violoncello in Es-Dur'),(107,1,NULL,'',5,'',108,7,0,'','1801','Serenade für Flöte, Viola und Violine in D-Dur'),(128,1,NULL,'',5,'',129,7,0,'','1803','Serenade für Klavier und Violine in D-Dur'),(79,1,NULL,'',5,'',80,7,0,'','1797','Serenade für Streichtrio in D-Dur'),(144,1,NULL,'',22,'',145,11,0,'','1796','Sextett für Bläsersextett in Es-Dur'),(13,1,NULL,'',22,'',14,11,0,'','1795','Sextett für Horn, Viola, Violine und Violoncello in Es-Dur'),(75,1,NULL,'',3,'1',76,19,0,'','1796','Sonate für Klavier und Violoncello Nr. 1 in F-Dur'),(76,1,NULL,'',3,'2',77,26,0,'','1796','Sonate für Klavier und Violoncello Nr. 2 in g-moll'),(141,1,NULL,'',3,'3',142,31,0,'','1808','Sonate für Klavier und Violoncello Nr. 3 in A-Dur'),(160,1,NULL,'',3,'4',161,1,0,'','1815','Sonate für Klavier und Violoncello Nr. 4 in C-Dur'),(161,1,NULL,'',3,'5',162,8,0,'','1815','Sonate für Klavier und Violoncello Nr. 5 in d-moll'),(66,1,NULL,'',1,'1',67,19,0,'','1800','Streichquartett Nr. 1 in F-Dur'),(149,1,NULL,'',1,'10',150,11,0,'','1809','Streichquartett Nr. 10 in Es-Dur'),(153,1,NULL,'',1,'11',154,20,0,'Serioso','1810','Streichquartett Nr. 11 in f-moll - \"Serioso\"'),(188,1,NULL,'',1,'12',189,11,0,'','1825','Streichquartett Nr. 12 in Es-Dur'),(191,1,NULL,'',1,'13',192,35,0,'','1825','Streichquartett Nr. 13 in B-Dur'),(192,1,NULL,'',1,'14',193,4,0,'','1826','Streichquartett Nr. 14 in cis-moll'),(193,1,NULL,'',1,'15',194,32,0,'','1825','Streichquartett Nr. 15 in a-moll'),(196,1,NULL,'',1,'16',197,19,0,'','1826','Streichquartett Nr. 16 in F-Dur'),(96,1,NULL,'',1,'2',97,25,0,'','1800','Streichquartett Nr. 2 in G-Dur'),(97,1,NULL,'',1,'3',98,7,0,'','1800','Streichquartett Nr. 3 in D-Dur'),(98,1,NULL,'',1,'4',99,2,0,'','1800','Streichquartett Nr. 4 in c-moll'),(99,1,NULL,'',1,'5',100,31,0,'','1800','Streichquartett Nr. 5 in A-Dur'),(100,1,NULL,'',1,'6',101,35,0,'','1800','Streichquartett Nr. 6 in B-Dur'),(61,1,NULL,'',1,'7',62,19,0,'Rasumovsky 1','1806','Streichquartett Nr. 7 in F-Dur - \"Rasumovsky 1\"'),(62,1,NULL,'',1,'8',63,14,0,'Rasumovsky 2','1806','Streichquartett Nr. 8 in e-moll - \"Rasumovsky 2\"'),(63,1,NULL,'',1,'9',64,1,0,'Rasumovsky 3','1806','Streichquartett Nr. 9 in C-Dur - \"Rasumovsky 3\"'),(112,1,NULL,'',4,'',113,1,0,'','1801','Streichquintett in C-Dur'),(198,1,NULL,'',4,'',199,7,0,'','1817','Streichquintett in D-Dur'),(74,1,NULL,'',4,'',75,11,0,'','1795','Streichquintett in Es-Dur'),(73,1,NULL,'',2,'1',74,11,0,'','1794','Streichtrio Nr. 1 in Es-Dur'),(80,1,NULL,'',2,'2',81,25,0,'','1798','Streichtrio Nr. 2 in G-Dur'),(81,1,NULL,'',2,'3',82,7,0,'','1798','Streichtrio Nr. 3 in D-Dur'),(82,1,NULL,'',2,'4',83,2,0,'','1798','Streichtrio Nr. 4 in c-moll'),(186,1,NULL,'',8,'9',187,8,0,'An die Freude','1824','Symphonie für Chor und Orchester Nr. 9 in d-moll - \"An die Freude\"'),(103,1,NULL,'',8,'1',104,1,0,'','1800','Symphonie für Orchester Nr. 1 in C-Dur'),(123,1,NULL,'',8,'2',124,7,0,'','1803','Symphonie für Orchester Nr. 2 in D-Dur'),(57,1,NULL,'',8,'3',58,11,0,'Eroica','1805','Symphonie für Orchester Nr. 3 in Es-Dur - \"Eroica\"'),(64,1,NULL,'',8,'4',65,35,0,'','1807','Symphonie für Orchester Nr. 4 in B-Dur'),(139,1,NULL,'',8,'5',140,2,0,'','1808','Symphonie für Orchester Nr. 5 in c-moll'),(140,1,NULL,'',8,'6',141,19,0,'Pastorale','1808','Symphonie für Orchester Nr. 6 in F-Dur - \"Pastorale\"'),(32,1,NULL,'',8,'7',33,31,0,'','1813','Symphonie für Orchester Nr. 7 in A-Dur'),(151,1,NULL,'',8,'8',152,19,0,'','1814','Symphonie für Orchester Nr. 8 in F-Dur'),(175,1,NULL,'',NULL,'',176,NULL,0,'Tramte, empi, tremate!','1802','Tramte, empi, tremate! für Bass, Orchester, Sopran und Tenor'),(27,1,NULL,'',2,'',28,1,0,'','1795','Trio für Englisch-Horn und Oboe in C-Dur'),(58,1,NULL,'',6,'',59,1,0,'','1805','Tripelkonzert in C-Dur'),(138,1,NULL,'',11,'',139,NULL,0,'','1796','Variation für Violoncello über ein eigenes Thema'),(65,1,NULL,'',6,'',66,7,0,'','1808','Violinkonzert in D-Dur'),(87,1,NULL,'',3,'1',88,7,0,'','1798','Violinsonate Nr. 1 in D-Dur'),(154,1,NULL,'',3,'10',155,25,0,'','1812','Violinsonate Nr. 10 in G-Dur'),(88,1,NULL,'',3,'2',89,31,0,'','1798','Violinsonate Nr. 2 in A-Dur'),(89,1,NULL,'',3,'3',90,11,0,'','1798','Violinsonate Nr. 3 in Es-Dur'),(105,1,NULL,'',3,'4',106,32,0,'','1801','Violinsonate Nr. 4 in a-moll'),(106,1,NULL,'',3,'5',107,19,0,'Frühling','1801','Violinsonate Nr. 5 in F-Dur - \"Frühling\"'),(113,1,NULL,'',3,'6',114,31,0,'','1803','Violinsonate Nr. 6 in A-Dur'),(114,1,NULL,'',3,'7',115,2,0,'','1803','Violinsonate Nr. 7 in c-moll'),(115,1,NULL,'',3,'8',116,25,0,'','1803','Violinsonate Nr. 8 in G-Dur'),(35,1,NULL,'',3,'9',36,31,0,'Kreutzer','1802','Violinsonate Nr. 9 in A-Dur - \"Kreutzer\"'),(179,3,NULL,'',30,'',1,1,0,'','','Walzer in C-Dur'),(31,1,NULL,'',NULL,'',32,NULL,0,'Wellington\'s Sieg','1813','Wellington\'s Sieg für Orchester'),(200,2,NULL,'',33,'',201,25,NULL,'','1761/2','Menuett in G-Dur, KV 1'),(201,2,NULL,'',34,'',202,1,NULL,'','1761/2','Andante in C-Dur, KV 1-a'),(202,2,NULL,'',35,'',203,1,NULL,'','1761/2','Allegro für Cembalo in C-Dur, KV 1-b'),(203,2,NULL,'',35,'',204,19,NULL,'','1761','Allegro für Cembalo in F-Dur, KV 1-c'),(204,2,NULL,'',33,'',205,19,NULL,'','1761','Menuett für Cembalo in F-Dur, KV 1-d'),(205,2,NULL,'',33,'',206,25,NULL,'','1761/2','Menuett für Cembalo in G-Dur, KV 1-e'),(206,2,NULL,'',33,'',207,1,NULL,'','1761/2','Menuett für Cembalo in C-Dur, KV 1-f'),(207,2,NULL,'',33,'',208,19,NULL,'','1762','Menuett für Cembalo in F-Dur, KV 2'),(208,2,NULL,'',35,'',209,35,NULL,'','1762','Allegro für Cembalo in B-Dur, KV 3'),(209,2,NULL,'',33,'',210,19,NULL,'','1762','Menuett für Cembalo in F-Dur, KV 4'),(210,2,NULL,'',33,'',211,19,NULL,'','1762','Menuett für Cembalo in F-Dur, KV 5'),(211,2,NULL,'',35,'',212,1,NULL,'','1763','Allegro für Cembalo in C-Dur, KV 5-a'),(212,2,NULL,'',3,'',213,1,NULL,'','1764','Sonate für Cembalo und Violine in C-Dur, KV 6'),(213,2,NULL,'',3,'',214,7,NULL,'','1764','Sonate für Cembalo und Violine in D-Dur, KV 7'),(214,2,NULL,'',3,'',215,35,NULL,'','1764','Sonate für Cembalo und Violine in B-Dur, KV 8'),(215,2,NULL,'',35,'',216,1,NULL,'','1763','Allegro für Cembalo in C-Dur, KV 9-a'),(217,2,NULL,'',8,'2',218,35,NULL,'','1764','Symphonie Nr. 2 in B-Dur, KV 17'),(218,2,NULL,'',8,'3',219,11,NULL,'','1764','Symphonie Nr. 3 in Es-Dur, KV 18'),(289,2,NULL,'',8,'4',290,7,NULL,'','','Symphonie für Orchester Nr. 4 in D-Dur, KV 19'),(220,2,NULL,'',8,'5',221,35,NULL,'','1765','Symphonie Nr. 5 in B-Dur, KV 22'),(221,2,NULL,'',8,'6',222,19,NULL,'','1767','Symphonie Nr. 6 in F-Dur, KV 43'),(222,2,NULL,'',3,'',223,1,NULL,'','1768','Sonate für Klavier und Violine in C-Dur, KV 46-d'),(223,2,NULL,'',8,'8',224,7,NULL,'','1768','Symphonie Nr. 8 in D-Dur, KV 48'),(224,2,NULL,'',8,'9',225,1,NULL,'','1769/70','Symphonie Nr. 9 in C-Dur, KV 73'),(290,2,NULL,'',8,'4a',291,19,NULL,'','','Symphonie für Orchester Nr. 4a in F-Dur, KV 19-a'),(226,2,NULL,'',8,'14',227,31,NULL,'','1771','Symphonie Nr. 14 in A-Dur, KV 114'),(227,2,NULL,'',8,'16',228,1,NULL,'','1772','Symphonie Nr. 16 in C-Dur, KV 128'),(228,2,NULL,'',8,'17',229,25,NULL,'','1772','Symphonie Nr. 17 in G-Dur, KV 129'),(229,2,NULL,'',8,'18',230,19,NULL,'','1772','Symphonie Nr. 18 in F-Dur, KV 130'),(230,2,NULL,'',8,'19',231,11,NULL,'','1772','Symphonie Nr. 19 in Es-Dur, KV 132'),(231,2,NULL,'',8,'20',232,7,NULL,'','1772','Symphonie Nr. 20 in D-Dur, KV 133'),(232,2,NULL,'',8,'21',233,31,NULL,'','1772','Symphonie Nr. 21 in A-Dur, KV 134'),(233,2,NULL,'',3,'',234,25,NULL,'','1778','Sonate für Klavier und Violine in G-Dur, KV 301'),(234,2,NULL,'',3,'',235,11,NULL,'','1778','Sonate für Klavier und Violine in Es-Dur, KV 302'),(235,2,NULL,'',3,'',236,1,NULL,'','1778','Sonate für Klavier und Violine in C-Dur, KV 303'),(236,2,NULL,'',3,'',237,14,NULL,'','1778','Sonate für Klavier und Violine in e-moll, KV 304'),(237,2,NULL,'',3,'',238,31,NULL,'','1778','Sonate für Klavier und Violine in A-Dur, KV 305'),(238,2,NULL,'',3,'',239,7,NULL,'','1778','Sonate für Klavier und Violine in D-Dur, KV 306'),(239,2,NULL,'',8,'33',240,35,NULL,'','1779','Symphonie Nr. 33 in B-Dur, KV 319'),(240,2,NULL,'',26,'',241,25,NULL,'Missa brevis','1768','Messe in G-Dur - \"Missa brevis\", KV 49'),(241,2,NULL,'',6,'1',242,19,NULL,'','1767','Konzert für Klavier und Orchester Nr. 1 in F-Dur, KV 37'),(242,2,NULL,'',6,'2',243,35,NULL,'','1767','Konzert für Klavier und Orchester Nr. 2 in B-Dur, KV 39'),(243,2,NULL,'',6,'3',244,7,NULL,'','1767','Konzert für Klavier und Orchester Nr. 3 in D-Dur, KV 40'),(244,2,NULL,'',6,'4',245,25,NULL,'','1767','Konzert für Klavier und Orchester Nr. 4 in G-Dur, KV 41'),(245,2,NULL,'',1,'3',246,25,NULL,'','1772','Quartett für Streichquartett Nr. 3 in G-Dur, KV 156'),(246,2,NULL,'',1,'4',247,1,NULL,'','1772/3','Quartett für Streichquartett Nr. 4 in C-Dur, KV 157'),(247,2,NULL,'',1,'5',248,19,NULL,'','1773','Quartett für Streichquartett Nr. 5 in F-Dur, KV 158'),(248,2,NULL,'',1,'6',249,35,NULL,'','1773','Quartett für Streichquartett Nr. 6 in B-Dur, KV 159'),(249,2,NULL,'',1,'7',250,11,NULL,'','1773','Quartett für Streichquartett Nr. 7 in Es-Dur, KV 160'),(250,2,NULL,'',8,'22',251,1,NULL,'','1773','Symphonie für Orchester Nr. 22 in C-Dur, KV 162'),(251,2,NULL,'',1,'8',252,19,NULL,'','1773','Quartett für Streichquartett Nr. 8 in F-Dur, KV 168'),(252,2,NULL,'',1,'9',253,31,NULL,'','1773','Quartett für Streichquartett Nr. 9 in A-Dur, KV 169'),(253,2,NULL,'',1,'10',254,1,NULL,'','1773','Quartett für Streichquartett Nr. 10 in C-Dur, KV 170'),(254,2,NULL,'',1,'11',255,11,NULL,'','1773','Quartett für Streichquartett Nr. 11 in Es-Dur, KV 171'),(255,2,NULL,'',1,'12',256,35,NULL,'','1773','Quartett für Streichquartett Nr. 12 in B-Dur, KV 172'),(256,2,NULL,'',1,'13',257,8,NULL,'','1773','Quartett für Streichquartett Nr. 13 in d-moll, KV 173'),(257,2,NULL,'',1,'',258,35,NULL,'','1773','Quartett für Streichquartett in B-Dur, KV 174'),(258,2,NULL,'',6,'5',259,7,NULL,'','1773','Konzert für Klavier und Orchester Nr. 5 in D-Dur, KV 175'),(259,2,NULL,'',8,'27',260,25,NULL,'','1773','Symphonie für Orchester Nr. 27 in G-Dur, KV 199'),(260,2,NULL,'',8,'28',261,1,NULL,'','1773','Symphonie für Orchester Nr. 28 in C-Dur, KV 200'),(261,2,NULL,'',8,'29',262,31,NULL,'','1774','Symphonie für Orchester Nr. 29 in A-Dur, KV 201'),(262,2,NULL,'',8,'30',263,7,NULL,'','1774','Symphonie für Orchester Nr. 30 in D-Dur, KV 202'),(263,2,NULL,'',3,'',264,1,NULL,'','1774','Sonate für Klavier in C-Dur, KV 279'),(264,2,NULL,'',3,'',265,19,NULL,'','1774','Sonate für Klavier in F-Dur, KV 280'),(265,2,NULL,'',3,'',266,35,NULL,'','1774','Sonate für Klavier in B-Dur, KV 281'),(266,2,NULL,'',3,'',267,11,NULL,'','1774','Sonate für Klavier in Es-Dur, KV 282'),(267,2,NULL,'',3,'',268,25,NULL,'','1774','Sonate für Klavier in G-Dur, KV 283'),(268,2,NULL,'',3,'',269,7,NULL,'','1775','Sonate für Klavier in D-Dur, KV 284'),(269,2,NULL,'',3,'',270,1,NULL,'','1777','Sonate für Klavier in C-Dur, KV 309'),(270,2,NULL,'',3,'',271,32,NULL,'','1778','Sonate für Klavier in a-moll, KV 310'),(271,2,NULL,'',3,'',272,7,NULL,'','1777','Sonate für Klavier in D-Dur, KV 311'),(272,2,NULL,'',3,'',273,1,NULL,'','1778','Sonate für Klavier in C-Dur, KV 330'),(273,2,NULL,'',3,'',274,19,NULL,'','1778','Sonate für Klavier in F-Dur, KV 332'),(274,2,NULL,'',3,'',275,35,NULL,'','1778','Sonate für Klavier in B-Dur, KV 333'),(275,2,NULL,'',3,'',276,19,NULL,'','1781','Sonate für Klavier und Violine in F-Dur, KV 376'),(276,2,NULL,'',3,'',277,19,NULL,'','1781','Sonate für Klavier und Violine in F-Dur, KV 377'),(277,2,NULL,'',3,'',278,35,NULL,'','1779','Sonate für Klavier und Violine in B-Dur, KV 378'),(278,2,NULL,'',3,'',279,25,NULL,'','1781','Sonate für Klavier und Violine in G-Dur, KV 379'),(279,2,NULL,'',3,'',280,11,NULL,'','1781','Sonate für Klavier und Violine in Es-Dur, KV 380'),(280,2,NULL,'',3,'',281,25,NULL,'','1764','Sonate für Cembalo und Violine in G-Dur, KV 9'),(281,2,NULL,'',3,'',282,NULL,NULL,'','1766','Sonate für Cembalo und Violine, KV 26'),(282,2,NULL,'',3,'',283,NULL,NULL,'','1766','Sonate für Cembalo und Violine, KV 27'),(283,2,NULL,'',3,'',284,NULL,NULL,'','1766','Sonate für Cembalo und Violine, KV 28'),(284,2,NULL,'',3,'',285,NULL,NULL,'','1766','Sonate für Cembalo und Violine, KV 29'),(285,2,NULL,'',3,'',286,NULL,NULL,'','1766','Sonate für Cembalo und Violine, KV 30'),(286,2,NULL,'',3,'',287,NULL,NULL,'','1766','Sonate für Cembalo und Violine, KV 31'),(288,2,NULL,'',8,'1',289,11,NULL,'','','Symphonie für Orchester Nr. 1 in Es-Dur, KV 16'),(291,2,NULL,'',8,'7',292,7,NULL,'','','Symphonie für Orchester Nr. 7 in D-Dur, KV 45'),(292,2,NULL,'',8,'',293,25,NULL,'Alte Lambacher','','Symphonie für Orchester in G-Dur - \"Alte Lambacher\", KV A221'),(293,2,NULL,'',8,'55',294,35,NULL,'','','Symphonie für Orchester Nr. 55 in B-Dur, KV 45-b'),(294,2,NULL,'',8,'10',295,25,NULL,'','','Symphonie für Orchester Nr. 10 in G-Dur, KV 74'),(295,2,NULL,'',8,'42',296,19,NULL,'','','Symphonie für Orchester Nr. 42 in F-Dur, KV 75'),(296,2,NULL,'',8,'43',297,19,NULL,'','','Symphonie für Orchester Nr. 43 in F-Dur, KV 76'),(297,2,NULL,'',8,'44',298,7,NULL,'','','Symphonie für Orchester Nr. 44 in D-Dur, KV 81'),(298,2,NULL,'',8,'11',299,7,NULL,'','','Symphonie für Orchester Nr. 11 in D-Dur, KV 84'),(299,2,NULL,'',8,'45',300,7,NULL,'','','Symphonie für Orchester Nr. 45 in D-Dur, KV 95'),(300,2,NULL,'',8,'46',301,1,NULL,'','','Symphonie für Orchester Nr. 46 in C-Dur, KV 96'),(301,2,NULL,'',8,'47',302,7,NULL,'','','Symphonie für Orchester Nr. 47 in D-Dur, KV 97'),(302,2,NULL,'',8,'12',303,25,NULL,'','','Symphonie für Orchester Nr. 12 in G-Dur, KV 110'),(303,2,NULL,'',8,'13',304,19,NULL,'','','Symphonie für Orchester Nr. 13 in F-Dur, KV 112'),(304,2,NULL,'',8,'15',305,25,NULL,'','','Symphonie für Orchester Nr. 15 in G-Dur, KV 124'),(305,2,NULL,'',8,'24',306,35,NULL,'','','Symphonie für Orchester Nr. 24 in B-Dur, KV 182'),(306,2,NULL,'',8,'25',307,26,NULL,'','','Symphonie für Orchester Nr. 25 in g-moll, KV 183'),(307,2,NULL,'',8,'26',308,11,NULL,'','','Symphonie für Orchester Nr. 26 in Es-Dur, KV 184'),(308,2,NULL,'',8,'31',309,7,NULL,'Pariser','','Symphonie für Orchester Nr. 31 in D-Dur - \"Pariser\", KV 297'),(309,2,NULL,'',8,'36',310,1,NULL,'Linzer','','Symphonie für Orchester Nr. 36 in C-Dur - \"Linzer\", KV 425'),(310,2,NULL,'',8,'34',311,1,NULL,'','','Symphonie für Orchester Nr. 34 in C-Dur, KV 338'),(311,2,NULL,'',8,'35',312,7,NULL,'Haffner','','Symphonie für Orchester Nr. 35 in D-Dur - \"Haffner\", KV 385'),(312,2,NULL,'',8,'38',313,7,NULL,'Prager','','Symphonie für Orchester Nr. 38 in D-Dur - \"Prager\", KV 504'),(313,2,NULL,'',8,'39',314,11,NULL,'','','Symphonie für Orchester Nr. 39 in Es-Dur, KV 543'),(314,2,NULL,'',8,'40',315,26,NULL,'','','Symphonie für Orchester Nr. 40 in g-moll, KV 550'),(315,2,NULL,'',8,'41',316,1,NULL,'Jupiter','','Symphonie für Orchester Nr. 41 in C-Dur - \"Jupiter\", KV 551'),(316,2,NULL,'',1,'',317,8,NULL,'','','Quartett für Streichquartett in d-moll, KV 421'),(317,2,NULL,'',1,'',318,11,NULL,'','','Quartett für Streichquartett in Es-Dur, KV 428'),(318,2,NULL,'',1,'',319,35,NULL,'Jagd-Quartett','','Quartett für Streichquartett in B-Dur - \"Jagd-Quartett\", KV 458'),(319,2,NULL,'',1,'',320,1,NULL,'Dissonanzen-Quartett','','Quartett für Streichquartett in C-Dur - \"Dissonanzen-Quartett\", KV 465'),(320,2,NULL,'',1,'',321,19,NULL,'3. Preu?üisches Quartett','',''),(321,2,NULL,'',4,'',322,2,NULL,'','','Quintett für Streichquintett in c-moll, KV 406'),(322,2,NULL,'',4,'',323,1,NULL,'','','Quintett für Streichquintett in C-Dur, KV 515'),(323,2,NULL,'',4,'',324,26,NULL,'','','Quintett für Streichquintett in g-moll, KV 516'),(324,2,NULL,'',4,'',325,7,NULL,'','','Quintett für Streichquintett in D-Dur, KV 593'),(325,2,NULL,'',4,'',326,11,NULL,'','','Quintett für Streichquintett in Es-Dur, KV 614'),(329,1,NULL,'',17,'',331,35,NULL,'',NULL,'Marsch für 2 Fagott, 2 Horn und 2 Klarinette in B-Dur');
+/*!40000 ALTER TABLE `classical_piece` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_instrumentations`
+--
+
+DROP TABLE IF EXISTS `classical_piece_instrumentations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_instrumentations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `instrumentation_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `piece_id` (`piece_id`,`instrumentation_id`),
+  KEY `instrumentation_id_refs_id_550ea6f2` (`instrumentation_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1124 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_instrumentations`
+--
+
+LOCK TABLES `classical_piece_instrumentations` WRITE;
+/*!40000 ALTER TABLE `classical_piece_instrumentations` DISABLE KEYS */;
+INSERT INTO `classical_piece_instrumentations` VALUES (800,166,19),(801,178,3),(802,122,3),(803,126,3),(804,167,35),(805,20,21),(806,132,7),(807,180,3),(808,14,21),(809,187,3),(810,150,21),(811,164,19),(812,7,3),(813,121,3),(814,120,3),(821,136,24),(822,135,6),(823,134,2),(824,125,2),(825,163,5),(826,195,7),(827,130,15),(828,162,34),(829,17,30),(830,11,25),(831,8,3),(832,194,1),(833,95,13),(834,197,42),(835,93,11),(836,101,11),(837,124,11),(838,60,11),(839,148,11),(840,70,3),(841,92,3),(842,104,3),(843,108,3),(844,109,3),(845,110,3),(846,111,3),(847,116,3),(848,117,3),(849,118,3),(850,42,3),(851,71,3),(852,43,3),(853,55,3),(854,56,3),(855,59,3),(856,9,3),(857,10,3),(858,12,3),(859,30,3),(860,159,3),(861,165,3),(862,72,3),(863,168,3),(864,169,3),(865,170,3),(866,78,3),(867,83,3),(868,84,3),(869,85,3),(870,90,3),(871,91,3),(872,77,7),(873,67,2),(874,131,2),(875,181,2),(876,68,2),(877,69,2),(878,86,2),(879,142,2),(880,143,2),(881,155,2),(887,171,26),(888,183,41),(889,182,40),(890,182,39),(891,119,18),(892,36,18),(893,41,18),(894,39,18),(895,37,18),(896,40,18),(897,38,18),(898,34,21),(899,156,21),(900,5,21),(901,152,21),(902,3,21),(903,54,21),(904,28,21),(905,49,21),(906,189,21),(907,157,21),(908,6,21),(909,52,21),(911,177,38),(910,177,37),(912,48,21),(913,4,21),(914,15,21),(915,18,21),(916,19,21),(917,16,21),(918,50,21),(919,53,21),(920,158,21),(921,1,21),(922,23,21),(923,51,21),(924,2,21),(925,22,21),(926,47,21),(927,21,21),(928,173,26),(936,184,42),(937,26,32),(938,129,20),(939,33,26),(940,147,15),(941,146,15),(942,145,15),(943,25,31),(944,172,26),(945,133,15),(946,185,15),(947,24,15),(948,174,15),(949,176,15),(950,199,15),(951,29,3),(968,94,12),(974,44,10),(975,127,10),(976,45,3),(977,190,3),(978,46,3),(979,102,14),(980,107,16),(982,128,19),(981,128,8),(983,79,4),(984,144,28),(985,13,29),(1020,75,6),(1021,76,6),(1022,141,6),(1023,160,6),(1024,161,6),(1025,66,1),(1026,149,1),(1027,153,1),(1028,188,1),(1029,191,1),(1030,192,1),(1031,193,1),(1032,196,1),(1033,96,1),(1034,97,1),(1035,98,1),(1036,99,1),(1037,100,1),(1038,61,1),(1039,62,1),(1040,63,1),(1041,112,17),(1042,198,5),(1043,74,5),(1044,73,4),(1045,80,4),(1046,81,4),(1047,82,4),(1048,186,26),(1050,103,15),(1057,123,15),(1065,57,15),(1073,64,15),(1084,139,15),(1086,140,15),(1087,32,15),(1089,151,15),(1104,175,36),(1105,27,33),(1106,58,22),(1107,138,27),(1108,65,23),(1109,87,8),(1110,154,8),(1111,88,8),(1112,89,8),(1113,105,8),(1114,106,8),(1115,113,8),(1116,114,8),(1117,115,8),(1118,35,8),(1119,31,15),(819,203,44),(816,202,44),(820,201,44),(935,200,44),(930,204,44),(934,205,44),(929,206,44),(931,207,44),(815,208,44),(932,209,44),(933,210,44),(817,211,44),(987,212,45),(988,213,45),(986,214,45),(818,215,44),(1011,222,8),(1018,233,8),(1014,234,8),(1010,235,8),(1013,236,8),(1008,237,8),(1012,238,8),(1051,288,15),(1095,217,15),(1098,218,15),(1100,220,15),(1101,221,15),(1102,223,15),(1103,224,15),(1090,226,15),(1091,227,15),(1092,228,15),(1093,229,15),(1094,230,15),(1096,231,15),(1097,232,15),(1099,239,15),(882,241,11),(883,242,11),(884,243,11),(885,244,11),(961,245,1),(962,246,1),(963,247,1),(964,248,1),(965,249,1),(1058,250,15),(966,251,1),(967,252,1),(957,253,1),(958,254,1),(959,255,1),(960,256,1),(953,257,1),(886,258,11),(1062,259,15),(1063,260,15),(1064,261,15),(1066,262,15),(999,263,3),(1005,264,3),(997,265,3),(1004,266,3),(1007,267,3),(1002,268,3),(1000,269,3),(996,270,3),(1003,271,3),(1001,272,3),(1006,273,3),(998,274,3),(1016,275,8),(1017,276,8),(1009,277,8),(1019,278,8),(1015,279,8),(989,280,45),(990,281,45),(991,282,45),(992,283,45),(993,284,45),(994,285,45),(995,286,45),(1074,289,15),(1083,290,15),(1088,291,15),(1049,292,15),(1085,293,15),(1052,294,15),(1077,295,15),(1078,296,15),(1079,297,15),(1053,298,15),(1080,299,15),(1081,300,15),(1082,301,15),(1054,302,15),(1055,303,15),(1056,304,15),(1059,305,15),(1060,306,15),(1061,307,15),(1067,308,15),(1070,309,15),(1068,310,15),(1069,311,15),(1071,312,15),(1072,313,15),(1075,314,15),(1076,315,15),(955,316,1),(956,317,1),(952,318,1),(954,319,1),(970,321,5),(969,322,5),(973,323,5),(971,324,5),(972,325,5),(1123,329,51);
+/*!40000 ALTER TABLE `classical_piece_instrumentations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_operaRoles`
+--
+
+DROP TABLE IF EXISTS `classical_piece_operaRoles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_operaRoles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `operarole_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `piece_id` (`piece_id`,`operarole_id`),
+  KEY `operarole_id_refs_id_5fa1554a` (`operarole_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_operaRoles`
+--
+
+LOCK TABLES `classical_piece_operaRoles` WRITE;
+/*!40000 ALTER TABLE `classical_piece_operaRoles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_operaRoles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_opera_roles`
+--
+
+DROP TABLE IF EXISTS `classical_piece_opera_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_opera_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `operarole_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `piece_id` (`piece_id`,`operarole_id`),
+  KEY `operarole_id_refs_id_29fa2c1a` (`operarole_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_opera_roles`
+--
+
+LOCK TABLES `classical_piece_opera_roles` WRITE;
+/*!40000 ALTER TABLE `classical_piece_opera_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_opera_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_parts`
+--
+
+DROP TABLE IF EXISTS `classical_piece_parts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_parts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `from_piece_id` int(11) NOT NULL,
+  `to_piece_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `from_piece_id` (`from_piece_id`,`to_piece_id`),
+  KEY `to_piece_id_refs_id_42b1630` (`to_piece_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=117 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_parts`
+--
+
+LOCK TABLES `classical_piece_parts` WRITE;
+/*!40000 ALTER TABLE `classical_piece_parts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_parts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piecetype`
+--
+
+DROP TABLE IF EXISTS `classical_piecetype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piecetype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `plural` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piecetype`
+--
+
+LOCK TABLES `classical_piecetype` WRITE;
+/*!40000 ALTER TABLE `classical_piecetype` DISABLE KEYS */;
+INSERT INTO `classical_piecetype` VALUES (20,'Arie','Arien'),(12,'Arrangement','Arrangements'),(10,'Bagatelle','Bagatellen'),(16,'Ballet',''),(24,'Duett','Duette'),(23,'Fantasie','Fantasien'),(31,'Fuge','Fugen'),(32,'Kantate','Kantaten'),(6,'Konzert',''),(9,'Lied','Lieder'),(17,'Marsch','Märsche'),(26,'Messe','Messen'),(15,'Notturno','Notturnos'),(28,'Oktett','Oktette'),(21,'Oper','Opern'),(25,'Oratorium','Oratorien'),(19,'Ouvertüre','Ouvertüren'),(27,'Polonaise','Polonaisen'),(13,'Präludium','Präludien'),(1,'Quartett',''),(4,'Quintett',''),(14,'Romanze','Romanzen'),(18,'Rondo','Rondos'),(7,'Septett',''),(5,'Serenade',''),(22,'Sextett','Sextette'),(3,'Sonate',''),(8,'Symphonie',''),(29,'Terzett','Terzette'),(2,'Trio',''),(11,'Variation','Variationen'),(30,'Walzer','Walzer'),(33,'Menuett',''),(34,'Andante',''),(35,'Allegro','');
+/*!40000 ALTER TABLE `classical_piecetype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recording`
+--
+
+DROP TABLE IF EXISTS `classical_recording`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recording` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_recording_label_id` (`label_id`),
+  KEY `classical_recording_type_id` (`type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recording`
+--
+
+LOCK TABLES `classical_recording` WRITE;
+/*!40000 ALTER TABLE `classical_recording` DISABLE KEYS */;
+INSERT INTO `classical_recording` VALUES (1,1,1),(2,2,2),(3,3,2),(4,3,2),(5,4,2),(6,4,2),(7,4,2),(8,5,2),(9,3,3),(10,5,3),(11,3,3),(12,6,2),(13,3,2);
+/*!40000 ALTER TABLE `classical_recording` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recording_performances`
+--
+
+DROP TABLE IF EXISTS `classical_recording_performances`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recording_performances` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `recording_id` int(11) NOT NULL,
+  `performance_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `recording_id` (`recording_id`,`performance_id`),
+  KEY `performance_id_refs_id_3958d67` (`performance_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recording_performances`
+--
+
+LOCK TABLES `classical_recording_performances` WRITE;
+/*!40000 ALTER TABLE `classical_recording_performances` DISABLE KEYS */;
+INSERT INTO `classical_recording_performances` VALUES (98,1,2),(97,1,1),(100,2,4),(99,2,3),(101,3,5),(103,4,7),(102,4,6),(104,5,8),(105,6,9),(109,7,13),(108,7,12),(107,7,11),(106,7,10),(111,8,15),(110,8,14),(120,9,24),(119,9,23),(118,9,22),(117,9,21),(116,9,20),(115,9,19),(114,9,18),(113,9,17),(112,9,16),(125,10,29),(124,10,28),(123,10,27),(122,10,26),(121,10,25),(127,11,31),(126,11,30),(128,12,32),(129,13,33);
+/*!40000 ALTER TABLE `classical_recording_performances` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recordlabel`
+--
+
+DROP TABLE IF EXISTS `classical_recordlabel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recordlabel` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recordlabel`
+--
+
+LOCK TABLES `classical_recordlabel` WRITE;
+/*!40000 ALTER TABLE `classical_recordlabel` DISABLE KEYS */;
+INSERT INTO `classical_recordlabel` VALUES (1,'Ars Musici'),(5,'Columbia'),(3,'Deutsche Grammophon'),(2,'Electrola'),(6,'Heliodor'),(4,'Philips');
+/*!40000 ALTER TABLE `classical_recordlabel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recordtype`
+--
+
+DROP TABLE IF EXISTS `classical_recordtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recordtype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recordtype`
+--
+
+LOCK TABLES `classical_recordtype` WRITE;
+/*!40000 ALTER TABLE `classical_recordtype` DISABLE KEYS */;
+INSERT INTO `classical_recordtype` VALUES (1,'CD'),(3,'Kassette'),(2,'LP');
+/*!40000 ALTER TABLE `classical_recordtype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_synonym`
+--
+
+DROP TABLE IF EXISTS `classical_synonym`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_synonym` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `root` varchar(50) NOT NULL,
+  `synonym` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `model` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_synonym`
+--
+
+LOCK TABLES `classical_synonym` WRITE;
+/*!40000 ALTER TABLE `classical_synonym` DISABLE KEYS */;
+INSERT INTO `classical_synonym` VALUES (1,'Sonate','Sonata','PieceType'),(2,'Symphonie','Sinfonie','PieceType');
+/*!40000 ALTER TABLE `classical_synonym` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_typeplusinstrumentation`
+--
+
+DROP TABLE IF EXISTS `classical_typeplusinstrumentation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_typeplusinstrumentation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` int(11) NOT NULL,
+  `instrumentation_id` int(11) NOT NULL,
+  `nickname` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_typeplusinstrumentation_type_id` (`type_id`),
+  KEY `classical_typeplusinstrumentation_instrumentation_id` (`instrumentation_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_typeplusinstrumentation`
+--
+
+LOCK TABLES `classical_typeplusinstrumentation` WRITE;
+/*!40000 ALTER TABLE `classical_typeplusinstrumentation` DISABLE KEYS */;
+INSERT INTO `classical_typeplusinstrumentation` VALUES (13,28,34,'Bläseroktett'),(9,3,13,'Hornsonate'),(8,6,11,'Klavierkonzert'),(3,3,3,'Klaviersonate'),(6,3,7,'Klaviersonate zu vier Händen'),(2,2,2,'Klaviertrio'),(1,1,1,'Streichquartett'),(5,4,5,'Streichquintett'),(10,4,17,'Streichquintett'),(4,2,4,'Streichtrio'),(11,6,22,'Tripelkonzert'),(12,6,23,'Violinkonzert'),(7,3,8,'Violinsonate'),(14,8,15,'Symphonie');
+/*!40000 ALTER TABLE `classical_typeplusinstrumentation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_admin_log`
+--
+
+DROP TABLE IF EXISTS `django_admin_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `action_time` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `content_type_id` int(11) DEFAULT NULL,
+  `object_id` longtext,
+  `object_repr` varchar(200) NOT NULL,
+  `action_flag` smallint(5) unsigned NOT NULL,
+  `change_message` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_admin_log_user_id` (`user_id`),
+  KEY `django_admin_log_content_type_id` (`content_type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=186 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_admin_log`
+--
+
+LOCK TABLES `django_admin_log` WRITE;
+/*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
+INSERT INTO `django_admin_log` VALUES (1,'2009-01-13 15:06:10',1,8,'1','Ludwig van Beethoven',2,'name geändert.'),(2,'2009-01-13 15:06:22',1,8,'2','Wolfgang Amadeus Mozart',1,''),(3,'2009-01-13 15:08:40',1,3,'2','qollin',1,''),(4,'2009-01-13 15:09:20',1,3,'2','qollin',2,'first_name, last_name, email, is_staff und is_superuser geändert.'),(5,'2009-01-13 15:09:36',1,3,'1','lilith',2,'first_name und last_name geändert.'),(6,'2009-01-13 16:59:31',1,15,'1','4_d-minor',1,''),(7,'2009-01-13 17:11:22',1,15,'1','10_fis-minor',1,''),(8,'2009-01-13 17:11:29',1,15,'2','6_e-major',1,''),(9,'2009-01-13 17:11:41',1,16,'1','Sonate',1,''),(10,'2009-01-13 17:12:00',1,16,'2','Konzert',1,''),(11,'2009-01-13 17:13:53',1,11,'1','Klavier',1,''),(12,'2009-01-13 17:13:58',1,11,'2','Violine',1,''),(13,'2009-01-13 17:14:18',1,8,'1','Ludwig  van Beethoven',1,''),(14,'2009-01-13 17:14:27',1,8,'2','Wolfgang Amadeus Mozart',1,''),(15,'2009-01-13 17:32:53',1,14,'1','Instrumentation object',1,''),(16,'2009-01-13 17:39:59',1,15,'1','fis-Moll',1,''),(17,'2009-01-13 17:40:18',1,8,'1','  Beethoven',1,''),(18,'2009-01-13 17:40:26',1,17,'1','fdsaf-',1,''),(19,'2009-01-13 18:47:50',1,8,'1','Ludwig van Beethoven',1,''),(20,'2009-01-13 18:48:00',1,15,'1','fis-Moll',1,''),(21,'2009-01-13 18:48:18',1,16,'1','Sonate',1,''),(22,'2009-01-13 18:48:25',1,17,'1','Opus',1,''),(23,'2009-01-13 18:48:41',1,11,'1','Klavier',1,''),(24,'2009-02-01 17:53:32',2,22,'2','Electrola',1,''),(25,'2009-02-01 17:54:01',2,23,'2','LP',1,''),(26,'2009-02-01 17:56:15',2,12,'2','Yehudi Menuhin',1,''),(27,'2009-02-01 17:56:29',2,19,'2','Yehudi Menuhin, Violine',1,''),(28,'2009-02-01 17:56:56',2,12,'3','Hephzia Menuhin',1,''),(29,'2009-02-01 17:56:59',2,19,'3','Hephzia Menuhin, Klavier',1,''),(30,'2009-02-01 17:57:04',2,20,'2','Yehudi Menuhin, Violine; Hephzia Menuhin, Klavier',1,''),(31,'2009-02-01 17:58:22',2,21,'3','Violinsonate Nr. 5 in F-Dur - \"Frühling\" - Yehudi Menuhin, Violine; Hephzia Menuhin, Klavier',1,''),(32,'2009-02-01 17:59:37',2,24,'2','Electrola: Violinsonate Nr. 5 in F-Dur - \"Frühling\" - Yehudi Menuhin, Violine; Hephzia Menuhin, Klavier (LP)',1,''),(33,'2009-02-01 18:01:17',2,21,'4','Violinsonate Nr. 9 in A-Dur - \"Kreutzer\" - Yehudi Menuhin, Violine; Hephzia Menuhin, Klavier',1,''),(34,'2009-02-01 18:01:20',2,24,'2','Electrola: Violinsonate Nr. 5 in F-Dur - \"Frühling\" - Yehudi Menuhin, Violine; Hephzia Menuhin, Klavier, Violinsonate Nr. 9 in A-Dur - \"Kreutzer\" - Yehudi Menuhin, Violine; Hephzia Menuhin, Klavier (L',2,'performances geändert.'),(35,'2009-02-01 18:03:09',2,22,'3','Deutsche Grammophon',1,''),(36,'2009-02-01 18:04:27',2,12,'4','Ferenc Fricsay',1,''),(37,'2009-02-01 18:04:41',2,12,'5','Berliner Philharmoniker',1,''),(38,'2009-02-01 18:04:43',2,19,'4','Ferenc Fricsay und Berliner Philharmoniker, Orchester',1,''),(39,'2009-02-01 18:04:50',2,20,'3','Ferenc Fricsay und Berliner Philharmoniker, Orchester',1,''),(40,'2009-02-01 18:04:59',2,21,'5','Symphonie für Orchester Nr. 5 in c-moll - Ferenc Fricsay und Berliner Philharmoniker, Orchester',1,''),(41,'2009-02-01 18:05:02',2,24,'3','Deutsche Grammophon: Symphonie für Orchester Nr. 5 in c-moll - Ferenc Fricsay und Berliner Philharmoniker, Orchester (LP)',1,''),(42,'2009-02-01 18:07:33',2,12,'6','Wilhelm Kempff',1,''),(43,'2009-02-01 18:07:40',2,19,'5','Wilhelm Kempff, Klavier',1,''),(44,'2009-02-01 18:07:43',2,20,'4','Wilhelm Kempff, Klavier',1,''),(45,'2009-02-01 18:07:52',2,21,'6','Klaviersonate Nr. 8 in c-moll - \"Pathétique\" - Wilhelm Kempff, Klavier',1,''),(46,'2009-02-01 18:08:25',2,21,'7','Klaviersonate Nr. 14 in cis-moll - \"Mondschein\" - Wilhelm Kempff, Klavier',1,''),(47,'2009-02-01 18:08:30',2,24,'4','Deutsche Grammophon: Klaviersonate Nr. 8 in c-moll - \"Pathétique\" - Wilhelm Kempff, Klavier, Klaviersonate Nr. 14 in cis-moll - \"Mondschein\" - Wilhelm Kempff, Klavier (LP)',1,''),(48,'2009-02-01 18:09:13',2,22,'4','Philips',1,''),(49,'2009-02-01 18:13:16',2,12,'7','Mieczyslaw Horszowski',1,''),(50,'2009-02-01 18:13:22',2,19,'6','Mieczyslaw Horszowski, Klavier',1,''),(51,'2009-02-01 18:13:46',2,12,'8','Sandor Végh',1,''),(52,'2009-02-01 18:13:59',2,19,'7','Sandor Végh, Violine',1,''),(53,'2009-02-01 18:14:13',2,12,'9','Pablo Casals',1,''),(54,'2009-02-01 18:14:18',2,19,'8','Pablo Casals, Violoncello',1,''),(55,'2009-02-01 18:15:52',2,20,'5','Mieczyslaw Horszowski, Klavier; Sandor Végh, Violine; Pablo Casals, Violoncello',1,''),(56,'2009-02-01 18:16:04',2,21,'8','Klaviertrio Nr. 5 in D-Dur - Mieczyslaw Horszowski, Klavier; Sandor Végh, Violine; Pablo Casals, Violoncello',1,''),(57,'2009-02-01 18:16:10',2,24,'5','Philips: Klaviertrio Nr. 5 in D-Dur - Mieczyslaw Horszowski, Klavier; Sandor Végh, Violine; Pablo Casals, Violoncello (LP)',1,''),(58,'2009-02-01 18:19:34',2,12,'10','Menahem Pressler',1,''),(59,'2009-02-01 18:19:45',2,19,'9','Menahem Pressler, Klavier',1,''),(60,'2009-02-01 18:21:34',2,12,'11','Isidore Cohen',1,''),(61,'2009-02-01 18:21:37',2,19,'10','Isidore Cohen, Violine',1,''),(62,'2009-02-01 18:21:53',2,12,'12','Bernard Greenhouse',1,''),(63,'2009-02-01 18:21:55',2,19,'11','Bernard Greenhouse, Violoncello',1,''),(64,'2009-02-01 18:22:02',2,20,'6','Beaux Arts Trio',1,''),(65,'2009-02-01 18:22:11',2,21,'9','Klaviertrio Nr. 7 in B-Dur - Beaux Arts Trio',1,''),(66,'2009-02-01 18:23:12',2,24,'6','Philips: Klaviertrio Nr. 7 in B-Dur - Beaux Arts Trio (LP)',1,''),(67,'2009-02-01 18:25:03',2,12,'13','Mstislaw Rostropowitsch',1,''),(68,'2009-02-01 18:25:05',2,19,'12','Mstislaw Rostropowitsch, Violoncello',1,''),(69,'2009-02-01 18:25:37',2,12,'14','Sviatoslav Richter',1,''),(70,'2009-02-01 18:25:40',2,19,'13','Sviatoslav Richter, Klavier',1,''),(71,'2009-02-01 18:25:42',2,20,'7','Mstislaw Rostropowitsch, Violoncello; Sviatoslav Richter, Klavier',1,''),(72,'2009-02-01 18:25:50',2,21,'10','Sonate für Violoncello und Klavier Nr. 5 in d-moll - Mstislaw Rostropowitsch, Violoncello; Sviatoslav Richter, Klavier',1,''),(73,'2009-02-01 18:26:39',2,12,'15','Claudio Arrau',1,''),(74,'2009-02-01 18:26:41',2,19,'14','Claudio Arrau, Klavier',1,''),(75,'2009-02-01 18:26:43',2,20,'8','Claudio Arrau, Klavier',1,''),(76,'2009-02-01 18:26:52',2,21,'11','Klaviersonate Nr. 8 in c-moll - \"Pathétique\" - Claudio Arrau, Klavier',1,''),(77,'2009-02-01 18:28:25',2,12,'16','Arthur Grumiaux',1,''),(78,'2009-02-01 18:28:28',2,19,'15','Arthur Grumiaux, Violine',1,''),(79,'2009-02-01 18:29:05',2,12,'17','Bernard Haitink',1,''),(80,'2009-02-01 18:29:27',2,12,'18','Concertgebouw-Orchester Amsterdam',1,''),(81,'2009-02-01 18:29:31',2,19,'16','Bernard Haitink und Concertgebouw-Orchester Amsterdam, Orchester',1,''),(82,'2009-02-01 18:29:34',2,20,'9','Arthur Grumiaux, Violine; Bernard Haitink und Concertgebouw-Orchester Amsterdam, Orchester',1,''),(83,'2009-02-01 18:29:45',2,21,'12','Romanze für Violine in F-Dur - Arthur Grumiaux, Violine; Bernard Haitink und Concertgebouw-Orchester Amsterdam, Orchester',1,''),(84,'2009-02-01 18:30:38',2,12,'19','Eugen Jochum',1,''),(85,'2009-02-01 18:30:49',2,19,'17','Concertgebouw-Orchester Amsterdam und Eugen Jochum, Orchester',1,''),(86,'2009-02-01 18:31:01',2,20,'10','Concertgebouw-Orchester Amsterdam und Eugen Jochum, Orchester',1,''),(87,'2009-02-01 18:31:09',2,21,'13','Ouvertüre für Orchester - \"Egmont\" - Concertgebouw-Orchester Amsterdam und Eugen Jochum, Orchester',1,''),(88,'2009-02-01 18:31:13',2,24,'7','Philips: Sonate für Violoncello und Klavier Nr. 5 in d-moll - Mstislaw Rostropowitsch, Violoncello; Sviatoslav Richter, Klavier, Klaviersonate Nr. 8 in c-moll - \"Pathétique\" - Claudio Arrau, Klavier, ',1,''),(89,'2009-02-01 18:31:57',2,22,'5','Columbia',1,''),(90,'2009-02-01 18:32:35',2,12,'20','Walter Gieseking',1,''),(91,'2009-02-01 18:32:39',2,19,'18','Walter Gieseking, Klavier',1,''),(92,'2009-02-01 18:32:42',2,20,'11','Walter Gieseking, Klavier',1,''),(93,'2009-02-01 18:32:49',2,21,'14','Klaviersonate Nr. 8 in c-moll - \"Pathétique\" - Walter Gieseking, Klavier',1,''),(94,'2009-02-01 18:33:52',2,21,'15','Klaviersonate Nr. 14 in cis-moll - \"Mondschein\" - Walter Gieseking, Klavier',1,''),(95,'2009-02-01 18:33:56',2,24,'8','Columbia: Klaviersonate Nr. 8 in c-moll - \"Pathétique\" - Walter Gieseking, Klavier, Klaviersonate Nr. 14 in cis-moll - \"Mondschein\" - Walter Gieseking, Klavier (LP)',1,''),(96,'2009-02-01 18:35:21',2,23,'3','Kassette',1,''),(97,'2009-02-01 18:37:06',2,12,'21','Leonard Bernstein',1,''),(98,'2009-02-01 18:37:24',2,12,'22','Wiener Philharmoniker',1,''),(99,'2009-02-01 18:37:29',2,19,'19','Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(100,'2009-02-01 18:37:31',2,20,'12','Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(101,'2009-02-01 18:37:38',2,21,'16','Symphonie für Orchester Nr. 1 in C-Dur - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(102,'2009-02-01 18:38:48',2,21,'17','Symphonie für Orchester Nr. 2 in D-Dur - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(103,'2009-02-01 18:39:23',2,21,'18','Symphonie für Orchester Nr. 3 in Es-Dur - \"Eroica\" - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(104,'2009-02-01 18:39:56',2,21,'19','Symphonie für Orchester in B-Dur - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(105,'2009-02-01 18:40:36',2,21,'20','Symphonie für Orchester Nr. 5 in c-moll - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(106,'2009-02-01 18:41:22',2,21,'21','Symphonie für Orchester Nr. 6 in F-Dur - \"Pastorale\" - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(107,'2009-02-01 18:41:57',2,21,'22','Symphonie für Orchester Nr. 7 in A-Dur - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(108,'2009-02-01 18:42:42',2,21,'23','Symphonie für Orchester Nr. 8 in F-Dur - Leonard Bernstein und Wiener Philharmoniker, Orchester',1,''),(109,'2009-02-01 18:44:58',2,12,'23','Konzertvereinigung Wiener Staatsoperncho',1,''),(110,'2009-02-01 18:45:33',2,19,'20','Konzertvereinigung Wiener Staatsoperncho, Chor',1,''),(111,'2009-02-01 18:46:04',2,12,'24','Gwyneth Jones',1,''),(112,'2009-02-01 18:46:09',2,19,'21','Gwyneth Jones, Sopran',1,''),(113,'2009-02-01 18:46:48',2,12,'25','Hanna Schwarz',1,''),(114,'2009-02-01 18:46:54',2,19,'22','Hanna Schwarz, Alt',1,''),(115,'2009-02-01 18:47:19',2,12,'26','René Kollo',1,''),(116,'2009-02-01 18:47:24',2,19,'23','René Kollo, Tenor',1,''),(117,'2009-02-01 18:47:55',2,12,'27','Kurt Moll',1,''),(118,'2009-02-01 18:48:01',2,19,'24','Kurt Moll, Bass',1,''),(119,'2009-02-01 18:48:03',2,20,'13','Leonard Bernstein und Wiener Philharmoniker, Orchester; Konzertvereinigung Wiener Staatsoperncho, Chor; Gwyneth Jones, Sopran; Hanna Schwarz, Alt; René Kollo, Tenor; Kurt Moll, Bass',1,''),(120,'2009-02-01 18:48:15',2,21,'24','Symphonie für Orchester und Chor in d-moll - \"An die Freude\" - Leonard Bernstein und Wiener Philharmoniker, Orchester; Konzertvereinigung Wiener Staatsoperncho, Chor; Gwyneth Jones, Sopran; Hanna Schw',1,''),(121,'2009-02-01 18:48:19',2,24,'9','Deutsche Grammophon: Symphonie für Orchester Nr. 1 in C-Dur - Leonard Bernstein und Wiener Philharmoniker, Orchester, Symphonie für Orchester Nr. 2 in D-Dur - Leonard Bernstein und Wiener Philharmonik',1,''),(122,'2009-02-01 18:52:28',2,12,'28','Leon Fleischer',1,''),(123,'2009-02-01 18:52:31',2,19,'25','Leon Fleischer, Klavier',1,''),(124,'2009-02-01 18:52:57',2,12,'29','Georg Szell',1,''),(125,'2009-02-01 18:53:10',2,12,'30','Cleveland Orchestra',1,''),(126,'2009-02-01 18:53:20',2,19,'26','Georg Szell und Cleveland Orchestra, Orchester',1,''),(127,'2009-02-01 18:53:24',2,20,'14','Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester',1,''),(128,'2009-02-01 18:53:35',2,21,'25','Klavierkonzert Nr. 1 in C-Dur - Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester',1,''),(129,'2009-02-01 18:55:10',2,21,'26','Klavierkonzert Nr. 2 in B-Dur - Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester',1,''),(130,'2009-02-01 18:55:38',2,21,'27','Klavierkonzert Nr. 3 in c-moll - Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester',1,''),(131,'2009-02-01 18:55:59',2,21,'28','Klavierkonzert Nr. 4 in G-Dur - Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester',1,''),(132,'2009-02-01 18:56:30',2,21,'29','Klavierkonzert Nr. 5 in Es-Dur - \"Emperor\" - Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester',1,''),(133,'2009-02-01 18:56:33',2,24,'10','Columbia: Klavierkonzert Nr. 1 in C-Dur - Leon Fleischer, Klavier; Georg Szell und Cleveland Orchestra, Orchester, Klavierkonzert Nr. 2 in B-Dur - Leon Fleischer, Klavier; Georg Szell und Cleveland Or',1,''),(134,'2009-02-01 18:58:44',2,12,'31','Herbert von Karajan',1,''),(135,'2009-02-01 18:59:11',2,19,'27','Berliner Philharmoniker und Herbert von Karajan, Orchester',1,''),(136,'2009-02-01 18:59:14',2,20,'15','Berliner Philharmoniker und Herbert von Karajan, Orchester',1,''),(137,'2009-02-01 18:59:25',2,21,'30','Symphonie für Orchester Nr. 8 in F-Dur - Berliner Philharmoniker und Herbert von Karajan, Orchester',1,''),(138,'2009-02-01 19:00:22',2,21,'31','Symphonie für Orchester und Chor in d-moll - \"An die Freude\" - Berliner Philharmoniker und Herbert von Karajan, Orchester',1,''),(139,'2009-02-01 19:00:25',2,24,'11','Deutsche Grammophon: Symphonie für Orchester Nr. 8 in F-Dur - Berliner Philharmoniker und Herbert von Karajan, Orchester, Symphonie für Orchester und Chor in d-moll - \"An die Freude\" - Berliner Philha',1,''),(140,'2009-02-01 19:01:15',2,22,'6','Heliodor',1,''),(141,'2009-02-01 19:02:38',2,19,'28','Berliner Philharmoniker und Eugen Jochum, Orchester',1,''),(142,'2009-02-01 19:02:41',2,20,'16','Berliner Philharmoniker und Eugen Jochum, Orchester',1,''),(143,'2009-02-01 19:02:47',2,21,'32','Symphonie für Orchester Nr. 3 in Es-Dur - \"Eroica\" - Berliner Philharmoniker und Eugen Jochum, Orchester',1,''),(144,'2009-02-01 19:02:52',2,24,'12','Heliodor: Symphonie für Orchester Nr. 3 in Es-Dur - \"Eroica\" - Berliner Philharmoniker und Eugen Jochum, Orchester (LP)',1,''),(145,'2009-02-02 09:17:15',1,21,'32','Ludwig van Beethoven: Symphonie für Orchester Nr. 3 in Es-Dur - \"Eroica\" - Berliner Philharmoniker und Eugen Jochum, Orchester',2,'date geändert.'),(146,'2009-02-02 09:26:39',1,11,'None','Alt',3,''),(147,'2009-02-02 09:56:13',1,9,'186','Ludwig van Beethoven: Symphonie für Orchester und Chor in d-moll - \"An die Freude\"',2,'catalog_subordinal geändert.'),(148,'2009-02-03 11:17:47',1,9,'186','Ludwig van Beethoven: Symphonie für Chor und Orchester Nr. 9 in d-moll - \"An die Freude\"',2,'type_ordinal geändert.'),(149,'2009-02-03 11:18:02',1,17,'187','Opus 125',2,'sub_ordinal geändert.'),(150,'2009-02-03 11:18:57',1,9,'64','Ludwig van Beethoven: Symphonie für Orchester Nr. 4 in B-Dur',2,'type_ordinal geändert.'),(151,'2009-02-15 21:44:04',2,9,'202','Allegro für Cembalo in C-Dur, KV 1-b',2,'instrumentations geändert.'),(152,'2009-02-15 21:44:21',2,9,'202','Allegro für Cembalo in C-Dur, KV 1-b',2,'Keine Felder geändert.'),(153,'2009-02-15 21:44:32',2,9,'201','Andante für Cembalo in C-Dur, KV 1-a',2,'instrumentations geändert.'),(154,'2009-02-15 21:45:44',2,9,'200','Menuett für Cembalo in G-Dur, KV 1',2,'instrumentations geändert.'),(155,'2009-02-15 21:46:13',2,14,'None','',3,''),(156,'2009-02-16 21:19:32',2,9,'216','Symphonie für Orchester Nr. 1 in Es-Dur, KV 16',2,'instrumentations geändert.'),(157,'2009-02-16 21:19:56',2,9,'217','Symphonie für Orchester Nr. 2 in B-Dur, KV 17',2,'instrumentations geändert.'),(158,'2009-02-16 21:20:16',2,9,'218','Symphonie für Orchester Nr. 3 in Es-Dur, KV 18',2,'instrumentations geändert.'),(159,'2009-02-16 21:20:41',2,9,'220','Symphonie für Orchester Nr. 5 in B-Dur, KV 22',2,'instrumentations geändert.'),(160,'2009-02-16 21:20:59',2,9,'221','Symphonie für Orchester Nr. 6 in F-Dur, KV 43',2,'instrumentations geändert.'),(161,'2009-02-16 21:21:16',2,9,'223','Symphonie für Orchester Nr. 8 in D-Dur, KV 48',2,'instrumentations geändert.'),(162,'2009-02-16 21:21:31',2,9,'224','Symphonie für Orchester Nr. 9 in C-Dur, KV 73',2,'instrumentations geändert.'),(163,'2009-02-16 21:21:51',2,9,'226','Symphonie für Orchester Nr. 14 in A-Dur, KV 114',2,'instrumentations geändert.'),(164,'2009-02-16 21:22:08',2,9,'227','Symphonie für Orchester Nr. 16 in C-Dur, KV 128',2,'instrumentations geändert.'),(165,'2009-02-16 21:22:25',2,9,'228','Symphonie für Orchester Nr. 17 in G-Dur, KV 129',2,'instrumentations geändert.'),(166,'2009-02-16 21:22:40',2,9,'229','Symphonie für Orchester Nr. 18 in F-Dur, KV 130',2,'instrumentations geändert.'),(167,'2009-02-16 21:22:53',2,9,'230','Symphonie für Orchester Nr. 19 in Es-Dur, KV 132',2,'instrumentations geändert.'),(168,'2009-02-16 21:23:08',2,9,'231','Symphonie für Orchester Nr. 20 in D-Dur, KV 133',2,'instrumentations geändert.'),(169,'2009-02-16 21:23:23',2,9,'232','Symphonie für Orchester Nr. 21 in A-Dur, KV 134',2,'instrumentations geändert.'),(170,'2009-02-16 21:23:41',2,9,'239','Symphonie für Orchester Nr. 33 in B-Dur, KV 319',2,'instrumentations geändert.'),(171,'2009-02-16 21:24:13',2,18,'14','Symphonie',1,''),(172,'2009-02-24 18:09:04',2,25,'1','Synonym object',1,''),(173,'2009-02-26 09:20:36',2,25,'2','Synonym object',1,''),(174,'2009-02-26 13:15:14',2,9,'None','Symphonie für Orchester Nr. 1 in Es-Dur, KV 16',3,''),(175,'2009-02-26 13:15:37',2,9,'None','Symphonie Nr. 13 in F-Dur, KV 112',3,''),(176,'2009-02-26 13:18:15',2,9,'None','Symphonie Nr. 4 in D-Dur, KV 19',3,''),(177,'2009-02-26 13:18:25',2,9,'None','Symphonie Nr. 4a in F-Dur, KV 19-a',3,''),(178,'2009-03-10 18:30:33',2,26,'1','Dirigent',1,''),(179,'2009-03-10 18:30:43',2,26,'2','Orchester',1,''),(180,'2009-03-10 18:32:15',2,11,'11','Orchester',2,'instrument_roles geändert.'),(181,'2009-08-20 21:21:11',2,27,'3','W.o.O.',1,''),(182,'2009-09-13 15:12:20',2,9,'326',' für Fagott, Horn und Klarinette',3,''),(183,'2009-09-15 22:33:12',2,9,'327',' für Fagott, Horn und Klarinette',3,''),(184,'2009-11-28 22:45:55',2,9,'328',' für 2 Fagott, 2 Horn und 2 Klarinette',3,''),(185,'2010-01-08 21:07:24',2,12,'32','Bläser der Berliner Philharmoniker,',1,'');
+/*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_content_type`
+--
+
+DROP TABLE IF EXISTS `django_content_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_content_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `app_label` (`app_label`,`model`)
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_content_type`
+--
+
+LOCK TABLES `django_content_type` WRITE;
+/*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
+INSERT INTO `django_content_type` VALUES (1,'permission','auth','permission'),(2,'group','auth','group'),(3,'user','auth','user'),(4,'message','auth','message'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'site','sites','site'),(8,'composer','classical','composer'),(9,'piece','classical','piece'),(10,'log entry','admin','logentry'),(11,'instrument','classical','instrument'),(12,'performer','classical','performer'),(13,'opera role','classical','operarole'),(14,'instrumentation','classical','instrumentation'),(15,'music key','classical','musickey'),(16,'piece type','classical','piecetype'),(17,'catalog','classical','catalog'),(18,'type plus instrumentation','classical','typeplusinstrumentation'),(19,'allocated instrument','classical','allocatedinstrument'),(20,'allocated instrumentation','classical','allocatedinstrumentation'),(21,'performance','classical','performance'),(22,'record label','classical','recordlabel'),(23,'record type','classical','recordtype'),(24,'recording','classical','recording'),(25,'synonym','classical','synonym'),(26,'instrument role','classical','instrumentrole'),(27,'catalog type','classical','catalogtype');
+/*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_session`
+--
+
+DROP TABLE IF EXISTS `django_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_session` (
+  `session_key` varchar(40) NOT NULL,
+  `session_data` longtext NOT NULL,
+  `expire_date` datetime NOT NULL,
+  PRIMARY KEY (`session_key`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_session`
+--
+
+LOCK TABLES `django_session` WRITE;
+/*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
+INSERT INTO `django_session` VALUES ('6876b7057c68013c4e96037eda4e1cfe','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS4xMTc1ZmI4MmY3NDUwNWNmOGFh\nNDc1YjllMGJmOTNiMw==\n','2009-01-27 15:02:13'),('4d197545220f8d1ab2114201f05158c0','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-01-31 19:40:28'),('f45ba4e98d7ae2520188fb8eca3aaad0','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-02-15 17:26:00'),('dd6a54a4fe73ff90d0201536ccec68e8','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS4xMTc1ZmI4MmY3NDUwNWNmOGFh\nNDc1YjllMGJmOTNiMw==\n','2009-02-16 09:15:08'),('cfdff1d6745a01dfdf9533ab015e4faa','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS4xMTc1ZmI4MmY3NDUwNWNmOGFh\nNDc1YjllMGJmOTNiMw==\n','2009-07-15 15:25:31'),('94d707543f9c504d4e33a5480eb597b2','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-03-24 18:30:14'),('101c256170a1ea8c85a983f86d0e1687','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECVQZwaWVjZXNxBX1xBihVBmV4dHJh\nc3EHXXEIKFgTAAAASW5zdHJ1bWVudDogQ2VtYmFsb3EJWBgAAABJbnN0cnVtZW50YXRpb246IENl\nbWJhbG9xClgNAAAAQ2F0YWxvZzogS1YgMXELZVUGc3RyaW5ncQxYJgAAAEtWIDEgMTc2MS8yIE1l\nbnVldHQgZsO8ciBDZW1iYWxvIEctRHVycQ1VBXBpZWNlcQ5YIwAAAE1lbnVldHQgZsO8ciBDZW1i\nYWxvIGluIEctRHVyLCBLViAxcQ91dS5hM2Q0ZWM3NjE2MTIzNzNhMDkxNTBjNjUxNGQ5N2VhZQ==\n','2009-03-01 10:08:06'),('3ede0c7bae4be36d2d756ce336a58f52','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigEBdS4xMTc1ZmI4MmY3NDUwNWNmOGFh\nNDc1YjllMGJmOTNiMw==\n','2009-06-19 16:05:23'),('2af4c3d06a2fd27f764ebabbe6d10c0d','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-07-19 10:45:41'),('aabdf4eb2a35a10bdef18ddfe9756956','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-08-13 22:15:21'),('8b1742f9bc86e7e86ccd5617f7ad0102','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-09-03 21:20:34'),('fe5c77546e5ddce7fe7fd7a9520824f3','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-09-27 15:10:26'),('b29377580635360ce98611f984f10fda','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-11-12 21:24:55'),('64b6d9742883a5d66121bb62902b5e22','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-12-09 21:42:38'),('9ca01aab4c55e379bdf9a752f86ff5e0','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2009-12-12 22:45:24'),('36b0e3254c4d62f7e38eeb5f2614f887','gAJ9cQEoVRJfYXV0aF91c2VyX2JhY2tlbmRxAlUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5k\ncy5Nb2RlbEJhY2tlbmRxA1UNX2F1dGhfdXNlcl9pZHEEigECdS4yODBiODkyNmY4MDk1MjM4MDlm\nMDYyZTA5MGYxNjViOQ==\n','2010-01-22 21:06:53');
+/*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_site`
+--
+
+DROP TABLE IF EXISTS `django_site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_site` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `domain` varchar(100) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_site`
+--
+
+LOCK TABLES `django_site` WRITE;
+/*!40000 ALTER TABLE `django_site` DISABLE KEYS */;
+INSERT INTO `django_site` VALUES (1,'example.com','example.com');
+/*!40000 ALTER TABLE `django_site` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2010-04-24 10:44:47

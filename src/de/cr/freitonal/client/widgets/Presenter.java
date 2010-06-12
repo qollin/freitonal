@@ -1,7 +1,7 @@
 package de.cr.freitonal.client.widgets;
 
-import com.google.gwt.user.client.ui.HasWidgets;
+import de.cr.freitonal.client.event.DisplayMode;
 
 public interface Presenter {
-	public void go(HasWidgets container);
+	public void setDisplayMode(DisplayMode mode);
 }

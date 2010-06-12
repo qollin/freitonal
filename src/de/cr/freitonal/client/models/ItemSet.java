@@ -6,6 +6,13 @@ public class ItemSet {
 	private final ArrayList<Item> items;
 	private Item selected;
 
+	public ItemSet(Item... items) {
+		this.items = new ArrayList<Item>(items.length);
+		for (Item item : items) {
+			this.items.add(item);
+		}
+	}
+
 	public ItemSet(ArrayList<Item> items) {
 		this.items = items;
 	}
@@ -22,6 +29,10 @@ public class ItemSet {
 	}
 
 	public void setSelected(Item selected) {
+		//TODO: potentially expensive
+		if (!items.contains(selected)) {
+			throw new IllegalArgumentException("unknown item: " + selected);
+		}
 		this.selected = selected;
 	}
 

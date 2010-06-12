@@ -4,13 +4,14 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import de.cr.freitonal.client.event.DFA;
+import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
+import de.cr.freitonal.client.event.State;
 import de.cr.freitonal.client.event.TransitionHandler;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
 import de.cr.freitonal.client.rpc.SearchResult;
-import de.cr.freitonal.client.widgets.event.DFA;
-import de.cr.freitonal.client.widgets.event.State;
 import de.cr.freitonal.client.widgets.piece.PiecePresenter;
 
 public class AppController {
@@ -45,7 +46,7 @@ public class AppController {
 
 			public void onSuccess(SearchResult result) {
 				currentPieceSearchMask = result.getPieceSearchMask();
-				getPiecePresenter().setSearchData(currentPieceSearchMask);
+				getPiecePresenter().setSearchData(currentPieceSearchMask, SearchContext.FieldSearch);
 			}
 		});
 	}
@@ -59,7 +60,7 @@ public class AppController {
 
 			public void onSuccess(SearchResult result) {
 				currentPieceSearchMask = result.getPieceSearchMask();
-				getPiecePresenter().setSearchData(currentPieceSearchMask);
+				getPiecePresenter().setSearchData(currentPieceSearchMask, SearchContext.IntialLoading);
 			}
 
 		});
@@ -82,5 +83,6 @@ public class AppController {
 
 	public void setRPCService(RPCService rpcService) {
 		this.rpcService = rpcService;
+		this.piecePresenter.setRPCService(rpcService);
 	}
 }

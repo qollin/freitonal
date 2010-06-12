@@ -25,5 +25,9 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/freitonalGUI/lib/commons-fileupload-1.2.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/collin/Documents/workspace/freitonalGUI/clojure.jar" sourcepath="/Users/collin/Documents/workspace/freitonalGUI/clojure-src.jar"/>
+	<classpathentry kind="lib" path="/Users/collin/Documents/workspace/freitonalGUI/clojure-contrib.jar" sourcepath="/Users/collin/Documents/workspace/freitonalGUI/clojure-contrib-src.jar"/>
+	<classpathentry kind="lib" path="/Users/collin/Documents/workspace/freitonalGUI/classes"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.12-bin.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

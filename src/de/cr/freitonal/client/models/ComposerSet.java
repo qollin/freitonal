@@ -7,4 +7,8 @@ public class ComposerSet extends ItemSet {
 	public ComposerSet(ArrayList<Item> items) {
 		super(items);
 	}
+
+	public ComposerSet(Item... items) {
+		super(items);
+	}
 }

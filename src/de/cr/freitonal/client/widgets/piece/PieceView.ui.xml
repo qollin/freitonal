@@ -7,7 +7,10 @@
  xmlns:composer='urn:import:de.cr.freitonal.client.widgets.composer'
  xmlns:catalog='urn:import:de.cr.freitonal.client.widgets.catalog'
  xmlns:piecetype='urn:import:de.cr.freitonal.client.widgets.piecetype'
- xmlns:instrumentation='urn:import:de.cr.freitonal.client.widgets.instrumentation'>
+ xmlns:instrumentation='urn:import:de.cr.freitonal.client.widgets.instrumentation'
+ xmlns:subtitle='urn:import:de.cr.freitonal.client.widgets.subtitle'
+ xmlns:ordinal='urn:import:de.cr.freitonal.client.widgets.ordinal'
+ xmlns:musickey='urn:import:de.cr.freitonal.client.widgets.musickey'>
   
   <g:HTMLPanel>
     <div id="pieceForms">
@@ -18,14 +21,12 @@
       <catalog:CatalogView ui:field="catalog" labelText="Catalog"/>
       <piecetype:PieceTypeView ui:field="pieceType" labelText="Type"/>
       <instrumentation:InstrumentationView ui:field="instrumentations" labelText="Instrumentations"/>
-      <base:BaseView ui:field="subtitle" labelText="Subtitle"/>
-      <base:BaseView ui:field="ordinal" labelText="Ordinal"/>
-      <base:BaseView ui:field="key" labelText="Key"/>
+      <subtitle:SubtitleView ui:field="subtitle" labelText="Subtitle"/>
+      <ordinal:OrdinalView ui:field="ordinal" labelText="Ordinal"/>
+      <musickey:MusicKeyView ui:field="musicKey" labelText="Key"/>
     </div>
     <div id="pieceActions" class="formActions">
-      <button id="addPieceButton" class="fieldLabel">
-        St&uuml;ck hinzuf&uuml;gen
-      </button>
+      <g:Button ui:field="addPieceButton">add piece</g:Button>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>

@@ -3,13 +3,19 @@ package de.cr.freitonal.client.rpc;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.models.InstrumentationSet;
+import de.cr.freitonal.client.models.MusicKeySet;
+import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
+import de.cr.freitonal.client.models.SubtitleSet;
 
 public class PieceSearchMask {
 	private ComposerSet composers;
 	private CatalogSet catalogs;
 	private PieceTypeSet pieceTypeSet;
 	private InstrumentationSet instrumentationSet;
+	private SubtitleSet subtitleSet;
+	private OrdinalSet ordinalSet;
+	private MusicKeySet musicKeySet;
 
 	/**
 	 * @param composers
@@ -50,10 +56,42 @@ public class PieceSearchMask {
 		return instrumentationSet;
 	}
 
+	public SubtitleSet getSubtitles() {
+		return subtitleSet;
+	}
+
+	public void setSubtitles(SubtitleSet subtitleSet) {
+		this.subtitleSet = subtitleSet;
+	}
+
+	public OrdinalSet getOrdinals() {
+		return ordinalSet;
+	}
+
+	public void setOrdinals(OrdinalSet ordinalSet) {
+		this.ordinalSet = ordinalSet;
+	}
+
+	/**
+	 * @param musicKeySet
+	 *            the musicKeySet to set
+	 */
+	public void setMusicKeys(MusicKeySet musicKeySet) {
+		this.musicKeySet = musicKeySet;
+	}
+
+	/**
+	 * @return the musicKeySet
+	 */
+	public MusicKeySet getMusicKeys() {
+		return musicKeySet;
+	}
+
 	public void copyItemSelectionTo(PieceSearchMask target) {
 		composers.copyItemSelectionTo(target.composers);
 		catalogs.copyItemSelectionTo(target.catalogs);
 		pieceTypeSet.copyItemSelectionTo(target.pieceTypeSet);
 		instrumentationSet.copyItemSelectionTo(target.instrumentationSet);
 	}
+
 }

@@ -39,4 +39,8 @@ public class ItemSet {
 	public void copyItemSelectionTo(ItemSet target) {
 		target.selected = selected;
 	}
+
+	public int size() {
+		return items.size();
+	}
 }

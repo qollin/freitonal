@@ -1,17 +1,18 @@
-package de.cr.freitonal.usertests.client.widgets.instrumentation;
+package de.cr.freitonal.unittests.client.widgets.instrumentation;
 
+import static junit.framework.Assert.assertEquals;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.junit.client.GWTTestCase;
 
 import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
-import de.cr.freitonal.client.widgets.instrumentation.InstrumentationView;
 
-public class InstrumentationPresenterTest extends GWTTestCase {
+public class InstrumentationPresenterTest {
 	private InstrumentationPresenter instrumentationPresenter;
 
 	private static Item Piano = new Item("1", "Piano");
@@ -21,14 +22,9 @@ public class InstrumentationPresenterTest extends GWTTestCase {
 
 	private InstrumentationSet instrumentationSet;
 
-	@Override
-	public String getModuleName() {
-		return "de.cr.freitonal.FreitonalGUI";
-	}
-
-	@Override
-	public void gwtSetUp() {
-		InstrumentationView view = new InstrumentationView("instrumentation");
+	@Before
+	public void setUp() {
+		InstrumentationPresenter.View view = new InstrumentationViewMock();
 		instrumentationPresenter = new InstrumentationPresenter(new HandlerManager(null), view);
 		instrumentationSet = new InstrumentationSet(Piano, Violin, Viola, Violoncello);
 
@@ -43,7 +39,7 @@ public class InstrumentationPresenterTest extends GWTTestCase {
 	@Test
 	public void testSelectionOfOneInstrument() {
 		//there are no listeners on the event bus, but this will create all necessary side effects on the view side
-		instrumentationPresenter.getInstrumentPresenter(0).fireOnNewItemSelected_TEST(Piano);
+		instrumentationPresenter.getInstrumentPresenter(0).fireOnNewItemSelected(Piano);
 
 		instrumentationPresenter.setInstrumentations(new InstrumentationSet(Violin, Violoncello), SearchContext.FieldSearch);
 		assertEquals("There should be 2 dropdown boxes", 2, instrumentationPresenter.getNumberOfInstrumentPresenters());

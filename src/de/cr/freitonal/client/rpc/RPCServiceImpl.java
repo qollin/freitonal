@@ -1,32 +1,31 @@
 package de.cr.freitonal.client.rpc;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.cr.freitonal.client.models.Piece;
 import de.cr.freitonal.client.rpc.dto.DTOParser;
 
 public class RPCServiceImpl implements RPCService {
-	private static final String JSON_URL = GWT.getHostPageBaseURL() + "classical";
-
 	protected final ModelFactory modelFactory;
 
 	private RequestBuilderFactory requestBuilderFactory = new RequestBuilderFactory();
 
-	public RPCServiceImpl(DTOParser parser) {
+	private final URLEncoder urlEncoder;
+
+	public RPCServiceImpl(DTOParser parser, URLEncoder urlEncoder) {
+		this.urlEncoder = urlEncoder;
 		modelFactory = new ModelFactory(parser);
 	}
 
 	public void search(final PieceSearchMask searchMask, final AsyncCallback<SearchResult> callback) {
-		String url = URL.encode(JSON_URL + "/search");
+		String url = urlEncoder.encode("/search");
 		if (searchMask != null) {
-			url += new JSONFactory(searchMask).getHTTPParameters();
+			url += new JSONFactory(searchMask, urlEncoder).getHTTPParameters();
 		}
 
 		RequestBuilder builder = requestBuilderFactory.createRequestBuilder(RequestBuilder.GET, url);

@@ -1,7 +1,5 @@
 package de.cr.freitonal.client.rpc;
 
-import com.google.gwt.http.client.URL;
-
 import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.ItemSet;
 
@@ -9,9 +7,11 @@ public class JSONFactory {
 	private final PieceSearchMask searchMask;
 	private String parameters = "";
 	private boolean firstParameter = true;
+	private final URLEncoder urlEncoder;
 
-	public JSONFactory(PieceSearchMask searchMask) {
+	public JSONFactory(PieceSearchMask searchMask, URLEncoder urlEncoder) {
 		this.searchMask = searchMask;
+		this.urlEncoder = urlEncoder;
 
 		composerToHTTPParameter();
 		catalogToHTTPParameter();
@@ -67,7 +67,7 @@ public class JSONFactory {
 	}
 
 	private void addHTTPParameter(String key, String value) {
-		parameters += (firstParameter ? "?" : "&") + URL.encode(key) + "=" + URL.encode(value);
+		parameters += (firstParameter ? "?" : "&") + urlEncoder.encodeParam(key) + "=" + urlEncoder.encodeParam(value);
 		firstParameter = false;
 	}
 

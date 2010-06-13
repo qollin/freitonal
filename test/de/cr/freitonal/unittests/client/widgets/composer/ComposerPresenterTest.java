@@ -1,36 +1,31 @@
-package de.cr.freitonal.usertests.client.widgets.composer;
+package de.cr.freitonal.unittests.client.widgets.composer;
 
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Beethoven;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Mozart;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Mozart;
+import static junit.framework.Assert.assertEquals;
 
 import java.util.ArrayList;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.junit.client.GWTTestCase;
 
 import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.SearchFieldChangedHandler;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
-import de.cr.freitonal.client.widgets.composer.ComposerView;
 
-public class ComposerPresenterTest extends GWTTestCase {
+public class ComposerPresenterTest {
 	private ComposerPresenter composerPresenter;
 	private ComposerSet composerSet;
 	private HandlerManager eventBus;
 	private ArrayList<String> trace;
 
-	@Override
-	public String getModuleName() {
-		return "de.cr.freitonal.FreitonalGUI";
-	}
-
-	@Override
-	public void gwtSetUp() {
-		ComposerView view = new ComposerView("composer");
+	@Before
+	public void setUp() {
+		ComposerPresenter.View view = new ComposerViewMock();
 		eventBus = new HandlerManager(null);
 		trace = new ArrayList<String>();
 
@@ -47,7 +42,7 @@ public class ComposerPresenterTest extends GWTTestCase {
 
 	@Test
 	public void testSwitchBetweenSelectAndViewMode() {
-		composerPresenter.getListBoxPresenter().fireOnNewItemSelected_TEST(Mozart);
+		composerPresenter.getListBoxPresenter().fireOnNewItemSelected(Mozart);
 		assertEquals("after selecting a composer, the item count should be one", 1, composerPresenter.getItemCount());
 
 		eventBus.addHandler(SearchFieldChangedEvent.TYPE, new SearchFieldChangedHandler() {

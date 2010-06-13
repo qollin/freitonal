@@ -1,6 +1,8 @@
 package de.cr.freitonal.client.widgets.base;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
+import static de.cr.freitonal.client.event.DisplayMode.Select;
+import static de.cr.freitonal.client.event.DisplayMode.View;
 import static de.cr.freitonal.client.event.SearchContext.IntialLoading;
 
 import java.util.ArrayList;
@@ -13,9 +15,11 @@ import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
+import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
+import de.cr.freitonal.client.event.SimpleDFA;
 import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.ItemSet;
 
@@ -30,14 +34,12 @@ public class ListBoxPresenter {
 	private final EventHandlingStrategy strategy;
 	private final ArrayList<ChangeHandler> changeHandlers = new ArrayList<ChangeHandler>();
 	private ItemSet completeItemSet;
-	private DisplayMode mode = DisplayMode.Select;
+	private final SimpleDFA dfa = new SimpleDFA();
 
 	public interface View extends HasChangeHandlers, HasClickHandlers {
 		Item getSelectedItem();
 
 		void setItems(ArrayList<Item> items);
-
-		public int getItemCount();
 
 		void setSelectedItem(Item selected);
 
@@ -59,6 +61,7 @@ public class ListBoxPresenter {
 		this.view = view;
 		this.strategy = strategy;
 		bind();
+		initializeDFA();
 	}
 
 	private void bind() {
@@ -70,43 +73,73 @@ public class ListBoxPresenter {
 
 		view.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				fireHandleClickEventOnCloseImage();
+				fireHandleClickEventOnExitViewMode();
 			}
 		});
 	}
 
-	/**
-	 * This method must only be called from a test
-	 * 
-	 * @param selectedItem
-	 */
-	public void fireOnNewItemSelected_TEST(Item selectedItem) {
-		view.setSelectedItem(selectedItem);
-		fireOnNewItemSelected(selectedItem);
+	private void initializeDFA() {
+		dfa.addTransition("Select", "fireOnNewItemSelected", "View", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				Item selectedItem = (Item) parameters[0];
+				items.setSelected(selectedItem);
+
+				view.setDisplayMode(View);
+				fireSearchFieldChangedEvent();
+			}
+		});
+		dfa.addTransition("Select", "setDisplayMode", Create, "Create", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
+				items = completeItemSet;
+				view.setItems(completeItemSet.getItems());
+			}
+		});
+		dfa.addTransition("View", "fireHandleClickEventOnExitViewMode", "Select", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
+				view.setDisplayMode(Select);
+				fireSearchFieldChangedEvent();
+			}
+		});
+		dfa.addTransition("View", "setDisplayMode", Create, "Create", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
+				items = completeItemSet;
+				view.setItems(completeItemSet.getItems());
+			}
+		});
+		dfa.addTransition("Create", "fireOnNewItemSelected", "Create", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				Item selectedItem = (Item) parameters[0];
+				items.setSelected(selectedItem);
+			}
+		});
+		dfa.addTransition("Create", "fireHandleClickEventOnExitViewMode", "Create", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
+				view.setDisplayMode(Create);
+			}
+		});
+
+		dfa.start("Select");
 	}
 
-	private void fireOnNewItemSelected(Item selectedItem) {
-		items.setSelected(selectedItem);
-		view.setDisplayMode(DisplayMode.View);
-
-		if (mode != Create) {
-			fireSearchFieldChangedEvent();
-		}
+	public void fireOnNewItemSelected(Item selectedItem) {
+		dfa.transition("fireOnNewItemSelected", selectedItem);
 	}
 
 	/**
 	 * This method must only be called from a test
 	 */
 	public void fireHandleClickEventOnCloseImage_TEST() {
-		fireHandleClickEventOnCloseImage();
+		fireHandleClickEventOnExitViewMode();
 	}
 
-	private void fireHandleClickEventOnCloseImage() {
-		view.setDisplayMode(mode);
-
-		if (mode != Create) {
-			fireSearchFieldChangedEvent();
-		}
+	private void fireHandleClickEventOnExitViewMode() {
+		dfa.transition("fireHandleClickEventOnExitViewMode");
 	}
 
 	private void fireSearchFieldChangedEvent() {
@@ -123,7 +156,11 @@ public class ListBoxPresenter {
 	}
 
 	public int getItemCount() {
-		return view.getItemCount();
+		if (dfa.getState().equals("View")) {
+			return 1;
+		}
+
+		return items.size();
 	}
 
 	public void setView(View view) {
@@ -134,7 +171,8 @@ public class ListBoxPresenter {
 	 * @return the selected Item or null if there is no selection
 	 */
 	public Item getSelectedItem() {
-		return view.getSelectedItem();
+		return items.getSelected();
+		//return view.getSelectedItem();
 	}
 
 	public void setItems(ItemSet items, SearchContext searchContext) {
@@ -162,15 +200,7 @@ public class ListBoxPresenter {
 	}
 
 	public void setDisplayMode(DisplayMode mode) {
-		if (mode == null) {
-			throw new IllegalArgumentException("mode must not be null");
-		}
-
-		this.mode = mode;
-		if (mode == Create) {
-			view.setItems(completeItemSet.getItems());
-		}
-		view.setDisplayMode(mode);
+		dfa.transitionWithTriggerParam("setDisplayMode", mode);
 	}
 
 	public void setItems(ItemSet itemSet) {
@@ -179,9 +209,5 @@ public class ListBoxPresenter {
 
 	public ItemSet getFullItemSet() {
 		return this.getFullItemSet();
-	}
-
-	public DisplayMode getDisplayMode() {
-		return mode;
 	}
 }

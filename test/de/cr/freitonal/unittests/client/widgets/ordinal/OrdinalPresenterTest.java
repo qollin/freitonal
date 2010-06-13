@@ -1,30 +1,26 @@
-package de.cr.freitonal.usertests.client.widgets.ordinal;
+package de.cr.freitonal.unittests.client.widgets.ordinal;
 
+import static junit.framework.Assert.assertEquals;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.junit.client.GWTTestCase;
 
 import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
-import de.cr.freitonal.client.widgets.ordinal.OrdinalView;
 
-public class OrdinalPresenterTest extends GWTTestCase {
+public class OrdinalPresenterTest {
 	private OrdinalPresenter ordinalPresenter;
 
 	private static final Item one = new Item("1", "1");
 	private static final Item fourA = new Item("4a", "4a");
 
-	@Override
-	public String getModuleName() {
-		return "de.cr.freitonal.FreitonalGUI";
-	}
-
-	@Override
-	public void gwtSetUp() {
-		OrdinalView view = new OrdinalView("Ordinal");
+	@Before
+	public void setUp() {
+		OrdinalPresenter.View view = new OrdinalViewMock();
 		ordinalPresenter = new OrdinalPresenter(new HandlerManager(null), view);
 		OrdinalSet ordinalSet = new OrdinalSet(one, fourA);
 		ordinalPresenter.setItems(ordinalSet, SearchContext.IntialLoading);

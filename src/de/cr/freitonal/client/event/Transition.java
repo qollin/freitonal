@@ -4,17 +4,18 @@
 package de.cr.freitonal.client.event;
 
 class Transition {
-	private final String from, to, transition;
+	private final String from, to;
+	private final Trigger trigger;
 
-	public Transition(String from, String transition, String to) {
+	public Transition(String from, Trigger trigger, String to) {
 		this.from = from;
-		this.transition = transition;
+		this.trigger = trigger;
 		this.to = to;
 	}
 
 	@Override
 	public String toString() {
-		return from + " " + transition + " " + to;
+		return from + " " + trigger + " " + to;
 	}
 
 	@Override

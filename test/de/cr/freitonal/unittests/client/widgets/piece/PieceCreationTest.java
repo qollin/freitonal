@@ -1,11 +1,13 @@
 package de.cr.freitonal.unittests.client.widgets.piece;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Beethoven;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.NumberOfComposers;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.NumberOfInstruments;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Opus27_1;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Piano;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfComposers;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfInstruments;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Opus27_1;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 import java.util.ArrayList;
 
@@ -18,15 +20,16 @@ import de.cr.freitonal.client.rpc.RPCServiceImpl;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.client.widgets.piece.PiecePresenter;
-import de.cr.freitonal.client.widgets.piece.PieceView;
+import de.cr.freitonal.unittests.client.rpc.JSONTestCase;
 
-public class PieceCreationTest {
+public class PieceCreationTest extends JSONTestCase {
 	private PiecePresenter piecePresenter;
-	private AppController appController;
 
+	@Override
 	@Before
 	public void setUp() {
-		PieceView view = new PieceView();
+		super.setUp();
+		PiecePresenter.View view = new PieceViewMock();
 		appController = new AppController(view, null);
 		piecePresenter = appController.getPiecePresenter();
 
@@ -39,7 +42,7 @@ public class PieceCreationTest {
 	public void testSwitchToCreateModeComposer() {
 		ComposerPresenter composerPresenter = piecePresenter.getComposerPresenter();
 		onNextSearchReturn(resources.getSearchForBeethovenJSON().getText());
-		composerPresenter.getListBoxPresenter().fireOnNewItemSelected_TEST(Beethoven);
+		composerPresenter.getListBoxPresenter().fireOnNewItemSelected(Beethoven);
 
 		assertEquals("after selecting a composer, the item count should be one", 1, composerPresenter.getItemCount());
 
@@ -53,7 +56,7 @@ public class PieceCreationTest {
 	public void testSwitchToCreateModeInstrumentation() {
 		InstrumentationPresenter instrumentationPresenter = piecePresenter.getInstrumentationPresenter();
 		onNextSearchReturn(resources.getSearchForPianoJSON().getText());
-		instrumentationPresenter.getInstrumentPresenter(0).fireOnNewItemSelected_TEST(Piano);
+		instrumentationPresenter.getInstrumentPresenter(0).fireOnNewItemSelected(Piano);
 
 		assertEquals("after selecting an instrument, the item count should be one", 1, instrumentationPresenter.getInstrumentPresenter(0)
 				.getItemCount());
@@ -67,7 +70,7 @@ public class PieceCreationTest {
 
 		//check that in creation mode no search is triggered and no new dropdown box is created:
 		onNextSearchFail();
-		instrumentationPresenter.getInstrumentPresenter(0).fireOnNewItemSelected_TEST(Piano);
+		instrumentationPresenter.getInstrumentPresenter(0).fireOnNewItemSelected(Piano);
 		assertEquals("the instrumentation presenter should show 1 dropdown box", 1, instrumentationPresenter.getNumberOfInstrumentPresenters());
 
 		//check that the + button also works in creation mode
@@ -84,10 +87,10 @@ public class PieceCreationTest {
 
 		//select elements for the new piece:
 		piecePresenter.getComposerPresenter().fireOnNewItemSelected_TEST(Beethoven);
-		piecePresenter.getCatalogPresenter().fireOnNewItemSelected_TEST(Opus27_1);
+		piecePresenter.getCatalogPresenter().fireOnNewItemSelected(Opus27_1);
 
 		final ArrayList<String> trace = new ArrayList<String>();
-		appController.setRPCService(new RPCServiceImpl() {
+		appController.setRPCService(new RPCServiceImpl(parser, urlEncoder) {
 			@Override
 			public void save(Piece piece) {
 				assertNotNull("the piece to save should not be null", piece);

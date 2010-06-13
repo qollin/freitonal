@@ -88,14 +88,6 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 		return list.isEnabled();
 	}
 
-	public int getItemCount() {
-		if (mode == DisplayMode.View) {
-			return 1;
-		}
-
-		return list.getItemCount() - specialItems.size();
-	}
-
 	public void setSelectedItem(Item selected) {
 		for (int i = 0; i < list.getItemCount(); i++) {
 			if (list.getValue(i).equals(selected.id)) {

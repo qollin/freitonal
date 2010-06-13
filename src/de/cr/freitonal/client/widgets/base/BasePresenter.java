@@ -61,6 +61,6 @@ public class BasePresenter implements Presenter {
 	}
 
 	public void fireOnNewItemSelected_TEST(Item selectedItem) {
-		listBoxPresenter.fireOnNewItemSelected_TEST(selectedItem);
+		listBoxPresenter.fireOnNewItemSelected(selectedItem);
 	}
 }

@@ -1,39 +1,40 @@
-package de.cr.freitonal.usertests.client.rpc;
+package de.cr.freitonal.unittests.client.rpc;
 
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.AMajor;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Beethoven;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Eroica;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Ordinal4a;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Piano;
-import static de.cr.freitonal.usertests.client.test.data.FullSearchInformation.Violin;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.AMajor;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Eroica;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Ordinal4a;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Violin;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestBuilder.Method;
-import com.google.gwt.junit.client.GWTTestCase;
 
 import de.cr.freitonal.client.rpc.ModelFactory;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCServiceImpl;
 import de.cr.freitonal.client.rpc.RequestBuilderFactory;
 import de.cr.freitonal.client.rpc.SearchResult;
-import de.cr.freitonal.client.rpc.gwt.DTOParserGWT;
-import de.cr.freitonal.usertests.client.test.data.TestResources;
+import de.cr.freitonal.client.rpc.java.DTOParserJava;
+import de.cr.freitonal.unittests.client.test.data.TestResources;
 
-public class RPCServiceImplTest extends GWTTestCase {
+public class RPCServiceImplTest {
 
 	private RPCServiceImpl rpcService;
 	private PieceSearchMask pieceSearchMask;
 	private TestResources resources;
 
-	@Override
-	public void gwtSetUp() {
-		rpcService = new RPCServiceImpl(new DTOParserGWT());
-		resources = GWT.create(TestResources.class);
-		ModelFactory modelFactory = new ModelFactory(new DTOParserGWT());
+	@Before
+	public void setUp() {
+		rpcService = new RPCServiceImpl(new DTOParserJava(), new URLEncoderMock());
+		resources = new TestResources();
+		ModelFactory modelFactory = new ModelFactory(new DTOParserJava());
 		SearchResult searchResult = modelFactory.createSearchResult(resources.getFullSearchJSON().getText());
 
 		pieceSearchMask = searchResult.getPieceSearchMask();
@@ -97,10 +98,4 @@ public class RPCServiceImplTest extends GWTTestCase {
 		SearchResult searchResult = rpcService.createSearchResult(pieceSearchMask, resources.getSearchForBeethovenJSON().getText());
 		assertEquals(Beethoven, searchResult.getPieceSearchMask().getComposers().getSelected());
 	}
-
-	@Override
-	public String getModuleName() {
-		return "de.cr.freitonal.FreitonalGUI";
-	}
-
 }

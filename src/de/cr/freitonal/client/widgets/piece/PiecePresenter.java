@@ -119,6 +119,7 @@ public class PiecePresenter {
 	private void save() {
 		Piece piece = new Piece();
 		piece.composer = composerPresenter.getSelectedItem();
+		piece.catalog = catalogPresenter.getSelectedItem();
 		rpcService.save(piece);
 	}
 

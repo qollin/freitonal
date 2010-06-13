@@ -1,4 +1,4 @@
-package de.cr.freitonal.usertests.client.test.data;
+package de.cr.freitonal.unittests.client.test.data;
 
 import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.Item;
@@ -25,4 +25,5 @@ public class FullSearchInformation {
 	public static Item AMajor = new Item("31", "A-Dur");
 
 	public static Catalog Opus27_1 = new Catalog(new Item("1", "Opus"), new Item("110", "27-1"));
+	public static final Item KV = new Item("2", "KV");
 }

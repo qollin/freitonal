@@ -5,7 +5,6 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.cr.freitonal.client.event.DFA;
-import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.State;
 import de.cr.freitonal.client.event.TransitionHandler;
@@ -46,7 +45,7 @@ public class AppController {
 
 			public void onSuccess(SearchResult result) {
 				currentPieceSearchMask = result.getPieceSearchMask();
-				getPiecePresenter().setSearchData(currentPieceSearchMask, SearchContext.FieldSearch);
+				getPiecePresenter().setSearchData(currentPieceSearchMask);
 			}
 		});
 	}
@@ -60,7 +59,7 @@ public class AppController {
 
 			public void onSuccess(SearchResult result) {
 				currentPieceSearchMask = result.getPieceSearchMask();
-				getPiecePresenter().setSearchData(currentPieceSearchMask, SearchContext.IntialLoading);
+				getPiecePresenter().setSearchData(currentPieceSearchMask);
 			}
 
 		});

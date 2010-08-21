@@ -8,12 +8,20 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.widgets.base.ListBoxPresenter.View;
+import de.cr.freitonal.shared.models.Item;
 
 public class ListBoxViewMock implements View {
 
 	private boolean enabled;
+	private ArrayList<String> trace = new ArrayList<String>();
+
+	public ListBoxViewMock() {
+	}
+
+	public ListBoxViewMock(ArrayList<String> trace) {
+		this.trace = trace;
+	}
 
 	public Item getSelectedItem() {
 		// TODO Auto-generated method stub
@@ -30,8 +38,7 @@ public class ListBoxViewMock implements View {
 	}
 
 	public void setDisplayMode(DisplayMode mode) {
-		// TODO Auto-generated method stub
-
+		trace.add("setDisplayMode:" + mode);
 	}
 
 	public void setEnabled(boolean enabled) {

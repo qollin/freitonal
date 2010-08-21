@@ -1,23 +1,28 @@
 package de.cr.freitonal.client.widgets.catalog;
 
+import static de.cr.freitonal.client.event.DisplayMode.Create;
+
 import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.SearchContext;
-import de.cr.freitonal.client.event.SearchFieldChangedEvent;
+import de.cr.freitonal.client.event.AbstractTransitionAction;
+import de.cr.freitonal.client.event.DisplayMode;
+import de.cr.freitonal.client.event.SimpleDFA;
 import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.CatalogSet;
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.ListBoxPresenter;
+import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.shared.models.Item;
 
 public class CatalogPresenter extends CompositePresenter {
 	private final View view;
 	private final ListBoxPresenter nameListBoxPresenter;
 	private final ListBoxPresenter numberListBoxPresenter;
+	private final SimpleDFA dfa = new SimpleDFA();
 
 	public interface View {
 		public ListBoxPresenter.View getNameListBoxView();
@@ -29,20 +34,46 @@ public class CatalogPresenter extends CompositePresenter {
 		super(eventBus);
 		this.view = view;
 
-		nameListBoxPresenter = createListBoxPresenter(view.getNameListBoxView());
+		nameListBoxPresenter = new SearchFieldPresenter(eventBus, view.getNameListBoxView());
+		addPresenter(nameListBoxPresenter);
+		numberListBoxPresenter = new SearchFieldPresenter(eventBus, view.getNumberListBoxView());
+		addPresenter(numberListBoxPresenter);
+
+		numberListBoxPresenter.setEnabled(false);
+
+		bind();
+		initializeDFA();
+	}
+
+	private void bind() {
 		nameListBoxPresenter.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
-				CatalogPresenter.this.eventBus.fireEvent(new SearchFieldChangedEvent());
+				dfa.transition("nameListBoxChanged");
+			}
+		});
+	}
+
+	private void initializeDFA() {
+		dfa.addTransition("Select", "nameListBoxChanged", "Select", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
 				numberListBoxPresenter.setEnabled(true);
 			}
 		});
-		numberListBoxPresenter = createListBoxPresenter(view.getNumberListBoxView());
-		numberListBoxPresenter.setEnabled(false);
+		dfa.addTransitionWithTriggerParam("Select", "setDisplayMode", Create, "Create");
+		dfa.addTransition("Create", "nameListBoxChanged", "Create", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
+				numberListBoxPresenter.setEnabled(true);
+			}
+		});
+
+		dfa.start("Select");
 	}
 
-	public void setCatalogs(CatalogSet catalogs, SearchContext searchContext) {
-		nameListBoxPresenter.setItems(catalogs.getNames(), searchContext);
-		numberListBoxPresenter.setItems(catalogs.getNumbers(), searchContext);
+	public void setCatalogs(CatalogSet catalogs) {
+		nameListBoxPresenter.setItems(catalogs.getNames());
+		numberListBoxPresenter.setItems(catalogs.getNumbers());
 	}
 
 	public int getNameItemCount() {
@@ -72,4 +103,9 @@ public class CatalogPresenter extends CompositePresenter {
 		return new Catalog(items.get(0), items.get(1));
 	}
 
+	@Override
+	public void setDisplayMode(DisplayMode mode) {
+		super.setDisplayMode(mode);
+		dfa.transitionWithTriggerParam("setDisplayMode", mode);
+	};
 }

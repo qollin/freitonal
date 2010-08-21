@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.cr.freitonal.client.AppController;
-import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 import de.cr.freitonal.unittests.client.rpc.JSONTestCase;
 import de.cr.freitonal.unittests.client.test.data.FullSearchInformation;
@@ -20,7 +19,6 @@ import de.cr.freitonal.unittests.client.widgets.piece.PieceViewMock;
 
 public class CatalogPresenterTest extends JSONTestCase {
 	private CatalogPresenter catalogPresenter;
-	private CatalogSet catalogSet;
 
 	@Override
 	@Before
@@ -41,12 +39,16 @@ public class CatalogPresenterTest extends JSONTestCase {
 
 	@Test
 	public void testNameSelection() {
+		trace.clear();
 		assertNull("Initially, no name should be selected", catalogPresenter.getNameListBoxPresenter().getSelectedItem());
 		assertNull("Initially, no number should be selected", catalogPresenter.getNumberListBoxPresenter().getSelectedItem());
 		assertFalse("Initially, the number dropdown should be disabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
 
 		//select a name:
 		catalogPresenter.getNameListBoxPresenter().fireOnNewItemSelected(FullSearchInformation.KV);
+
+		assertEquals("a search should have triggered", 1, trace.size());
+		assertEquals("a search should have triggered", "search", trace.get(0));
 
 		assertNull("After selecting a name, no number should be selected", catalogPresenter.getNumberListBoxPresenter().getSelectedItem());
 		assertTrue("After selecting a name, the number dropdown should be enabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
@@ -57,5 +59,24 @@ public class CatalogPresenterTest extends JSONTestCase {
 		appController.getPiecePresenter().fireAddPieceButtonClicked();
 		onNextSearchFail();
 		catalogPresenter.fireOnNewItemSelected(Opus27_1);
+	}
+
+	@Test
+	public void testNameSelectionInCreateMode() {
+		appController.getPiecePresenter().fireAddPieceButtonClicked();
+
+		trace.clear();
+		assertNull("Initially, no name should be selected", catalogPresenter.getNameListBoxPresenter().getSelectedItem());
+		assertNull("Initially, no number should be selected", catalogPresenter.getNumberListBoxPresenter().getSelectedItem());
+		assertFalse("Initially, the number dropdown should be disabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
+
+		//select a name:
+		catalogPresenter.getNameListBoxPresenter().fireOnNewItemSelected(FullSearchInformation.KV);
+
+		assertEquals("no search should have triggered", 0, trace.size());
+
+		assertNull("After selecting a name, no number should be selected", catalogPresenter.getNumberListBoxPresenter().getSelectedItem());
+		assertTrue("After selecting a name, the number dropdown should be enabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
+
 	}
 }

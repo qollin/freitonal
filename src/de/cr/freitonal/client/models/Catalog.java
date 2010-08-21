@@ -1,5 +1,7 @@
 package de.cr.freitonal.client.models;
 
+import de.cr.freitonal.shared.models.Item;
+
 public class Catalog {
 	public Item name;
 	public Item number;

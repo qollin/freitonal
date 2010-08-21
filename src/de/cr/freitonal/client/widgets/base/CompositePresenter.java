@@ -5,58 +5,63 @@ import java.util.ArrayList;
 import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.models.Item;
-import de.cr.freitonal.client.widgets.Presenter;
+import de.cr.freitonal.shared.models.Item;
 
-public abstract class CompositePresenter implements Presenter {
-	protected final HandlerManager eventBus;
-	private final ArrayList<ListBoxPresenter> presenters = new ArrayList<ListBoxPresenter>();
-	private final ArrayList<ListBoxPresenter.View> views = new ArrayList<ListBoxPresenter.View>();
+public abstract class CompositePresenter extends BasePresenter {
+	private final ArrayList<SelectablePresenter> presenters = new ArrayList<SelectablePresenter>();
+	private final ArrayList<View> views = new ArrayList<View>();
 
 	protected CompositePresenter(HandlerManager eventBus) {
-		this.eventBus = eventBus;
+		super(eventBus);
 	}
 
-	protected ListBoxPresenter createListBoxPresenter(ListBoxPresenter.View view) {
-		ListBoxPresenter listBoxPresenter = new ListBoxPresenter(eventBus, view,
-				ListBoxPresenter.EventHandlingStrategy.RelayToRegisteredChangeEventHandlers);
-		presenters.add(listBoxPresenter);
-		views.add(view);
-		return listBoxPresenter;
+	protected void addPresenter(SelectablePresenter presenter) {
+		presenters.add(presenter);
+		views.add(presenter.getView());
 	}
 
-	protected void removeListBoxPresenter(int index) {
+	protected void removePresenter(int index) {
 		presenters.remove(index);
 		views.get(index).removeFromParent();
 		views.remove(index);
 	}
 
-	protected ListBoxPresenter getListBoxPresenter(int index) {
+	protected SelectablePresenter getPresenter(int index) {
 		return presenters.get(index);
 	}
 
-	protected int getNumberOfListBoxPresenters() {
+	protected int getNumberOfPresenters() {
 		return presenters.size();
 	}
 
-	protected void removeAllButTheFirstListBoxPresenter() {
-		while (getNumberOfListBoxPresenters() > 1) {
-			removeListBoxPresenter(1);
+	protected ArrayList<SelectablePresenter> getListBoxPresenters() {
+		return presenters;
+	}
+
+	protected void removeAllButTheFirstPresenter() {
+		while (getNumberOfPresenters() > 1) {
+			removePresenter(1);
 		}
 	}
 
 	public void setDisplayMode(DisplayMode mode) {
-		for (ListBoxPresenter presenter : presenters) {
+		for (SelectablePresenter presenter : presenters) {
 			presenter.setDisplayMode(mode);
 		}
 	}
 
-	protected ArrayList<Item> getSelectedItems() {
+	public ArrayList<Item> getSelectedItems() {
 		ArrayList<Item> selectedItems = new ArrayList<Item>();
-		for (ListBoxPresenter presenter : presenters) {
+		for (SelectablePresenter presenter : presenters) {
 			selectedItems.add(presenter.getSelectedItem());
 		}
 		return selectedItems;
+	}
+
+	public void setEnabled(boolean enabled) {
+		for (SelectablePresenter presenter : presenters) {
+			presenter.setEnabled(enabled);
+		}
 	}
 
 }

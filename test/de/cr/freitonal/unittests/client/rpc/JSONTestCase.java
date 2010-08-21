@@ -2,6 +2,8 @@ package de.cr.freitonal.unittests.client.rpc;
 
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -21,15 +23,19 @@ public abstract class JSONTestCase {
 	protected final DTOParserJava parser = new DTOParserJava();
 	protected final URLEncoder urlEncoder = new URLEncoderMock();
 
+	protected final ArrayList<String> trace = new ArrayList<String>();
+
 	@Before
 	public void setUp() {
 		resources = new TestResources();
+		trace.clear();
 	}
 
 	protected void onNextSearchReturn(final String jsonString) {
 		appController.setRPCService(new RPCServiceImpl(parser, urlEncoder) {
 			@Override
 			public void search(PieceSearchMask searchMask, AsyncCallback<SearchResult> callback) {
+				trace.add("search");
 				callback.onSuccess(createSearchResult(searchMask, jsonString));
 			}
 		});

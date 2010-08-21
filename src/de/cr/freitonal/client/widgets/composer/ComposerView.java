@@ -2,9 +2,9 @@ package de.cr.freitonal.client.widgets.composer;
 
 import com.google.gwt.uibinder.client.UiConstructor;
 
-import de.cr.freitonal.client.widgets.base.BaseView;
+import de.cr.freitonal.client.widgets.base.SimpleView;
 
-public class ComposerView extends BaseView implements ComposerPresenter.View {
+public class ComposerView extends SimpleView implements ComposerPresenter.View {
 
 	@UiConstructor
 	public ComposerView(String labelText) {

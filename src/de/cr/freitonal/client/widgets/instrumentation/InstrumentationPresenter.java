@@ -1,7 +1,6 @@
 package de.cr.freitonal.client.widgets.instrumentation;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
-import static de.cr.freitonal.client.event.SearchContext.IntialLoading;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -12,7 +11,8 @@ import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.event.SearchContext;
+import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedEvent;
+import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedHandler;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.SimpleDFA;
 import de.cr.freitonal.client.models.InstrumentationSet;
@@ -20,19 +20,23 @@ import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.models.ItemSetMultiSelection;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.ListBoxPresenter;
+import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.SelectablePresenter;
+import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
 public class InstrumentationPresenter extends CompositePresenter {
 
 	public interface View {
 		HasClickHandlers getAddInstrumentButton();
 
-		ListBoxPresenter.View addInstrumentList();
+		SearchFieldPresenter.View addInstrumentList();
 	}
 
 	private final View view;
 	private final SimpleDFA dfa = new SimpleDFA();
 	private InstrumentationSet currentInstrumentationSet;
 	private InstrumentationSet fullInstrumentationSet;
+	private boolean enabled = true;
 
 	public InstrumentationPresenter(HandlerManager eventBus, View view) {
 		super(eventBus);
@@ -48,13 +52,13 @@ public class InstrumentationPresenter extends CompositePresenter {
 			@Override
 			public void onTransition(Object[] parameters) {
 				fullInstrumentationSet = (InstrumentationSet) parameters[0];
-				updateItemSetOfInstrument(getListBoxPresenter(0), (InstrumentationSet) parameters[0], IntialLoading);
+				updateItemSetOfInstrument(getPresenter(0), (InstrumentationSet) parameters[0]);
 			}
 		});
 		dfa.addTransition("Main", "setInstrumentations", "Main", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
-				updateItemSetOfInstrument(getListBoxPresenter(0), (InstrumentationSet) parameters[0], (SearchContext) parameters[1]);
+				updateItemSetOfInstrument(getPresenter(0), (InstrumentationSet) parameters[0]);
 			}
 		});
 		dfa.addTransition("Main", "instrumentSelected", "Search", new AbstractTransitionAction() {
@@ -73,7 +77,7 @@ public class InstrumentationPresenter extends CompositePresenter {
 			@Override
 			public void onTransition(Object[] parameters) {
 				ListBoxPresenter instrumentPresenter = addInstrumentPresenter();
-				updateItemSetOfInstrument(instrumentPresenter, (InstrumentationSet) parameters[0], (SearchContext) parameters[1]);
+				updateItemSetOfInstrument(instrumentPresenter, (InstrumentationSet) parameters[0]);
 			}
 		});
 		dfa.addTransition(new String[] { "Main", "Search" }, "setDisplayMode", "Create", new AbstractTransitionAction() {
@@ -81,7 +85,7 @@ public class InstrumentationPresenter extends CompositePresenter {
 			public void onTransition(Object[] parameters) {
 				DisplayMode mode = (DisplayMode) parameters[0];
 				if (mode == Create) {
-					removeAllButTheFirstListBoxPresenter();
+					removeAllButTheFirstPresenter();
 				}
 				InstrumentationPresenter.super.setDisplayMode(mode);
 			}
@@ -90,9 +94,10 @@ public class InstrumentationPresenter extends CompositePresenter {
 			@Override
 			public void onTransition() {
 				ListBoxPresenter instrumentPresenter = addInstrumentPresenter();
-				updateItemSetOfInstrument(instrumentPresenter, fullInstrumentationSet, IntialLoading);
+				updateItemSetOfInstrument(instrumentPresenter, fullInstrumentationSet);
 			}
 		});
+		dfa.addTransition("Create", "instrumentSelected", "Create");
 		dfa.start("Initial");
 	}
 
@@ -100,10 +105,10 @@ public class InstrumentationPresenter extends CompositePresenter {
 		return new ItemSet(itemSet.getItems());
 	}
 
-	private void updateItemSetOfInstrument(ListBoxPresenter instrumentPresenter, InstrumentationSet instrumentationSet, SearchContext searchContext) {
+	private void updateItemSetOfInstrument(SelectablePresenter instrumentPresenter, InstrumentationSet instrumentationSet) {
 		currentInstrumentationSet = instrumentationSet;
 		ItemSet instruments = createBasicItemSetFromItemSetMultiSelection(instrumentationSet);
-		instrumentPresenter.setItems(instruments, searchContext);
+		instrumentPresenter.setItems(instruments);
 	}
 
 	private void updateInstrumentationItemSet() {
@@ -112,13 +117,18 @@ public class InstrumentationPresenter extends CompositePresenter {
 
 	private void search() {
 		updateInstrumentationItemSet();
-		eventBus.fireEvent(new SearchFieldChangedEvent());
+		getEventBus().fireEvent(new SearchFieldChangedEvent());
 	}
 
 	private void bind() {
 		view.getAddInstrumentButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				fireAddInstrumentButtonClicked();
+			}
+		});
+		getEventBus().addHandler(PiecePlusInstrumentationTypeSelectedEvent.TYPE, new PiecePlusInstrumentationTypeSelectedHandler() {
+			public void onPiecePlusInstrumentationTypeSelected() {
+				setEnabled(false);
 			}
 		});
 	}
@@ -132,7 +142,8 @@ public class InstrumentationPresenter extends CompositePresenter {
 	}
 
 	private ListBoxPresenter addInstrumentPresenter() {
-		final ListBoxPresenter instrumentPresenter = createListBoxPresenter(view.addInstrumentList());
+		final ListBoxPresenter instrumentPresenter = new ListBoxPresenter(getEventBus(), view.addInstrumentList());
+		addPresenter(instrumentPresenter);
 
 		instrumentPresenter.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
@@ -143,20 +154,36 @@ public class InstrumentationPresenter extends CompositePresenter {
 		return instrumentPresenter;
 	}
 
-	public void setInstrumentations(InstrumentationSet instrumentationSet, SearchContext context) {
-		dfa.transition("setInstrumentations", instrumentationSet, context);
+	public void setInstrumentations(InstrumentationSet instrumentationSet) {
+		dfa.transition("setInstrumentations", instrumentationSet);
 	}
 
 	public ListBoxPresenter getInstrumentPresenter(int i) {
-		return getListBoxPresenter(i);
+		return (ListBoxPresenter) getPresenter(i);
 	}
 
 	public int getNumberOfInstrumentPresenters() {
-		return getNumberOfListBoxPresenters();
+		return getNumberOfPresenters();
 	}
 
 	@Override
 	public void setDisplayMode(DisplayMode mode) {
 		dfa.transition("setDisplayMode", mode);
+	}
+
+	public VolatileInstrumentation getSelectedItem() {
+		return new VolatileInstrumentation("", getSelectedItems());
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+		for (SelectablePresenter presenter : getListBoxPresenters()) {
+			presenter.setEnabled(enabled);
+		}
 	}
 }

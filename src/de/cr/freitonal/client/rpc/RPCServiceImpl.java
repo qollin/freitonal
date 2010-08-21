@@ -7,8 +7,8 @@ import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.cr.freitonal.client.models.Piece;
 import de.cr.freitonal.client.rpc.dto.DTOParser;
+import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class RPCServiceImpl implements RPCService {
 	protected final ModelFactory modelFactory;
@@ -70,7 +70,7 @@ public class RPCServiceImpl implements RPCService {
 		this.requestBuilderFactory = requestBuilderFactory;
 	}
 
-	public void save(Piece piece) {
+	public void save(VolatilePiece piece) {
 		throw new IllegalStateException("not implemented yet");
 	}
 }

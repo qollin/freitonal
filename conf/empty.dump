@@ -1,0 +1,1096 @@
+-- MySQL dump 10.13  Distrib 5.1.37, for apple-darwin9.5.0 (i386)
+--
+-- Host: localhost    Database: freitonal-empty
+-- ------------------------------------------------------
+-- Server version	5.1.37
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Current Database: `freitonal-empty`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `freitonal-empty` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `freitonal-empty`;
+
+--
+-- Table structure for table `auth_group`
+--
+
+DROP TABLE IF EXISTS `auth_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_group` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group`
+--
+
+LOCK TABLES `auth_group` WRITE;
+/*!40000 ALTER TABLE `auth_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_group_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_group_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_group_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_id` (`group_id`,`permission_id`),
+  KEY `permission_id_refs_id_5886d21f` (`permission_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_group_permissions`
+--
+
+LOCK TABLES `auth_group_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_group_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_group_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_message`
+--
+
+DROP TABLE IF EXISTS `auth_message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `message` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `auth_message_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_message`
+--
+
+LOCK TABLES `auth_message` WRITE;
+/*!40000 ALTER TABLE `auth_message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_permission`
+--
+
+DROP TABLE IF EXISTS `auth_permission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `content_type_id` int(11) NOT NULL,
+  `codename` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
+  KEY `auth_permission_content_type_id` (`content_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_permission`
+--
+
+LOCK TABLES `auth_permission` WRITE;
+/*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user`
+--
+
+DROP TABLE IF EXISTS `auth_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `email` varchar(75) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `last_login` datetime NOT NULL,
+  `date_joined` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user`
+--
+
+LOCK TABLES `auth_user` WRITE;
+/*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_groups`
+--
+
+DROP TABLE IF EXISTS `auth_user_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`group_id`),
+  KEY `group_id_refs_id_f116770` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user_groups`
+--
+
+LOCK TABLES `auth_user_groups` WRITE;
+/*!40000 ALTER TABLE `auth_user_groups` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user_groups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `auth_user_user_permissions`
+--
+
+DROP TABLE IF EXISTS `auth_user_user_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auth_user_user_permissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`permission_id`),
+  KEY `permission_id_refs_id_67e79cb` (`permission_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auth_user_user_permissions`
+--
+
+LOCK TABLES `auth_user_user_permissions` WRITE;
+/*!40000 ALTER TABLE `auth_user_user_permissions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auth_user_user_permissions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrument`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_allocatedinstrument_instrument_id` (`instrument_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrument`
+--
+
+LOCK TABLES `classical_allocatedinstrument` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrument` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_allocatedinstrument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrument_performers`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrument_performers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrument_performers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `allocatedinstrument_id` int(11) NOT NULL,
+  `performer_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `allocatedinstrument_id` (`allocatedinstrument_id`,`performer_id`),
+  KEY `performer_id_refs_id_15e8a7a6` (`performer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrument_performers`
+--
+
+LOCK TABLES `classical_allocatedinstrument_performers` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrument_performers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_allocatedinstrument_performers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrumentation`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrumentation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrumentation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrumentation`
+--
+
+LOCK TABLES `classical_allocatedinstrumentation` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_allocatedinstrumentation_allocated_instruments`
+--
+
+DROP TABLE IF EXISTS `classical_allocatedinstrumentation_allocated_instruments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_allocatedinstrumentation_allocated_instruments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `allocatedinstrumentation_id` int(11) NOT NULL,
+  `allocatedinstrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `allocatedinstrumentation_id` (`allocatedinstrumentation_id`,`allocatedinstrument_id`),
+  KEY `allocatedinstrument_id_refs_id_4f2efe2` (`allocatedinstrument_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_allocatedinstrumentation_allocated_instruments`
+--
+
+LOCK TABLES `classical_allocatedinstrumentation_allocated_instruments` WRITE;
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation_allocated_instruments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_allocatedinstrumentation_allocated_instruments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_catalog`
+--
+
+DROP TABLE IF EXISTS `classical_catalog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_catalog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ordinal` varchar(5) NOT NULL,
+  `sub_ordinal` varchar(5) NOT NULL,
+  `name_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name_id_refs_id_2b392415` (`name_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=332 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_catalog`
+--
+
+LOCK TABLES `classical_catalog` WRITE;
+/*!40000 ALTER TABLE `classical_catalog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_catalog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_catalogtype`
+--
+
+DROP TABLE IF EXISTS `classical_catalogtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_catalogtype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_catalogtype`
+--
+
+LOCK TABLES `classical_catalogtype` WRITE;
+/*!40000 ALTER TABLE `classical_catalogtype` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_catalogtype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_composer`
+--
+
+DROP TABLE IF EXISTS `classical_composer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_composer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `middle_name` varchar(30) NOT NULL,
+  `last_name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_composer`
+--
+
+LOCK TABLES `classical_composer` WRITE;
+/*!40000 ALTER TABLE `classical_composer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_composer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrument`
+--
+
+DROP TABLE IF EXISTS `classical_instrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrument`
+--
+
+LOCK TABLES `classical_instrument` WRITE;
+/*!40000 ALTER TABLE `classical_instrument` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrument_instrument_roles`
+--
+
+DROP TABLE IF EXISTS `classical_instrument_instrument_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrument_instrument_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrument_id` int(11) NOT NULL,
+  `instrumentrole_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `instrument_id` (`instrument_id`,`instrumentrole_id`),
+  KEY `instrumentrole_id_refs_id_11eb81c4` (`instrumentrole_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrument_instrument_roles`
+--
+
+LOCK TABLES `classical_instrument_instrument_roles` WRITE;
+/*!40000 ALTER TABLE `classical_instrument_instrument_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrument_instrument_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentation`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(25) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentation`
+--
+
+LOCK TABLES `classical_instrumentation` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrumentation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentation_instrument`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentation_instrument`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentation_instrument` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrumentation_id` int(11) NOT NULL,
+  `instrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `instrumentation_id` (`instrumentation_id`,`instrument_id`),
+  KEY `instrument_id_refs_id_79d97d98` (`instrument_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentation_instrument`
+--
+
+LOCK TABLES `classical_instrumentation_instrument` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentation_instrument` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrumentation_instrument` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentation_instruments`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentation_instruments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentation_instruments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrumentation_id` int(11) NOT NULL,
+  `instrument_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `instrumentation_id` (`instrumentation_id`,`instrument_id`),
+  KEY `instrument_id_refs_id_d5745de` (`instrument_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=498 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentation_instruments`
+--
+
+LOCK TABLES `classical_instrumentation_instruments` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentation_instruments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrumentation_instruments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentationmember`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentationmember`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentationmember` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `instrumentation_id` int(11) NOT NULL,
+  `instrument_id` int(11) NOT NULL,
+  `numberOfInstruments` int(11) NOT NULL,
+  `ordinal` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `instrumentation_id_refs_id_3953275d` (`instrumentation_id`),
+  KEY `instrument_id_refs_id_368be09f` (`instrument_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentationmember`
+--
+
+LOCK TABLES `classical_instrumentationmember` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentationmember` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrumentationmember` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_instrumentrole`
+--
+
+DROP TABLE IF EXISTS `classical_instrumentrole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_instrumentrole` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_instrumentrole`
+--
+
+LOCK TABLES `classical_instrumentrole` WRITE;
+/*!40000 ALTER TABLE `classical_instrumentrole` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_instrumentrole` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_musickey`
+--
+
+DROP TABLE IF EXISTS `classical_musickey`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_musickey` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `base` varchar(5) NOT NULL,
+  `note_sort_order` int(11) NOT NULL,
+  `note` varchar(6) NOT NULL,
+  `generated_title` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_musickey`
+--
+
+LOCK TABLES `classical_musickey` WRITE;
+/*!40000 ALTER TABLE `classical_musickey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_musickey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_operarole`
+--
+
+DROP TABLE IF EXISTS `classical_operarole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_operarole` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `instrument_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_operarole_instrument_id` (`instrument_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_operarole`
+--
+
+LOCK TABLES `classical_operarole` WRITE;
+/*!40000 ALTER TABLE `classical_operarole` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_operarole` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_performance`
+--
+
+DROP TABLE IF EXISTS `classical_performance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_performance` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `instrumentation_id` int(11) NOT NULL,
+  `date` varchar(12) NOT NULL,
+  `location` varchar(30) NOT NULL,
+  `live` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_performance_piece_id` (`piece_id`),
+  KEY `classical_performance_instrumentation_id` (`instrumentation_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_performance`
+--
+
+LOCK TABLES `classical_performance` WRITE;
+/*!40000 ALTER TABLE `classical_performance` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_performance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_performer`
+--
+
+DROP TABLE IF EXISTS `classical_performer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_performer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `middle_name` varchar(30) NOT NULL,
+  `last_name` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_performer`
+--
+
+LOCK TABLES `classical_performer` WRITE;
+/*!40000 ALTER TABLE `classical_performer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_performer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece`
+--
+
+DROP TABLE IF EXISTS `classical_piece`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `composer_id` int(11) NOT NULL,
+  `referenced_piece_id` int(11) DEFAULT NULL,
+  `type_adjective` varchar(40) NOT NULL,
+  `piece_type_id` int(11) DEFAULT NULL,
+  `type_ordinal` varchar(5) NOT NULL,
+  `catalog_id` int(11) NOT NULL,
+  `music_key_id` int(11) DEFAULT NULL,
+  `number_of_pieces` int(11) DEFAULT NULL,
+  `subtitle` varchar(100) NOT NULL,
+  `pub_date` varchar(12) DEFAULT NULL,
+  `generated_title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `referenced_piece_id` (`referenced_piece_id`),
+  KEY `classical_piece_composer_id` (`composer_id`),
+  KEY `classical_piece_piece_type_id` (`piece_type_id`),
+  KEY `classical_piece_catalog_id` (`catalog_id`),
+  KEY `classical_piece_music_key_id` (`music_key_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=330 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece`
+--
+
+LOCK TABLES `classical_piece` WRITE;
+/*!40000 ALTER TABLE `classical_piece` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_instrumentations`
+--
+
+DROP TABLE IF EXISTS `classical_piece_instrumentations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_instrumentations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `instrumentation_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `piece_id` (`piece_id`,`instrumentation_id`),
+  KEY `instrumentation_id_refs_id_550ea6f2` (`instrumentation_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1124 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_instrumentations`
+--
+
+LOCK TABLES `classical_piece_instrumentations` WRITE;
+/*!40000 ALTER TABLE `classical_piece_instrumentations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_instrumentations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_operaRoles`
+--
+
+DROP TABLE IF EXISTS `classical_piece_operaRoles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_operaRoles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `operarole_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `piece_id` (`piece_id`,`operarole_id`),
+  KEY `operarole_id_refs_id_5fa1554a` (`operarole_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_operaRoles`
+--
+
+LOCK TABLES `classical_piece_operaRoles` WRITE;
+/*!40000 ALTER TABLE `classical_piece_operaRoles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_operaRoles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_opera_roles`
+--
+
+DROP TABLE IF EXISTS `classical_piece_opera_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_opera_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `piece_id` int(11) NOT NULL,
+  `operarole_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `piece_id` (`piece_id`,`operarole_id`),
+  KEY `operarole_id_refs_id_29fa2c1a` (`operarole_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_opera_roles`
+--
+
+LOCK TABLES `classical_piece_opera_roles` WRITE;
+/*!40000 ALTER TABLE `classical_piece_opera_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_opera_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piece_parts`
+--
+
+DROP TABLE IF EXISTS `classical_piece_parts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piece_parts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `from_piece_id` int(11) NOT NULL,
+  `to_piece_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `from_piece_id` (`from_piece_id`,`to_piece_id`),
+  KEY `to_piece_id_refs_id_42b1630` (`to_piece_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piece_parts`
+--
+
+LOCK TABLES `classical_piece_parts` WRITE;
+/*!40000 ALTER TABLE `classical_piece_parts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piece_parts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_piecetype`
+--
+
+DROP TABLE IF EXISTS `classical_piecetype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_piecetype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `plural` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_piecetype`
+--
+
+LOCK TABLES `classical_piecetype` WRITE;
+/*!40000 ALTER TABLE `classical_piecetype` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_piecetype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recording`
+--
+
+DROP TABLE IF EXISTS `classical_recording`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recording` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `label_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_recording_label_id` (`label_id`),
+  KEY `classical_recording_type_id` (`type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recording`
+--
+
+LOCK TABLES `classical_recording` WRITE;
+/*!40000 ALTER TABLE `classical_recording` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_recording` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recording_performances`
+--
+
+DROP TABLE IF EXISTS `classical_recording_performances`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recording_performances` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `recording_id` int(11) NOT NULL,
+  `performance_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `recording_id` (`recording_id`,`performance_id`),
+  KEY `performance_id_refs_id_3958d67` (`performance_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recording_performances`
+--
+
+LOCK TABLES `classical_recording_performances` WRITE;
+/*!40000 ALTER TABLE `classical_recording_performances` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_recording_performances` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recordlabel`
+--
+
+DROP TABLE IF EXISTS `classical_recordlabel`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recordlabel` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(40) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recordlabel`
+--
+
+LOCK TABLES `classical_recordlabel` WRITE;
+/*!40000 ALTER TABLE `classical_recordlabel` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_recordlabel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_recordtype`
+--
+
+DROP TABLE IF EXISTS `classical_recordtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_recordtype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_recordtype`
+--
+
+LOCK TABLES `classical_recordtype` WRITE;
+/*!40000 ALTER TABLE `classical_recordtype` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_recordtype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_synonym`
+--
+
+DROP TABLE IF EXISTS `classical_synonym`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_synonym` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `root` varchar(50) NOT NULL,
+  `synonym` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `model` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_synonym`
+--
+
+LOCK TABLES `classical_synonym` WRITE;
+/*!40000 ALTER TABLE `classical_synonym` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_synonym` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `classical_typeplusinstrumentation`
+--
+
+DROP TABLE IF EXISTS `classical_typeplusinstrumentation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `classical_typeplusinstrumentation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` int(11) NOT NULL,
+  `instrumentation_id` int(11) NOT NULL,
+  `nickname` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classical_typeplusinstrumentation_type_id` (`type_id`),
+  KEY `classical_typeplusinstrumentation_instrumentation_id` (`instrumentation_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classical_typeplusinstrumentation`
+--
+
+LOCK TABLES `classical_typeplusinstrumentation` WRITE;
+/*!40000 ALTER TABLE `classical_typeplusinstrumentation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `classical_typeplusinstrumentation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_admin_log`
+--
+
+DROP TABLE IF EXISTS `django_admin_log`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `action_time` datetime NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `content_type_id` int(11) DEFAULT NULL,
+  `object_id` longtext,
+  `object_repr` varchar(200) NOT NULL,
+  `action_flag` smallint(5) unsigned NOT NULL,
+  `change_message` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `django_admin_log_user_id` (`user_id`),
+  KEY `django_admin_log_content_type_id` (`content_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_admin_log`
+--
+
+LOCK TABLES `django_admin_log` WRITE;
+/*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_content_type`
+--
+
+DROP TABLE IF EXISTS `django_content_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_content_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `app_label` (`app_label`,`model`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_content_type`
+--
+
+LOCK TABLES `django_content_type` WRITE;
+/*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_session`
+--
+
+DROP TABLE IF EXISTS `django_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_session` (
+  `session_key` varchar(40) NOT NULL,
+  `session_data` longtext NOT NULL,
+  `expire_date` datetime NOT NULL,
+  PRIMARY KEY (`session_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_session`
+--
+
+LOCK TABLES `django_session` WRITE;
+/*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `django_site`
+--
+
+DROP TABLE IF EXISTS `django_site`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `django_site` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `domain` varchar(100) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `django_site`
+--
+
+LOCK TABLES `django_site` WRITE;
+/*!40000 ALTER TABLE `django_site` DISABLE KEYS */;
+/*!40000 ALTER TABLE `django_site` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2010-06-26 13:33:49

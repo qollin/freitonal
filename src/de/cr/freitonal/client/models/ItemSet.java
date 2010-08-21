@@ -2,6 +2,8 @@ package de.cr.freitonal.client.models;
 
 import java.util.ArrayList;
 
+import de.cr.freitonal.shared.models.Item;
+
 public class ItemSet {
 	private final ArrayList<Item> items;
 	private Item selected;
@@ -14,6 +16,9 @@ public class ItemSet {
 	}
 
 	public ItemSet(ArrayList<Item> items) {
+		if (items == null) {
+			throw new IllegalArgumentException("items must not be null");
+		}
 		this.items = items;
 	}
 
@@ -30,7 +35,7 @@ public class ItemSet {
 
 	public void setSelected(Item selected) {
 		//TODO: potentially expensive
-		if (!items.contains(selected)) {
+		if (!getItems().contains(selected)) {
 			throw new IllegalArgumentException("unknown item: " + selected);
 		}
 		this.selected = selected;
@@ -41,6 +46,14 @@ public class ItemSet {
 	}
 
 	public int size() {
-		return items.size();
+		return getItems().size();
+	}
+
+	public boolean contains(Item item) {
+		return getItems().contains(item);
+	}
+
+	public Item getItem(int index) {
+		return getItems().get(0);
 	}
 }

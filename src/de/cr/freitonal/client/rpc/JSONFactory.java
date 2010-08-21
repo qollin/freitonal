@@ -1,7 +1,7 @@
 package de.cr.freitonal.client.rpc;
 
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.ItemSet;
+import de.cr.freitonal.shared.models.Item;
 
 public class JSONFactory {
 	private final PieceSearchMask searchMask;
@@ -27,19 +27,19 @@ public class JSONFactory {
 
 	private void instrumentationsToHTTPParameter() {
 		for (Item instrument : searchMask.getInstrumentations().getSelectedList()) {
-			addHTTPParameter("piece-instrumentations__instrument", instrument.id);
+			addHTTPParameter("piece-instrumentations__instrument", instrument.getID());
 		}
 	}
 
 	private void catalogToHTTPParameter() {
 		Item name = searchMask.getCatalogs().getNames().getSelected();
 		if (name != null) {
-			addHTTPParameter("piece-catalog__name", name.id);
+			addHTTPParameter("piece-catalog__name", name.getID());
 		}
 
 		Item number = searchMask.getCatalogs().getNumbers().getSelected();
 		if (number != null) {
-			addHTTPParameter("piece-catalog__number", number.id);
+			addHTTPParameter("piece-catalog__number", number.getID());
 		}
 	}
 
@@ -62,7 +62,7 @@ public class JSONFactory {
 	private void itemSetToHTTPParameter(ItemSet set, String parameterName) {
 		Item item = set.getSelected();
 		if (item != null) {
-			addHTTPParameter(parameterName, item.id);
+			addHTTPParameter(parameterName, item.getID());
 		}
 	}
 

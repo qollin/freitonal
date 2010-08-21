@@ -1,5 +1,6 @@
 package de.cr.freitonal.server.servlet;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.ServletConfig;
@@ -12,6 +13,8 @@ import clojure.lang.RT;
 import clojure.lang.Var;
 
 public class SearchServlet extends HttpServlet {
+	private static File srcDir = new File("../src");
+	private static File confDir = new File("../conf");
 
 	/**
 	 * 
@@ -21,7 +24,7 @@ public class SearchServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig servletConfig) {
 		try {
-			RT.loadResourceScript("de/cr/freitonal/server/search/search.clj");
+			RT.loadResourceScript("de/cr/freitonal/server/search.clj");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -29,10 +32,10 @@ public class SearchServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException {
-		Var searchFunction = RT.var("de.cr.freitonal.server.search.search", "doSearch");
+		Var searchFunction = RT.var("de.cr.freitonal.server.search", "doSearch");
 		String result;
 		try {
-			result = (String) searchFunction.invoke("../conf/db-test.clj", httpServletRequest.getParameterMap());
+			result = (String) searchFunction.invoke(confDir.getAbsolutePath() + "/db.clj", httpServletRequest.getParameterMap());
 			httpServletResponse.getWriter().write(result);
 		} catch (Exception e) {
 			e.printStackTrace();

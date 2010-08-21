@@ -10,7 +10,8 @@
  xmlns:instrumentation='urn:import:de.cr.freitonal.client.widgets.instrumentation'
  xmlns:subtitle='urn:import:de.cr.freitonal.client.widgets.subtitle'
  xmlns:ordinal='urn:import:de.cr.freitonal.client.widgets.ordinal'
- xmlns:musickey='urn:import:de.cr.freitonal.client.widgets.musickey'>
+ xmlns:musickey='urn:import:de.cr.freitonal.client.widgets.musickey'
+ xmlns:pubdate='urn:import:de.cr.freitonal.client.widgets.pubdate'>
   
   <g:HTMLPanel>
     <div id="pieceForms">
@@ -24,6 +25,7 @@
       <subtitle:SubtitleView ui:field="subtitle" labelText="Subtitle"/>
       <ordinal:OrdinalView ui:field="ordinal" labelText="Ordinal"/>
       <musickey:MusicKeyView ui:field="musicKey" labelText="Key"/>
+      <pubdate:PublicationDateView ui:field="publicationDate" labelText="Publication date"/>
     </div>
     <div id="pieceActions" class="formActions">
       <g:Button ui:field="addPieceButton">add piece</g:Button>

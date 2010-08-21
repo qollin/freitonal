@@ -5,6 +5,7 @@ import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.N
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfComposers;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfInstruments;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfOrdinals;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfPiecePlusInstrumentationTypes;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfPieceTypes;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfSubtitles;
 import static junit.framework.Assert.assertEquals;
@@ -35,7 +36,7 @@ public class ModelFactoryTest {
 		assertEquals(NumberOfComposers, results.getComposers().getItems().size());
 		assertEquals(NumberOfCatalogNames, results.getCatalogs().getNames().getItems().size());
 		assertEquals(NumberOfCatalogNumbers, results.getCatalogs().getNumbers().getItems().size());
-		assertEquals(NumberOfPieceTypes, results.getPieceTypes().getItems().size());
+		assertEquals(NumberOfPieceTypes + NumberOfPiecePlusInstrumentationTypes, results.getPieceTypes().size());
 		assertEquals(NumberOfInstruments, results.getInstrumentations().getItems().size());
 		assertEquals(NumberOfSubtitles, results.getSubtitles().getItems().size());
 		assertEquals(NumberOfOrdinals, results.getOrdinals().getItems().size());

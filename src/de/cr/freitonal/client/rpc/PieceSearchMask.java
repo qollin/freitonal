@@ -3,9 +3,11 @@ package de.cr.freitonal.client.rpc;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.models.InstrumentationSet;
+import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.models.MusicKeySet;
 import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
+import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
 
 public class PieceSearchMask {
@@ -16,6 +18,7 @@ public class PieceSearchMask {
 	private SubtitleSet subtitleSet;
 	private OrdinalSet ordinalSet;
 	private MusicKeySet musicKeySet;
+	private PublicationDateSet publicationDateSet;
 
 	/**
 	 * @param composers
@@ -92,6 +95,15 @@ public class PieceSearchMask {
 		catalogs.copyItemSelectionTo(target.catalogs);
 		pieceTypeSet.copyItemSelectionTo(target.pieceTypeSet);
 		instrumentationSet.copyItemSelectionTo(target.instrumentationSet);
+		publicationDateSet.copyItemSelectionTo(target.publicationDateSet);
+	}
+
+	public ItemSet getPublicationDates() {
+		return publicationDateSet;
+	}
+
+	public void setPublicationDates(PublicationDateSet publicationDateSet) {
+		this.publicationDateSet = publicationDateSet;
 	}
 
 }

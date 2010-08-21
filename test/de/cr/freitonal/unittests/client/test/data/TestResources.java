@@ -30,4 +30,8 @@ public class TestResources {
 	public TextResource getSearchForAMajorJSON() {
 		return new TextResource(BaseDir + "/searchForAMajor.json");
 	}
+
+	public TextResource getSearchForQuartettJSON() {
+		return new TextResource(BaseDir + "/searchForQuartett.json");
+	}
 }

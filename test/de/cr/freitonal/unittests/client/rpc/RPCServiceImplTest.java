@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestBuilder.Method;
+import com.google.gwt.http.client.RequestCallback;
 
 import de.cr.freitonal.client.rpc.ModelFactory;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
@@ -58,7 +58,7 @@ public class RPCServiceImplTest {
 	@Test
 	public void testComposerSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
-		assertNextSearchStringMatches("^[^?]+\\?piece-composer=" + Beethoven.id + "$");
+		assertNextSearchStringMatches("^[^?]+\\?piece-composer=" + Beethoven.getID() + "$");
 		rpcService.search(pieceSearchMask, null);
 	}
 
@@ -66,29 +66,29 @@ public class RPCServiceImplTest {
 	public void testComposerAndInstrumentSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
 		pieceSearchMask.getInstrumentations().setSelectedList(Piano, Violin);
-		assertNextSearchStringMatches("^[^?]+\\?piece-composer=" + Beethoven.id + "\\&piece-instrumentations__instrument=" + Piano.id
-				+ "\\&piece-instrumentations__instrument=" + Violin.id + "$");
+		assertNextSearchStringMatches("^[^?]+\\?piece-composer=" + Beethoven.getID() + "\\&piece-instrumentations__instrument=" + Piano.getID()
+				+ "\\&piece-instrumentations__instrument=" + Violin.getID() + "$");
 		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testSubtitleSearch() {
 		pieceSearchMask.getSubtitles().setSelected(Eroica);
-		assertNextSearchStringMatches("^[^?]+\\?piece-subtitle=" + Eroica.id + "$");
+		assertNextSearchStringMatches("^[^?]+\\?piece-subtitle=" + Eroica.getID() + "$");
 		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testOrdinalSearch() {
 		pieceSearchMask.getOrdinals().setSelected(Ordinal4a);
-		assertNextSearchStringMatches("^[^?]+\\?piece-type_ordinal=" + Ordinal4a.id + "$");
+		assertNextSearchStringMatches("^[^?]+\\?piece-type_ordinal=" + Ordinal4a.getID() + "$");
 		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testMusicKeySearch() {
 		pieceSearchMask.getMusicKeys().setSelected(AMajor);
-		assertNextSearchStringMatches("^[^?]+\\?piece-music_key=" + AMajor.id + "$");
+		assertNextSearchStringMatches("^[^?]+\\?piece-music_key=" + AMajor.getID() + "$");
 		rpcService.search(pieceSearchMask, null);
 	}
 

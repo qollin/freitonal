@@ -10,20 +10,19 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.AbstractTransitionAction;
-import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.event.SimpleDFA;
-import de.cr.freitonal.client.models.Piece;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
-import de.cr.freitonal.client.widgets.Presenter;
-import de.cr.freitonal.client.widgets.base.BasePresenter;
+import de.cr.freitonal.client.widgets.base.Presenter;
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.client.widgets.musickey.MusicKeyPresenter;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
+import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
+import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class PiecePresenter {
 	private final ComposerPresenter composerPresenter;
@@ -33,6 +32,7 @@ public class PiecePresenter {
 	private final SubtitlePresenter subtitlePresenter;
 	private final OrdinalPresenter ordinalPresenter;
 	private final MusicKeyPresenter musicKeyPresenter;
+	private final PublicationDatePresenter publicationDatePresenter;
 	private final View view;
 	private final SimpleDFA dfa = new SimpleDFA();
 
@@ -55,6 +55,10 @@ public class PiecePresenter {
 		public MusicKeyPresenter.View getMusicKeyView();
 
 		public HasClickHandlers getAddPieceButton();
+
+		public void setAddPieceButtonText(String text);
+
+		public PublicationDatePresenter.View getPublicationDateView();
 	}
 
 	public PiecePresenter(View view, HandlerManager eventBus, RPCService rpcService) {
@@ -82,6 +86,9 @@ public class PiecePresenter {
 		musicKeyPresenter = new MusicKeyPresenter(eventBus, view.getMusicKeyView());
 		presenters.add(musicKeyPresenter);
 
+		publicationDatePresenter = new PublicationDatePresenter(eventBus, view.getPublicationDateView());
+		presenters.add(publicationDatePresenter);
+
 		bind();
 		initializeDFA();
 	}
@@ -90,6 +97,7 @@ public class PiecePresenter {
 		dfa.addTransition("Main", "fireAddPieceButtonClicked", "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
+				view.setAddPieceButtonText("save piece");
 				for (Presenter presenter : presenters) {
 					presenter.setDisplayMode(Create);
 				}
@@ -117,20 +125,26 @@ public class PiecePresenter {
 	}
 
 	private void save() {
-		Piece piece = new Piece();
-		piece.composer = composerPresenter.getSelectedItem();
+		VolatilePiece piece = new VolatilePiece();
+		piece.setComposer(composerPresenter.getSelectedItem());
 		piece.catalog = catalogPresenter.getSelectedItem();
+		piece.musicKey = musicKeyPresenter.getSelectedItem();
+		piece.ordinal = ordinalPresenter.getSelectedItem();
+		piece.subtitle = subtitlePresenter.getSelectedItem();
+		piece.setPieceType(pieceTypePresenter.getSelectedItem());
+		piece.setInstrumentation(instrumentationPresenter.getSelectedItem());
 		rpcService.save(piece);
 	}
 
-	public void setSearchData(PieceSearchMask pieceSearchMask, SearchContext initialLoading) {
-		composerPresenter.setItems(pieceSearchMask.getComposers(), initialLoading);
-		catalogPresenter.setCatalogs(pieceSearchMask.getCatalogs(), initialLoading);
-		pieceTypePresenter.setItems(pieceSearchMask.getPieceTypes(), initialLoading);
-		instrumentationPresenter.setInstrumentations(pieceSearchMask.getInstrumentations(), initialLoading);
-		subtitlePresenter.setItems(pieceSearchMask.getSubtitles(), initialLoading);
-		ordinalPresenter.setItems(pieceSearchMask.getOrdinals(), initialLoading);
-		musicKeyPresenter.setItems(pieceSearchMask.getMusicKeys(), initialLoading);
+	public void setSearchData(PieceSearchMask pieceSearchMask) {
+		composerPresenter.setItems(pieceSearchMask.getComposers());
+		catalogPresenter.setCatalogs(pieceSearchMask.getCatalogs());
+		pieceTypePresenter.setPieceTypes(pieceSearchMask.getPieceTypes());
+		instrumentationPresenter.setInstrumentations(pieceSearchMask.getInstrumentations());
+		subtitlePresenter.setItems(pieceSearchMask.getSubtitles());
+		ordinalPresenter.setItems(pieceSearchMask.getOrdinals());
+		musicKeyPresenter.setItems(pieceSearchMask.getMusicKeys());
+		publicationDatePresenter.setItems(pieceSearchMask.getPublicationDates());
 	}
 
 	/**
@@ -140,7 +154,7 @@ public class PiecePresenter {
 		return composerPresenter;
 	}
 
-	public BasePresenter getPieceTypePresenter() {
+	public PieceTypePresenter getPieceTypePresenter() {
 		return pieceTypePresenter;
 	}
 

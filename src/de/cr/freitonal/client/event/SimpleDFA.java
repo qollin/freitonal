@@ -14,10 +14,10 @@ public class SimpleDFA {
 	}
 
 	public void addTransition(String fromState, String trigger, String toState, TransitionAction transitionAction) {
-		addTransition(fromState, trigger, null, toState, transitionAction);
+		addTransitionWithTriggerParam(fromState, trigger, null, toState, transitionAction);
 	}
 
-	public void addTransition(String fromState, String triggerString, Object triggerParam, String toState, TransitionAction transitionAction) {
+	public void addTransitionWithTriggerParam(String fromState, String triggerString, Object triggerParam, String toState, TransitionAction transitionAction) {
 		if (!delta.containsKey(fromState)) {
 			delta.put(fromState, new HashMap<Trigger, String>());
 		}
@@ -28,6 +28,10 @@ public class SimpleDFA {
 		if (transitionAction != null) {
 			actions.put(new Transition(fromState, trigger, toState), transitionAction);
 		}
+	}
+
+	public void addTransitionWithTriggerParam(String fromState, String triggerString, Object triggerParam, String toState) {
+		addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, null);
 	}
 
 	public void addTransition(String[] fromStates, String trigger, String toState, AbstractTransitionAction transitionAction) {

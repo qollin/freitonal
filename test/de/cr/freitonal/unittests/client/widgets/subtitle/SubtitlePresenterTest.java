@@ -7,10 +7,9 @@ import org.junit.Test;
 
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.SearchContext;
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.SubtitleSet;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
+import de.cr.freitonal.shared.models.Item;
 
 public class SubtitlePresenterTest {
 	private SubtitlePresenter subtitlePresenter;
@@ -24,7 +23,7 @@ public class SubtitlePresenterTest {
 		SubtitlePresenter.View view = new SubtitleViewMock();
 		subtitlePresenter = new SubtitlePresenter(new HandlerManager(null), view);
 		SubtitleSet subtitleSet = new SubtitleSet(Eroica, Waldstein, Rasumovsky);
-		subtitlePresenter.setItems(subtitleSet, SearchContext.IntialLoading);
+		subtitlePresenter.setItems(subtitleSet);
 	}
 
 	@Test

@@ -10,7 +10,7 @@
       </div>
       <div class="fieldContents">
         <listbox:ListBoxView ui:field="nameList"/>
-        <listbox:ListBoxView ui:field="numberList"/>
+        <listbox:ListBoxAndEntryView ui:field="numberList"/>
       </div>
     </div>
   </g:HTMLPanel>

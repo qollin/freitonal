@@ -1,1 +1,4 @@
-AppController & SearchEvents & Creation Mode
+- refactor AppController to use SimpleDFA
+- move widget tests from JSONPieceTest to individual Test classes (JSONComposerTest, etc.)
+- replace *presenter.getListBoxPresenter.fireOnNewSelectedItem() by *presenter.fireOneNewSelectedItem()
+- refactor insert-sipmple-object to include updating the Item

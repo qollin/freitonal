@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.models.InstrumentationSet;
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.MusicKeySet;
 import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
+import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
 import de.cr.freitonal.client.rpc.dto.DTOArray;
 import de.cr.freitonal.client.rpc.dto.DTOObject;
 import de.cr.freitonal.client.rpc.dto.DTOParser;
 import de.cr.freitonal.client.rpc.dto.DTOValue;
+import de.cr.freitonal.shared.models.Item;
 
 public class ModelFactory {
 	private final DTOParser parser;
+
+	private static final ArrayList<Item> NoItems = new ArrayList<Item>();
 
 	public ModelFactory(DTOParser parser) {
 		this.parser = parser;
@@ -38,17 +41,23 @@ public class ModelFactory {
 		pieceSearchMask.setComposers(createComposerSet(rpcObject.get("piece-composer").isArray()));
 		pieceSearchMask
 				.setCatalogs(createCatalogSet(rpcObject.get("piece-catalog__name").isArray(), rpcObject.get("piece-catalog__number").isArray()));
-		pieceSearchMask.setPieceTypes(createPieceTypeSet(rpcObject.get("piece-piece_type").isArray()));
+		pieceSearchMask.setPieceTypes(createPieceTypeSet(rpcObject.get("piece-piece_type").isArray(), rpcObject.get("piece-type+instrumentation")
+				.isArray()));
 		pieceSearchMask.setInstrumentations(createInstrumentationSet(rpcObject.get("piece-instrumentations__instruments").isArray()));
 		pieceSearchMask.setSubtitles(createSubtitleSet(rpcObject.get("piece-subtitle").isArray()));
 		pieceSearchMask.setOrdinals(createOrdinalSet(rpcObject.get("piece-type_ordinal").isArray()));
 		pieceSearchMask.setMusicKeys(createMusicKeySet(rpcObject.get("piece-music_key").isArray()));
+		pieceSearchMask.setPublicationDates(createPublicationDateSet(rpcObject.get("piece-publication_date").isArray()));
 
 		return pieceSearchMask;
 	}
 
 	private MusicKeySet createMusicKeySet(DTOArray array) {
 		return new MusicKeySet(createItemListFromRPCArray(array));
+	}
+
+	private PublicationDateSet createPublicationDateSet(DTOArray array) {
+		return new PublicationDateSet(createItemListFromRPCArray(array));
 	}
 
 	private OrdinalSet createOrdinalSet(DTOArray array) {
@@ -63,8 +72,8 @@ public class ModelFactory {
 		return new InstrumentationSet(createItemListFromRPCArray(array));
 	}
 
-	private PieceTypeSet createPieceTypeSet(DTOArray array) {
-		return new PieceTypeSet(createItemListFromRPCArray(array));
+	private PieceTypeSet createPieceTypeSet(DTOArray pieceTypes, DTOArray piecePlusInstrumentationTypes) {
+		return new PieceTypeSet(createItemListFromRPCArray(pieceTypes), createItemListFromRPCArray(piecePlusInstrumentationTypes));
 	}
 
 	private CatalogSet createCatalogSet(DTOArray nameArray, DTOArray numberArray) {

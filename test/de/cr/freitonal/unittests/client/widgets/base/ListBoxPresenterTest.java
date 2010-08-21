@@ -1,6 +1,8 @@
 package de.cr.freitonal.unittests.client.widgets.base;
 
+import static de.cr.freitonal.client.event.DisplayMode.Create;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 
@@ -13,20 +15,22 @@ import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.SearchFieldChangedHandler;
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.widgets.base.ListBoxPresenter;
+import de.cr.freitonal.shared.models.Item;
 
 public class ListBoxPresenterTest {
 
-	private HandlerManager eventBus;
-	private ListBoxPresenter.View view;
-	final ArrayList<String> trace = new ArrayList<String>();
+	protected HandlerManager eventBus;
+	protected ListBoxPresenter.View view;
+	protected final ArrayList<String> trace = new ArrayList<String>();
+	protected final Item emptyItem = new Item("", "");
+	private ListBoxPresenter presenter;
 
 	@Before
 	public void setUp() {
 		eventBus = new HandlerManager(null);
-		view = new ListBoxViewMock();
+		view = new ListBoxViewMock(trace);
 		trace.clear();
 
 		eventBus.addHandler(SearchFieldChangedEvent.TYPE, new SearchFieldChangedHandler() {
@@ -34,30 +38,25 @@ public class ListBoxPresenterTest {
 				trace.add("onSearchFieldChanged");
 			}
 		});
+		presenter = new ListBoxPresenter(eventBus, view);
+		presenter.setItems(new ItemSet(emptyItem));
 	}
 
 	@Test
-	public void testConstructorWithDefaultEventHandlingStrategy() {
-		ListBoxPresenter presenter = new ListBoxPresenter(eventBus, view);
-		presenter.setItems(new ItemSet(Item.Empty));
-		presenter.fireOnNewItemSelected(Item.Empty);
-		assertEquals(1, trace.size());
-		assertEquals("onSearchFieldChanged", trace.get(0));
-
-	}
-
-	@Test
-	public void testConstructorWithRelayingEventHandlingStrategy() {
-		ListBoxPresenter presenter = new ListBoxPresenter(eventBus, view, ListBoxPresenter.EventHandlingStrategy.RelayToRegisteredChangeEventHandlers);
+	public void testConstructor() {
 		presenter.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				trace.add("onChangeEvent");
 			}
 		});
-		presenter.setItems(new ItemSet(Item.Empty));
-		presenter.fireOnNewItemSelected(Item.Empty);
-		assertEquals("a global search event must not be generated", 1, trace.size());
-		assertEquals("the event must be relayed to the locally registered handler", "onChangeEvent", trace.get(0));
+		presenter.fireOnNewItemSelected(emptyItem);
+		assertFalse("a global search event must not be generated", trace.contains("onSearchFieldChanged"));
 	}
 
+	@Test
+	public void testSetDisplayMode() {
+		presenter.setDisplayMode(Create);
+		assertEquals("setDisplayMode must have been called on the view", 1, trace.size());
+		assertEquals("setDisplayMode must have been called on the view", "setDisplayMode:" + Create, trace.get(0));
+	}
 }

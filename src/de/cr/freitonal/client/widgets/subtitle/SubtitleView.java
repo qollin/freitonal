@@ -2,9 +2,9 @@ package de.cr.freitonal.client.widgets.subtitle;
 
 import com.google.gwt.uibinder.client.UiConstructor;
 
-import de.cr.freitonal.client.widgets.base.BaseView;
+import de.cr.freitonal.client.widgets.base.SimpleView;
 
-public class SubtitleView extends BaseView implements SubtitlePresenter.View {
+public class SubtitleView extends SimpleView implements SubtitlePresenter.View {
 
 	@UiConstructor
 	public SubtitleView(String labelText) {

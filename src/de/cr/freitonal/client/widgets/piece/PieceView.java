@@ -12,14 +12,16 @@ import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 import de.cr.freitonal.client.widgets.catalog.CatalogView;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.composer.ComposerView;
-import de.cr.freitonal.client.widgets.instrumentation.InstrumentationView;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter.View;
+import de.cr.freitonal.client.widgets.instrumentation.InstrumentationView;
 import de.cr.freitonal.client.widgets.musickey.MusicKeyPresenter;
 import de.cr.freitonal.client.widgets.musickey.MusicKeyView;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalView;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypeView;
+import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
+import de.cr.freitonal.client.widgets.pubdate.PublicationDateView;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
 import de.cr.freitonal.client.widgets.subtitle.SubtitleView;
 
@@ -49,6 +51,9 @@ public class PieceView extends Composite implements PiecePresenter.View {
 
 	@UiField
 	MusicKeyView musicKey;
+
+	@UiField
+	PublicationDateView publicationDate;
 
 	@UiField
 	Button addPieceButton;
@@ -88,6 +93,14 @@ public class PieceView extends Composite implements PiecePresenter.View {
 
 	public HasClickHandlers getAddPieceButton() {
 		return addPieceButton;
+	}
+
+	public void setAddPieceButtonText(String text) {
+		addPieceButton.setText(text);
+	}
+
+	public PublicationDatePresenter.View getPublicationDateView() {
+		return publicationDate;
 	}
 
 }

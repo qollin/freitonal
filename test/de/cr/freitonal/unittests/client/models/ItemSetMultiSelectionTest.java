@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.ItemSetMultiSelection;
+import de.cr.freitonal.shared.models.Item;
 
 public class ItemSetMultiSelectionTest {
 

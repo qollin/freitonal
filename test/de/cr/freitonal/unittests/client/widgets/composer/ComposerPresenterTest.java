@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.SearchContext;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.SearchFieldChangedHandler;
 import de.cr.freitonal.client.models.ComposerSet;
@@ -32,7 +31,7 @@ public class ComposerPresenterTest {
 		composerPresenter = new ComposerPresenter(eventBus, view);
 		composerSet = new ComposerSet(Beethoven, Mozart);
 
-		composerPresenter.setItems(composerSet, SearchContext.IntialLoading);
+		composerPresenter.setItems(composerSet);
 	}
 
 	@Test

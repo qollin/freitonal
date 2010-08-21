@@ -7,46 +7,26 @@ import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.N
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfCatalogNumbers;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfComposers;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfInstruments;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.NumberOfPieceTypes;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Ordinal4a;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Violin;
 import static junit.framework.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import de.cr.freitonal.client.AppController;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.client.widgets.musickey.MusicKeyPresenter;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
-import de.cr.freitonal.client.widgets.piece.PiecePresenter;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
-import de.cr.freitonal.unittests.client.rpc.JSONTestCase;
 
-public class JSONPieceTest extends JSONTestCase {
-	private PiecePresenter.View pieceView;
-	private PiecePresenter piecePresenter;
-
-	@Override
-	@Before
-	public void setUp() {
-		super.setUp();
-		pieceView = new PieceViewMock();
-		appController = new AppController(pieceView, null);
-		piecePresenter = appController.getPiecePresenter();
-
-		onNextSearchReturn(resources.getFullSearchJSON().getText());
-		appController.go();
-	}
+public class JSONPieceTest extends PieceTestCase {
 
 	@Test
-	public void testFullSearch() {
+	public void testInitialLoading() {
 		assertEquals(NumberOfComposers, piecePresenter.getComposerPresenter().getItemCount());
 		assertEquals(NumberOfCatalogNames, piecePresenter.getCatalogPresenter().getNameItemCount());
 		assertEquals(NumberOfCatalogNumbers, piecePresenter.getCatalogPresenter().getNumberItemCount());
-		assertEquals(NumberOfPieceTypes, piecePresenter.getPieceTypePresenter().getItemCount());
 		assertEquals(NumberOfInstruments, piecePresenter.getInstrumentationPresenter().getInstrumentPresenter(0).getItemCount());
 	}
 
@@ -79,7 +59,7 @@ public class JSONPieceTest extends JSONTestCase {
 		assertEquals(Piano, instrumentationPresenter.getInstrumentPresenter(0).getSelectedItem());
 		assertEquals(1, instrumentationPresenter.getInstrumentPresenter(1).getItemCount());
 		assertEquals(Violin, instrumentationPresenter.getInstrumentPresenter(1).getSelectedItem());
-		assertEquals(4, instrumentationPresenter.getInstrumentPresenter(2).getItemCount());
+		assertEquals("the third presenter should show 5 instruments", 5, instrumentationPresenter.getInstrumentPresenter(2).getItemCount());
 	}
 
 	@Test

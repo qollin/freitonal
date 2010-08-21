@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.models.Item;
+import de.cr.freitonal.shared.models.Item;
 
 public class ListBoxView extends Composite implements ListBoxPresenter.View {
 	interface Binder extends UiBinder<HTMLPanel, ListBoxView> {
@@ -37,9 +37,17 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 
 	private DisplayMode mode;
 
+	protected ListBoxView(boolean b) {
+		//empty constructor, so a subclass can provide it's own initialization
+	}
+
 	@UiConstructor
 	public ListBoxView() {
 		HTMLPanel panel = binder.createAndBindUi(this);
+		init(panel);
+	}
+
+	protected void init(HTMLPanel panel) {
 		initWidget(panel);
 		switchToSelectMode();
 	}
@@ -61,7 +69,7 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 
 	private void addItems(ArrayList<Item> items) {
 		for (Item item : items) {
-			list.addItem(item.value, item.id);
+			list.addItem(item.getValue(), item.getID());
 		}
 	}
 
@@ -90,7 +98,7 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 
 	public void setSelectedItem(Item selected) {
 		for (int i = 0; i < list.getItemCount(); i++) {
-			if (list.getValue(i).equals(selected.id)) {
+			if (list.getValue(i).equals(selected.getID())) {
 				list.setSelectedIndex(i);
 				return;
 			}
@@ -127,20 +135,18 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 		}
 	}
 
-	private void switchToSelectMode() {
+	protected void switchToSelectMode() {
 		label.setVisible(false);
 		closeImage.setVisible(false);
 
 		list.setVisible(true);
 	}
 
-	private void switchToCreateMode() {
-		switchToSelectMode();
-		list.setSelectedIndex(0);
+	protected void switchToCreateMode() {
 	}
 
-	private void switchToViewMode() {
-		label.setText(getSelectedItem().value);
+	protected void switchToViewMode() {
+		label.setText(getSelectedItem().getValue());
 		list.setVisible(false);
 
 		label.setVisible(true);

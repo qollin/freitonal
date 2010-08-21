@@ -7,10 +7,9 @@ import org.junit.Test;
 
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.SearchContext;
-import de.cr.freitonal.client.models.Item;
 import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
+import de.cr.freitonal.shared.models.Item;
 
 public class OrdinalPresenterTest {
 	private OrdinalPresenter ordinalPresenter;
@@ -23,7 +22,7 @@ public class OrdinalPresenterTest {
 		OrdinalPresenter.View view = new OrdinalViewMock();
 		ordinalPresenter = new OrdinalPresenter(new HandlerManager(null), view);
 		OrdinalSet ordinalSet = new OrdinalSet(one, fourA);
-		ordinalPresenter.setItems(ordinalSet, SearchContext.IntialLoading);
+		ordinalPresenter.setItems(ordinalSet);
 	}
 
 	@Test

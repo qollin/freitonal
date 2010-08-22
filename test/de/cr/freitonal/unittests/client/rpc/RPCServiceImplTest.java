@@ -3,6 +3,7 @@ package de.cr.freitonal.unittests.client.rpc;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.AMajor;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Eroica;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.KV;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Ordinal4a;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Violin;
@@ -22,6 +23,7 @@ import de.cr.freitonal.client.rpc.RPCServiceImpl;
 import de.cr.freitonal.client.rpc.RequestBuilderFactory;
 import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.client.rpc.java.DTOParserJava;
+import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.unittests.client.test.data.TestResources;
 
 public class RPCServiceImplTest {
@@ -40,7 +42,8 @@ public class RPCServiceImplTest {
 		pieceSearchMask = searchResult.getPieceSearchMask();
 	}
 
-	private void assertNextSearchStringMatches(final String regex) {
+	private void assertNextSearchStringMatches(String parameters) {
+		final String regex = "^[^?]+\\?" + parameters + "$";
 		rpcService.setRequestBuilderFactory(new RequestBuilderFactory() {
 			@Override
 			public RequestBuilder createRequestBuilder(Method httpMethod, String url) {
@@ -58,7 +61,7 @@ public class RPCServiceImplTest {
 	@Test
 	public void testComposerSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
-		assertNextSearchStringMatches("^[^?]+\\?piece-composer=" + Beethoven.getID() + "$");
+		assertNextSearchStringMatches("piece-composer=" + Beethoven.getID());
 		rpcService.search(pieceSearchMask, null);
 	}
 
@@ -66,29 +69,45 @@ public class RPCServiceImplTest {
 	public void testComposerAndInstrumentSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
 		pieceSearchMask.getInstrumentations().setSelectedList(Piano, Violin);
-		assertNextSearchStringMatches("^[^?]+\\?piece-composer=" + Beethoven.getID() + "\\&piece-instrumentations__instrument=" + Piano.getID()
-				+ "\\&piece-instrumentations__instrument=" + Violin.getID() + "$");
+		assertNextSearchStringMatches("piece-composer=" + Beethoven.getID() + "\\&piece-instrumentations__instrument=" + Piano.getID()
+				+ "\\&piece-instrumentations__instrument=" + Violin.getID());
 		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testSubtitleSearch() {
 		pieceSearchMask.getSubtitles().setSelected(Eroica);
-		assertNextSearchStringMatches("^[^?]+\\?piece-subtitle=" + Eroica.getID() + "$");
+		assertNextSearchStringMatches("piece-subtitle=" + Eroica.getID());
 		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testOrdinalSearch() {
 		pieceSearchMask.getOrdinals().setSelected(Ordinal4a);
-		assertNextSearchStringMatches("^[^?]+\\?piece-type_ordinal=" + Ordinal4a.getID() + "$");
+		assertNextSearchStringMatches("piece-type_ordinal=" + Ordinal4a.getID());
 		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testMusicKeySearch() {
 		pieceSearchMask.getMusicKeys().setSelected(AMajor);
-		assertNextSearchStringMatches("^[^?]+\\?piece-music_key=" + AMajor.getID() + "$");
+		assertNextSearchStringMatches("piece-music_key=" + AMajor.getID());
+		rpcService.search(pieceSearchMask, null);
+	}
+
+	@Test
+	public void testCatalogNameSearch() {
+		pieceSearchMask.getCatalogs().getNames().setSelected(KV);
+		assertNextSearchStringMatches("piece-catalog__name=" + KV.getID());
+		rpcService.search(pieceSearchMask, null);
+	}
+
+	@Test
+	public void testCatalogSearch() {
+		Item ordinal = new Item("210", "1");
+		pieceSearchMask.getCatalogs().getNames().setSelected(KV);
+		pieceSearchMask.getCatalogs().getNumbers().setSelected(ordinal);
+		assertNextSearchStringMatches("piece-catalog=" + ordinal.getID());
 		rpcService.search(pieceSearchMask, null);
 	}
 

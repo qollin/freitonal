@@ -32,14 +32,14 @@ public class JSONFactory {
 	}
 
 	private void catalogToHTTPParameter() {
-		Item name = searchMask.getCatalogs().getNames().getSelected();
-		if (name != null) {
-			addHTTPParameter("piece-catalog__name", name.getID());
-		}
-
 		Item number = searchMask.getCatalogs().getNumbers().getSelected();
 		if (number != null) {
-			addHTTPParameter("piece-catalog__number", number.getID());
+			addHTTPParameter("piece-catalog", number.getID());
+		} else {
+			Item name = searchMask.getCatalogs().getNames().getSelected();
+			if (name != null) {
+				addHTTPParameter("piece-catalog__name", name.getID());
+			}
 		}
 	}
 

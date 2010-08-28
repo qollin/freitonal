@@ -10,7 +10,9 @@ import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
+import de.cr.freitonal.client.event.EqualsTriggerParam;
 import de.cr.freitonal.client.event.SimpleDFA;
+import de.cr.freitonal.client.event.Trigger;
 import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
@@ -60,7 +62,7 @@ public class CatalogPresenter extends CompositePresenter {
 				numberListBoxPresenter.setEnabled(true);
 			}
 		});
-		dfa.addTransitionWithTriggerParam("Select", "setDisplayMode", Create, "Create");
+		dfa.addTransitionWithTriggerParam("Select", "setDisplayMode", new EqualsTriggerParam(Create), "Create");
 		dfa.addTransition("Create", "nameListBoxChanged", "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
@@ -106,6 +108,6 @@ public class CatalogPresenter extends CompositePresenter {
 	@Override
 	public void setDisplayMode(DisplayMode mode) {
 		super.setDisplayMode(mode);
-		dfa.transitionWithTriggerParam("setDisplayMode", mode);
+		dfa.transitionWithTriggerParam(new Trigger("setDisplayMode", mode));
 	};
 }

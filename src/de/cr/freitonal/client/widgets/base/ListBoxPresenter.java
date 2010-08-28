@@ -16,7 +16,10 @@ import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
+import de.cr.freitonal.client.event.EqualsTriggerParam;
 import de.cr.freitonal.client.event.SimpleDFA;
+import de.cr.freitonal.client.event.Trigger;
+import de.cr.freitonal.client.event.TriggerParam;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.shared.models.Item;
 
@@ -74,17 +77,21 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				ListBoxPresenter.this.completeItemSet = itemSet;
 			}
 		});
+		TriggerParam triggerOnOneElementItemSet = new TriggerParam() {
+			public boolean matches(Object[] transitionParameters) {
+				return ((ItemSet) transitionParameters[0]).size() == 1;
+			}
+		};
+		dfa.addTransitionWithTriggerParam("Select", "setItems", triggerOnOneElementItemSet, "View", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				handleItemSetChange((ItemSet) parameters[0]);
+			}
+		});
 		dfa.addTransition("Select", "setItems", "Select", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
-				ItemSet itemSet = (ItemSet) parameters[0];
-
-				ListBoxPresenter.this.itemSet = itemSet;
-				view.setItems(itemSet.getItems());
-
-				if (itemSet.getSelected() != null) {
-					view.setSelectedItem(itemSet.getSelected());
-				}
+				handleItemSetChange((ItemSet) parameters[0]);
 			}
 		});
 
@@ -98,7 +105,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				fireListBoxChangedEvent();
 			}
 		});
-		dfa.addTransitionWithTriggerParam("Select", "setDisplayMode", Create, "Create", new AbstractTransitionAction() {
+		dfa.addTransitionWithTriggerParam("Select", "setDisplayMode", new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
 				itemSet = completeItemSet;
@@ -113,7 +120,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				fireListBoxChangedEvent();
 			}
 		});
-		dfa.addTransitionWithTriggerParam("View", "setDisplayMode", Create, "Create", new AbstractTransitionAction() {
+		dfa.addTransitionWithTriggerParam("View", "setDisplayMode", new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
 				itemSet = completeItemSet;
@@ -137,6 +144,15 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 		});
 
 		dfa.start("Init");
+	}
+
+	private void handleItemSetChange(ItemSet itemSet) {
+		this.itemSet = itemSet;
+		view.setItems(itemSet.getItems());
+
+		if (itemSet.getSelected() != null) {
+			view.setSelectedItem(itemSet.getSelected());
+		}
 	}
 
 	public void fireOnNewItemSelected(Item selectedItem) {
@@ -192,11 +208,11 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	}
 
 	public void setDisplayMode(DisplayMode mode) {
-		dfa.transitionWithTriggerParam("setDisplayMode", mode);
+		dfa.transitionWithTriggerParam(new Trigger("setDisplayMode", mode));
 	}
 
 	public void setItems(ItemSet itemSet) {
-		dfa.transition("setItems", itemSet);
+		dfa.transitionWithTriggerParam(new Trigger("setItems", itemSet), itemSet);
 	}
 
 	public ItemSet getFullItemSet() {
@@ -209,6 +225,17 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 
 	public View getView() {
 		return view;
+	}
+
+	public DisplayMode getDisplayMode() {
+		if (dfa.getState() == "Select") {
+			return Select;
+		} else if (dfa.getState() == "Create") {
+			return Create;
+		} else if (dfa.getState() == "View") {
+			return View;
+		}
+		throw new IllegalStateException(dfa.getState() + " is not mappable to a display mode");
 	}
 
 }

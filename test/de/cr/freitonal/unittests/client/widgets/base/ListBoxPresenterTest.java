@@ -1,6 +1,7 @@
 package de.cr.freitonal.unittests.client.widgets.base;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
+import static de.cr.freitonal.client.event.DisplayMode.View;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -58,5 +59,11 @@ public class ListBoxPresenterTest {
 		presenter.setDisplayMode(Create);
 		assertEquals("setDisplayMode must have been called on the view", 1, trace.size());
 		assertEquals("setDisplayMode must have been called on the view", "setDisplayMode:" + Create, trace.get(0));
+	}
+
+	@Test
+	public void WhenOnlyASingleItemIsAvailableSwitchToViewMode() {
+		presenter.setItems(new ItemSet(emptyItem));
+		assertEquals(View, presenter.getDisplayMode());
 	}
 }

@@ -1,12 +1,9 @@
 package de.cr.freitonal.client.event;
 
-import java.util.HashMap;
-
 public class SimpleDFA {
 	private boolean debug;
 
-	private final HashMap<String, HashMap<Trigger, String>> delta = new HashMap<String, HashMap<Trigger, String>>();
-	private final HashMap<Transition, TransitionAction> actions = new HashMap<Transition, TransitionAction>();
+	private final DeltaMap delta = new DeltaMap();
 	private String currentState;
 
 	public void addTransition(String fromState, String trigger, String toState) {
@@ -17,20 +14,12 @@ public class SimpleDFA {
 		addTransitionWithTriggerParam(fromState, trigger, null, toState, transitionAction);
 	}
 
-	public void addTransitionWithTriggerParam(String fromState, String triggerString, Object triggerParam, String toState, TransitionAction transitionAction) {
-		if (!delta.containsKey(fromState)) {
-			delta.put(fromState, new HashMap<Trigger, String>());
-		}
-
-		Trigger trigger = new Trigger(triggerString, triggerParam);
-		delta.get(fromState).put(trigger, toState);
-
-		if (transitionAction != null) {
-			actions.put(new Transition(fromState, trigger, toState), transitionAction);
-		}
+	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState,
+			TransitionAction transitionAction) {
+		delta.addTransition(fromState, triggerString, triggerParam, toState, transitionAction);
 	}
 
-	public void addTransitionWithTriggerParam(String fromState, String triggerString, Object triggerParam, String toState) {
+	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState) {
 		addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, null);
 	}
 
@@ -41,39 +30,43 @@ public class SimpleDFA {
 	}
 
 	public void start(String startState) {
-		if (!delta.containsKey(startState)) {
+		if (!delta.containsState(startState)) {
 			throw new IllegalStateException("unknown state: " + startState);
 		}
 		currentState = startState;
 	}
 
-	private TransitionAction moveToNextState(String triggerString, Object triggerParam) {
-		Trigger trigger = new Trigger(triggerString, triggerParam);
-		if (delta.get(currentState) == null || !delta.get(currentState).containsKey(trigger)) {
-			throw new IllegalStateException(triggerString + " is not a transition away from " + currentState);
+	private TransitionAction moveToNextState(Trigger trigger) {
+		String nextState = delta.getState(currentState, trigger);
+
+		if (nextState == null) {
+			throw new IllegalStateException(trigger.getTriggerString() + " is not a transition away from " + currentState);
 		}
 
-		String nextState = delta.get(currentState).get(trigger);
-		Transition transition = new Transition(currentState, trigger, nextState);
+		TransitionAction action = delta.getAction(currentState, trigger);
 		currentState = nextState;
 
-		if (actions.containsKey(transition)) {
-			return actions.get(transition);
-		}
-
-		return null;
+		return action;
 	}
 
-	public void transitionWithTriggerParam(String trigger, Object triggerParam) {
-		TransitionAction action = moveToNextState(trigger, triggerParam);
+	public void transitionWithTriggerParam(Trigger trigger) {
+		transitionWithTriggerParam(trigger, (Object[]) null);
+	}
+
+	public void transitionWithTriggerParam(Trigger trigger, Object... parameters) {
+		TransitionAction action = moveToNextState(trigger);
 
 		if (action != null) {
-			action.onTransition();
+			if (parameters != null) {
+				action.onTransition(parameters);
+			} else {
+				action.onTransition();
+			}
 		}
 	}
 
 	public void transition(String trigger) {
-		transitionWithTriggerParam(trigger, null);
+		transitionWithTriggerParam(new Trigger(trigger));
 	}
 
 	public void transition(String trigger, Object... parameter) {
@@ -82,7 +75,7 @@ public class SimpleDFA {
 		if (parameter == null) {
 			throw new IllegalArgumentException("transition parameter must not be null");
 		}
-		TransitionAction action = moveToNextState(trigger, null);
+		TransitionAction action = moveToNextState(new Trigger(trigger));
 
 		if (debug) {
 			System.err.println("transitioning from " + oldState + " to " + currentState + " through " + trigger);

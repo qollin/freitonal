@@ -1,9 +1,10 @@
-package de.cr.freitonal.client.event;
+package de.cr.freitonal.client.event.dfa;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+
 
 public class DeltaMap {
 	private final HashMap<String, HashMap<String, ArrayList<Transition>>> map;
@@ -48,28 +49,20 @@ public class DeltaMap {
 		}
 	}
 
-	public String getState(String fromState, String triggerString) {
-		return getState(fromState, new Trigger(triggerString));
-	}
-
 	public String getState(String fromState, Trigger trigger) {
 		Transition transition = getTransition(fromState, trigger);
 		if (transition != null) {
-			return transition.targetState;
+			return transition.getTargetState();
 		}
 
 		return null;
-	}
-
-	public TransitionAction getAction(String fromState, String triggerString) {
-		return getAction(fromState, new Trigger(triggerString));
 	}
 
 	public TransitionAction getAction(String fromState, Trigger trigger) {
 		Transition transition = getTransition(fromState, trigger);
 
 		if (transition != null) {
-			return transition.action;
+			return transition.getAction();
 		}
 
 		return null;
@@ -103,36 +96,6 @@ public class DeltaMap {
 
 	public boolean containsState(String state) {
 		return states.contains(state);
-	}
-
-	public static class Transition implements Comparable<Transition> {
-		private final TriggerParam triggerParam;
-		String targetState;
-		TransitionAction action;
-
-		public Transition(TriggerParam triggerParam, String state, TransitionAction action) {
-			this.triggerParam = triggerParam;
-			this.targetState = state;
-			this.action = action;
-		}
-
-		public int compareTo(Transition other) {
-			if (other.getTriggerParam() == null && getTriggerParam() != null) {
-				return -1;
-			} else if (other.getTriggerParam() != null && getTriggerParam() == null) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}
-
-		/**
-		 * @return the triggerParam
-		 */
-		public TriggerParam getTriggerParam() {
-			return triggerParam;
-		}
-
 	}
 
 }

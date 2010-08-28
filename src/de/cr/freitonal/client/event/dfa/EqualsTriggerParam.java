@@ -1,4 +1,5 @@
-package de.cr.freitonal.client.event;
+package de.cr.freitonal.client.event.dfa;
+
 
 public class EqualsTriggerParam implements TriggerParam {
 	private final Object triggerParam;

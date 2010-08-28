@@ -9,8 +9,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
-import de.cr.freitonal.client.event.SimpleDFA;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DFA;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
 import de.cr.freitonal.client.widgets.base.Presenter;
@@ -34,7 +34,7 @@ public class PiecePresenter {
 	private final MusicKeyPresenter musicKeyPresenter;
 	private final PublicationDatePresenter publicationDatePresenter;
 	private final View view;
-	private final SimpleDFA dfa = new SimpleDFA();
+	private final DFA dfa = new DFA();
 
 	private final ArrayList<Presenter> presenters = new ArrayList<Presenter>();
 	private RPCService rpcService;

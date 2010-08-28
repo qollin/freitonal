@@ -1,6 +1,7 @@
-package de.cr.freitonal.client.event;
+package de.cr.freitonal.client.event.dfa;
 
-public class SimpleDFA {
+
+public class DFA {
 	private boolean debug;
 
 	private final DeltaMap delta = new DeltaMap();
@@ -36,24 +37,19 @@ public class SimpleDFA {
 		currentState = startState;
 	}
 
-	private TransitionAction moveToNextState(Trigger trigger) {
-		String nextState = delta.getState(currentState, trigger);
-
-		if (nextState == null) {
-			throw new IllegalStateException(trigger.getTriggerString() + " is not a transition away from " + currentState);
-		}
-
-		TransitionAction action = delta.getAction(currentState, trigger);
-		currentState = nextState;
-
-		return action;
+	public void transition(Trigger trigger) {
+		transition(trigger, (Object[]) null);
 	}
 
-	public void transitionWithTriggerParam(Trigger trigger) {
-		transitionWithTriggerParam(trigger, (Object[]) null);
+	public void transition(String trigger) {
+		transition(new Trigger(trigger));
 	}
 
-	public void transitionWithTriggerParam(Trigger trigger, Object... parameters) {
+	public void transition(String trigger, Object... parameters) {
+		transition(new Trigger(trigger), parameters);
+	}
+
+	public void transition(Trigger trigger, Object... parameters) {
 		TransitionAction action = moveToNextState(trigger);
 
 		if (action != null) {
@@ -65,25 +61,17 @@ public class SimpleDFA {
 		}
 	}
 
-	public void transition(String trigger) {
-		transitionWithTriggerParam(new Trigger(trigger));
-	}
+	private TransitionAction moveToNextState(Trigger trigger) {
+		String nextState = delta.getState(currentState, trigger);
 
-	public void transition(String trigger, Object... parameter) {
-		String oldState = currentState;
-
-		if (parameter == null) {
-			throw new IllegalArgumentException("transition parameter must not be null");
-		}
-		TransitionAction action = moveToNextState(new Trigger(trigger));
-
-		if (debug) {
-			System.err.println("transitioning from " + oldState + " to " + currentState + " through " + trigger);
+		if (nextState == null) {
+			throw new IllegalStateException(trigger.getTriggerString() + " is not a transition away from " + currentState);
 		}
 
-		if (action != null) {
-			action.onTransition(parameter);
-		}
+		TransitionAction action = delta.getAction(currentState, trigger);
+		currentState = nextState;
+
+		return action;
 	}
 
 	public String getState() {

@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.event;
+package de.cr.freitonal.unittests.client.event.dfa;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.cr.freitonal.client.event.EqualsTriggerParam;
+import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
 
 public class AEqualsTriggerParamShould {
 

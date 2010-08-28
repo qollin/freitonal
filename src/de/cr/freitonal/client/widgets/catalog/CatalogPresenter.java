@@ -8,11 +8,11 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.event.EqualsTriggerParam;
-import de.cr.freitonal.client.event.SimpleDFA;
-import de.cr.freitonal.client.event.Trigger;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DFA;
+import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
+import de.cr.freitonal.client.event.dfa.Trigger;
 import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
@@ -24,7 +24,7 @@ public class CatalogPresenter extends CompositePresenter {
 	private final View view;
 	private final ListBoxPresenter nameListBoxPresenter;
 	private final ListBoxPresenter numberListBoxPresenter;
-	private final SimpleDFA dfa = new SimpleDFA();
+	private final DFA dfa = new DFA();
 
 	public interface View {
 		public ListBoxPresenter.View getNameListBoxView();
@@ -108,6 +108,6 @@ public class CatalogPresenter extends CompositePresenter {
 	@Override
 	public void setDisplayMode(DisplayMode mode) {
 		super.setDisplayMode(mode);
-		dfa.transitionWithTriggerParam(new Trigger("setDisplayMode", mode));
+		dfa.transition(new Trigger("setDisplayMode", mode));
 	};
 }

@@ -9,12 +9,12 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedEvent;
 import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedHandler;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
-import de.cr.freitonal.client.event.SimpleDFA;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DFA;
 import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.models.ItemSetMultiSelection;
@@ -33,7 +33,7 @@ public class InstrumentationPresenter extends CompositePresenter {
 	}
 
 	private final View view;
-	private final SimpleDFA dfa = new SimpleDFA();
+	private final DFA dfa = new DFA();
 	private InstrumentationSet currentInstrumentationSet;
 	private InstrumentationSet fullInstrumentationSet;
 	private boolean enabled = true;

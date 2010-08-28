@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.cr.freitonal.client.event.DFA;
+import de.cr.freitonal.client.event.OldDFA;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.State;
 import de.cr.freitonal.client.event.TransitionHandler;
@@ -17,7 +17,7 @@ public class AppController {
 	private final PiecePresenter piecePresenter;
 	private RPCService rpcService;
 	private final HandlerManager eventBus = new HandlerManager(null);
-	private DFA dfa;
+	private OldDFA oldDFA;
 	private PieceSearchMask currentPieceSearchMask;
 
 	public AppController(PiecePresenter.View pieceView, final RPCService rpcService) {
@@ -28,8 +28,8 @@ public class AppController {
 
 	private void createDFA() {
 		State searchState = new State("Search");
-		dfa = new DFA(searchState, eventBus);
-		dfa.addTransition(SearchFieldChangedEvent.TYPE, searchState, searchState, new TransitionHandler() {
+		oldDFA = new OldDFA(searchState, eventBus);
+		oldDFA.addTransition(SearchFieldChangedEvent.TYPE, searchState, searchState, new TransitionHandler() {
 			public void onTransition(GwtEvent<?> event) {
 				search((SearchFieldChangedEvent) event);
 			}
@@ -76,8 +76,8 @@ public class AppController {
 		return piecePresenter;
 	}
 
-	public DFA getDFA() {
-		return dfa;
+	public OldDFA getDFA() {
+		return oldDFA;
 	}
 
 	public void setRPCService(RPCService rpcService) {

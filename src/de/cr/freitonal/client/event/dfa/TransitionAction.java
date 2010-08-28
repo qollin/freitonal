@@ -1,4 +1,4 @@
-package de.cr.freitonal.client.event;
+package de.cr.freitonal.client.event.dfa;
 
 public interface TransitionAction {
 	public void onTransition();

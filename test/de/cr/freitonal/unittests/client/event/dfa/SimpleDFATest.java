@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.event;
+package de.cr.freitonal.unittests.client.event.dfa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
-import de.cr.freitonal.client.event.SimpleDFA;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DFA;
 
 public class SimpleDFATest {
 
-	private SimpleDFA dfa;
+	private DFA dfa;
 	final ArrayList<String> trace = new ArrayList<String>();
 
 	@Before
 	public void setUp() {
-		dfa = new SimpleDFA();
+		dfa = new DFA();
 		trace.clear();
 	}
 

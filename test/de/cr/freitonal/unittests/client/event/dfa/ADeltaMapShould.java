@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.event;
+package de.cr.freitonal.unittests.client.event.dfa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -6,13 +6,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
-import de.cr.freitonal.client.event.DeltaMap;
-import de.cr.freitonal.client.event.TransitionAction;
-import de.cr.freitonal.client.event.Trigger;
-import de.cr.freitonal.client.event.TriggerParam;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DeltaMap;
+import de.cr.freitonal.client.event.dfa.TransitionAction;
+import de.cr.freitonal.client.event.dfa.Trigger;
+import de.cr.freitonal.client.event.dfa.TriggerParam;
 
-public class AFreshDeltaMapShould {
+public class ADeltaMapShould {
 	private DeltaMap delta;
 
 	@Before
@@ -23,7 +23,7 @@ public class AFreshDeltaMapShould {
 	@Test
 	public void AcceptSimpleTransitions() {
 		delta.addTransition("start", "trigger", "finish");
-		assertEquals("finish", delta.getState("start", "trigger"));
+		assertEquals("finish", delta.getState("start", new Trigger("trigger")));
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class AFreshDeltaMapShould {
 		TransitionAction action = new AbstractTransitionAction() {
 		};
 		delta.addTransition("start", "trigger", "finish", action);
-		assertEquals(action, delta.getAction("start", "trigger"));
+		assertEquals(action, delta.getAction("start", new Trigger("trigger")));
 	}
 
 	@Test

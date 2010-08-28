@@ -1,4 +1,4 @@
-package de.cr.freitonal.client.event;
+package de.cr.freitonal.client.event.dfa;
 
 public class Trigger {
 	private final String triggerString;

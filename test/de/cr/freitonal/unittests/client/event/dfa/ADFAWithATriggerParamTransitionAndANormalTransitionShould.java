@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.event;
+package de.cr.freitonal.unittests.client.event.dfa;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
-import de.cr.freitonal.client.event.EqualsTriggerParam;
-import de.cr.freitonal.client.event.SimpleDFA;
-import de.cr.freitonal.client.event.Trigger;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DFA;
+import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
+import de.cr.freitonal.client.event.dfa.Trigger;
 
 public class ADFAWithATriggerParamTransitionAndANormalTransitionShould {
 	private final ArrayList<String> trace = new ArrayList<String>();
-	private SimpleDFA dfa;
+	private DFA dfa;
 
 	@Before
 	public void createDFA() {
-		dfa = new SimpleDFA();
+		dfa = new DFA();
 		trace.clear();
 
 		dfa.addTransition("start", "trigger", "finish", new AbstractTransitionAction() {
@@ -48,7 +48,7 @@ public class ADFAWithATriggerParamTransitionAndANormalTransitionShould {
 
 	@Test
 	public void ExecuteTheActionForTheTriggerParamTransitionWhenTransitionWithTriggerParamIsCalled() {
-		dfa.transitionWithTriggerParam(new Trigger("trigger", "param"));
+		dfa.transition(new Trigger("trigger", "param"));
 
 		assertEquals("finish", dfa.getState());
 		assertEquals(1, trace.size());

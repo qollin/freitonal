@@ -8,14 +8,14 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
 
-public class DFA {
+public class OldDFA {
 	private final State initialState;
 	private State currentState;
 	private final HandlerManager eventBus;
 	private final HashSet<Type<?>> registeredEventTypes = new HashSet<Type<?>>();
 	private final HashMap<State, HashMap<Type<?>, State>> transitions = new HashMap<State, HashMap<Type<?>, State>>();
 
-	public DFA(State initialState, HandlerManager eventBus) {
+	public OldDFA(State initialState, HandlerManager eventBus) {
 		this.initialState = initialState;
 		this.eventBus = eventBus;
 		currentState = initialState;

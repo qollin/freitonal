@@ -14,12 +14,12 @@ import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.event.AbstractTransitionAction;
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.event.EqualsTriggerParam;
-import de.cr.freitonal.client.event.SimpleDFA;
-import de.cr.freitonal.client.event.Trigger;
-import de.cr.freitonal.client.event.TriggerParam;
+import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
+import de.cr.freitonal.client.event.dfa.DFA;
+import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
+import de.cr.freitonal.client.event.dfa.Trigger;
+import de.cr.freitonal.client.event.dfa.TriggerParam;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.shared.models.Item;
 
@@ -28,7 +28,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	protected ItemSet itemSet;
 	private final ArrayList<ChangeHandler> changeHandlers = new ArrayList<ChangeHandler>();
 	private ItemSet completeItemSet;
-	protected final SimpleDFA dfa = new SimpleDFA();
+	protected final DFA dfa = new DFA();
 
 	public interface View extends HasChangeHandlers, HasClickHandlers, de.cr.freitonal.client.widgets.base.View {
 		Item getSelectedItem();
@@ -208,11 +208,11 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	}
 
 	public void setDisplayMode(DisplayMode mode) {
-		dfa.transitionWithTriggerParam(new Trigger("setDisplayMode", mode));
+		dfa.transition(new Trigger("setDisplayMode", mode));
 	}
 
 	public void setItems(ItemSet itemSet) {
-		dfa.transitionWithTriggerParam(new Trigger("setItems", itemSet), itemSet);
+		dfa.transition(new Trigger("setItems", itemSet), itemSet);
 	}
 
 	public ItemSet getFullItemSet() {

@@ -2,11 +2,11 @@ package de.cr.freitonal.client.widgets.composer;
 
 import com.google.gwt.event.shared.HandlerManager;
 
-import de.cr.freitonal.client.widgets.base.SimplePresenter;
+import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
 
-public class ComposerPresenter extends SimplePresenter {
+public class ComposerPresenter extends ScalarPresenter {
 
-	public interface View extends SimplePresenter.View {
+	public interface View extends ScalarPresenter.View {
 
 	}
 

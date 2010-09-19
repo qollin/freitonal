@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.widgets.base.ListBoxPresenter.View;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter.View;
 import de.cr.freitonal.shared.models.Item;
 
 public class ListBoxViewMock implements View {

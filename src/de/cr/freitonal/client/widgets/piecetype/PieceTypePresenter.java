@@ -7,9 +7,9 @@ import com.google.gwt.event.shared.HandlerManager;
 import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedEvent;
 import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.widgets.base.MultiSourceSearchFieldPresenter;
-import de.cr.freitonal.client.widgets.base.SimplePresenter;
+import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
 
-public class PieceTypePresenter extends SimplePresenter {
+public class PieceTypePresenter extends ScalarPresenter {
 	private PieceTypeSet pieceTypes;
 
 	public PieceTypePresenter(HandlerManager eventBus, View view) {

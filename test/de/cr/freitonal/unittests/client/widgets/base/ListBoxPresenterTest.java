@@ -17,7 +17,7 @@ import com.google.gwt.event.shared.HandlerManager;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.SearchFieldChangedHandler;
 import de.cr.freitonal.client.models.ItemSet;
-import de.cr.freitonal.client.widgets.base.ListBoxPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.shared.models.Item;
 
 public class ListBoxPresenterTest {

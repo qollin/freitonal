@@ -3,6 +3,7 @@ package de.cr.freitonal.client.widgets.base;
 import com.google.gwt.event.shared.HandlerManager;
 
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 
 public class SearchFieldPresenter extends ListBoxPresenter {
 	public SearchFieldPresenter(HandlerManager eventBus, View view) {

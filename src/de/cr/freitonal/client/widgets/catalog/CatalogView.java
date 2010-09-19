@@ -8,9 +8,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 
-import de.cr.freitonal.client.widgets.base.ListBoxAndEntryView;
-import de.cr.freitonal.client.widgets.base.ListBoxPresenter.View;
-import de.cr.freitonal.client.widgets.base.ListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.EditableListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter.View;
 
 public class CatalogView extends Composite implements CatalogPresenter.View {
 	interface Binder extends UiBinder<HTMLPanel, CatalogView> {
@@ -22,7 +22,7 @@ public class CatalogView extends Composite implements CatalogPresenter.View {
 	ListBoxView nameList;
 
 	@UiField
-	ListBoxAndEntryView numberList;
+	EditableListBoxView numberList;
 
 	@UiField
 	Label label;

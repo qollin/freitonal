@@ -2,8 +2,8 @@ package de.cr.freitonal.unittests.client.widgets.piece;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 
-import de.cr.freitonal.client.widgets.base.SimplePresenter;
-import de.cr.freitonal.client.widgets.base.SimplePresenter.View;
+import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
+import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter.View;
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
@@ -47,11 +47,11 @@ public class PieceViewMock implements PiecePresenter.View {
 		return instrumentationView;
 	}
 
-	public SimplePresenter.View getMusicKeyView() {
+	public ScalarPresenter.View getMusicKeyView() {
 		return musicKeyView;
 	}
 
-	public SimplePresenter.View getOrdinalView() {
+	public ScalarPresenter.View getOrdinalView() {
 		return ordinalView;
 	}
 
@@ -59,7 +59,7 @@ public class PieceViewMock implements PiecePresenter.View {
 		return pieceTypeView;
 	}
 
-	public SimplePresenter.View getSubtitleView() {
+	public ScalarPresenter.View getSubtitleView() {
 		return subtitleView;
 	}
 

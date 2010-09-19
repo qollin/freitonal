@@ -1,7 +1,7 @@
 <ui:UiBinder
  xmlns:ui='urn:ui:com.google.gwt.uibinder'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'
- xmlns:listbox='urn:import:de.cr.freitonal.client.widgets.base'>
+ xmlns:listbox='urn:import:de.cr.freitonal.client.widgets.base.listbox'>
   
   <g:HTMLPanel>
     <div class="fieldWrapper">
@@ -10,7 +10,7 @@
       </div>
       <div class="fieldContents">
         <listbox:ListBoxView ui:field="nameList"/>
-        <listbox:ListBoxAndEntryView ui:field="numberList"/>
+        <listbox:EditableListBoxView ui:field="numberList"/>
       </div>
     </div>
   </g:HTMLPanel>

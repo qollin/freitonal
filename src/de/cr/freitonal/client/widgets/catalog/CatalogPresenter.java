@@ -16,8 +16,8 @@ import de.cr.freitonal.client.event.dfa.Trigger;
 import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
-import de.cr.freitonal.client.widgets.base.ListBoxPresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.shared.models.Item;
 
 public class CatalogPresenter extends CompositePresenter {

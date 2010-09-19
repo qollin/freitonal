@@ -19,9 +19,9 @@ import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.models.ItemSetMultiSelection;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
-import de.cr.freitonal.client.widgets.base.ListBoxPresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
 import de.cr.freitonal.client.widgets.base.SelectablePresenter;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
 public class InstrumentationPresenter extends CompositePresenter {

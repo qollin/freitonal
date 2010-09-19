@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 
-import de.cr.freitonal.client.widgets.base.ListBoxPresenter.View;
-import de.cr.freitonal.client.widgets.base.ListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter.View;
 
 public class InstrumentationView extends Composite implements InstrumentationPresenter.View {
 	interface Binder extends UiBinder<HTMLPanel, InstrumentationView> {

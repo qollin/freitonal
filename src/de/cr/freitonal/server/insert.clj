@@ -22,8 +22,9 @@
 
 (defn insert-instrumentation [#^VolatileInstrumentation instrumentation]
   (let [id (insert-instrumentation* (.getNickname instrumentation))
-        instrumentCount (create-countmap (seq (.getInstruments instrumentation)))]
-    (loop [instruments (keys instrumentCount)
+        originalInstrumentList (seq (.getInstruments instrumentation))
+        instrumentCount (create-countmap originalInstrumentList)]
+    (loop [instruments (remove-duplicates originalInstrumentList)
            counter 1]
       (when (not (empty? instruments))
         (let [instrument (first instruments)]
@@ -42,9 +43,14 @@
   (let [id (insert-simple-object :classical_piecetype {:name (.getValue piecetype)})]
     (Item. (str id) piecetype)))
 
+(defn create-structure-for-volatile-piece [#^VolatilePiece piece]
+  (let [mandatoryStructure {:composer_id (.getID (.getComposer piece))}]
+    (if (not (nil? (.getPieceType piece)))
+      (assoc mandatoryStructure :piece_type_id (.getID (.getPieceType piece)))
+      mandatoryStructure)))
+
 (defn insert-piece [#^VolatilePiece piece]
-  (let [id (insert-simple-object :classical_piece {:composer_id (.getID (.getComposer piece))
-                                                   :piece_type_id (.getID (.getPieceType piece))})]
+  (let [id (insert-simple-object :classical_piece (create-structure-for-volatile-piece piece))]
     (sql/insert-records :classical_piece_instrumentations {:piece_id id
                                                            :instrumentation_id (.getID (.getInstrumentationAsNonVolatile piece))})
     (Piece. (str id) piece)))

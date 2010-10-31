@@ -1,5 +1,6 @@
 package de.cr.freitonal.client.rpc.java;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import de.cr.freitonal.client.rpc.dto.DTOObject;
@@ -14,6 +15,10 @@ public class DTOObjectJava implements DTOObject {
 	}
 
 	public DTOValue get(String key) {
-		return new DTOValueJava(jsonObject.get(key));
+		JsonElement value = jsonObject.get(key);
+		if (value == null) {
+			return null;
+		}
+		return new DTOValueJava(value);
 	}
 }

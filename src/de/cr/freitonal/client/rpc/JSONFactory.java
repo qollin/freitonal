@@ -2,6 +2,7 @@ package de.cr.freitonal.client.rpc;
 
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
 public class JSONFactory {
 	private final PieceSearchMask searchMask;
@@ -26,8 +27,11 @@ public class JSONFactory {
 	}
 
 	private void instrumentationsToHTTPParameter() {
-		for (Item instrument : searchMask.getInstrumentations().getSelectedList()) {
-			addHTTPParameter("piece-instrumentations__instrument", instrument.getID());
+		VolatileInstrumentation searchPattern = searchMask.getInstrumentations().getSearchPattern();
+		if (searchPattern != null) {
+			for (Item instrument : searchPattern.getInstruments()) {
+				addHTTPParameter("piece-instrumentations__instrument", instrument.getID());
+			}
 		}
 	}
 

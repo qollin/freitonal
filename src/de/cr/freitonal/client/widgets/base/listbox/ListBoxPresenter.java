@@ -1,6 +1,7 @@
 package de.cr.freitonal.client.widgets.base.listbox;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
+import static de.cr.freitonal.client.event.DisplayMode.DependendView;
 import static de.cr.freitonal.client.event.DisplayMode.Select;
 import static de.cr.freitonal.client.event.DisplayMode.View;
 
@@ -23,7 +24,6 @@ import de.cr.freitonal.client.event.dfa.TriggerParam;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.widgets.base.BasePresenter;
 import de.cr.freitonal.client.widgets.base.SelectablePresenter;
-import de.cr.freitonal.client.widgets.base.View;
 import de.cr.freitonal.shared.models.Item;
 
 public class ListBoxPresenter extends BasePresenter implements SelectablePresenter {
@@ -80,15 +80,16 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				ListBoxPresenter.this.completeItemSet = itemSet;
 			}
 		});
-		TriggerParam triggerOnOneElementItemSet = new TriggerParam() {
+		TriggerParam triggerOnItemSetWithZeroOrOneItem = new TriggerParam() {
 			public boolean matches(Object[] transitionParameters) {
-				return ((ItemSet) transitionParameters[0]).size() == 1;
+				return ((ItemSet) transitionParameters[0]).size() <= 1;
 			}
 		};
-		dfa.addTransitionWithTriggerParam("Select", "setItems", triggerOnOneElementItemSet, "View", new AbstractTransitionAction() {
+		dfa.addTransitionWithTriggerParam("Select", "setItems", triggerOnItemSetWithZeroOrOneItem, "DependendView", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
 				handleItemSetChange((ItemSet) parameters[0]);
+				view.setDisplayMode(DependendView);
 			}
 		});
 		dfa.addTransition("Select", "setItems", "Select", new AbstractTransitionAction() {
@@ -108,7 +109,8 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				fireListBoxChangedEvent();
 			}
 		});
-		dfa.addTransitionWithTriggerParam("Select", "setDisplayMode", new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
+		dfa.addTransitionWithTriggerParam(new String[] { "Select", "DependendView", "Create", "View" }, "setDisplayMode", new EqualsTriggerParam(
+				Create), "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
 				itemSet = completeItemSet;
@@ -121,13 +123,6 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 			public void onTransition() {
 				view.setDisplayMode(Select);
 				fireListBoxChangedEvent();
-			}
-		});
-		dfa.addTransitionWithTriggerParam("View", "setDisplayMode", new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
-			@Override
-			public void onTransition() {
-				itemSet = completeItemSet;
-				view.setItems(completeItemSet.getItems());
 			}
 		});
 		dfa.addTransition("View", "setItems", "View");
@@ -237,6 +232,8 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 			return Create;
 		} else if (dfa.getState() == "View") {
 			return View;
+		} else if (dfa.getState() == "DependendView") {
+			return DependendView;
 		}
 		throw new IllegalStateException(dfa.getState() + " is not mappable to a display mode");
 	}

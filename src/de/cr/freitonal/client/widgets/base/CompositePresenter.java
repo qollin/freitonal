@@ -53,7 +53,9 @@ public abstract class CompositePresenter extends BasePresenter {
 	public ArrayList<Item> getSelectedItems() {
 		ArrayList<Item> selectedItems = new ArrayList<Item>();
 		for (SelectablePresenter presenter : presenters) {
-			selectedItems.add(presenter.getSelectedItem());
+			if (presenter.getSelectedItem() != null) {
+				selectedItems.add(presenter.getSelectedItem());
+			}
 		}
 		return selectedItems;
 	}
@@ -62,6 +64,16 @@ public abstract class CompositePresenter extends BasePresenter {
 		for (SelectablePresenter presenter : presenters) {
 			presenter.setEnabled(enabled);
 		}
+	}
+
+	public DisplayMode getDisplayMode() {
+		DisplayMode mode = presenters.get(0).getDisplayMode();
+		for (SelectablePresenter presenter : presenters) {
+			if (presenter.getDisplayMode() != mode) {
+				throw new IllegalStateException("CompositePresenter cannot deal with sub presenters in different display modes");
+			}
+		}
+		return mode;
 	}
 
 }

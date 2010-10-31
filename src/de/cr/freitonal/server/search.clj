@@ -216,6 +216,40 @@
        AND classical_instrumentation.id = classical_piece_instrumentations.instrumentation_id"}
     render-name searchParams))
 
+(defn render-instrumentation [rec]
+  (hash-map :id (:id rec) 
+            :nickname (:nickname rec)
+            :instruments (vector (vector (:instrument_id rec) (:name rec)))))
+
+(defn merge-instrumentRecords-into-instrumentations 
+  ([instrumentRecords] 
+    (merge-instrumentRecords-into-instrumentations (rest instrumentRecords) (hash-map (:id (first instrumentRecords)) (first instrumentRecords))))
+  ([instrumentRecords acc]
+    (if (empty? instrumentRecords)
+      (vals acc)
+      (let [rec (first instrumentRecords)
+            id (:id rec)
+            new-acc (if (contains? acc id)
+                      (assoc acc id (assoc rec :instruments (append (get-in acc [id :instruments]) (:instruments rec))))
+                      (assoc acc id rec))]
+        (merge-instrumentRecords-into-instrumentations (rest instrumentRecords) new-acc)))))
+
+(defn search-piece-instrumentations [searchParams]
+  (let [instrumentRecords (run-search-query
+                            {:select "DISTINCT classical_instrumentation.id, 
+                                               classical_instrumentation.nickname, 
+                                               instruments.instrument_id,
+                                               instrument.name"
+                             :from ["classical_piece piece", "classical_instrumentation", "classical_piece_instrumentations",
+                                    "classical_instrumentationmember instruments", "classical_instrument instrument"]
+                             :where "classical_piece_instrumentations.piece_id = piece.id
+                               AND classical_piece_instrumentations.instrumentation_id = classical_instrumentation.id
+                               AND instruments.instrumentation_id = classical_instrumentation.id
+                               AND instruments.instrument_id = instrument.id
+                               ORDER BY instruments.ordinal"}
+                            render-instrumentation searchParams)]
+    (merge-instrumentRecords-into-instrumentations instrumentRecords)))
+
 (defn search-piece-music-key [searchParams]
   (run-search-query
     {:select "DISTINCT classical_musickey.id, classical_musickey.generated_title AS name"
@@ -270,6 +304,7 @@
                     "piece-type_ordinal" (search-piece-type_ordinal processedSearchParams)
                     "piece-piece_type" (search-piece-piece_type processedSearchParams)
                     "piece-instrumentations__instruments" (search-piece-instruments processedSearchParams)
+                    "piece-instrumentations" (search-piece-instrumentations processedSearchParams)
                     "piece-music_key" (search-piece-music-key processedSearchParams)
                     "piece-catalog__name" (search-piece-catalog-name processedSearchParams)
                     "piece-catalog__number" (search-piece-catalog-number processedSearchParams)

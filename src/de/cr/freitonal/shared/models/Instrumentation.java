@@ -5,6 +5,11 @@ import java.util.ArrayList;
 public class Instrumentation extends VolatileInstrumentation {
 	private final String id;
 
+	public Instrumentation(String id, String nickname, Item... instruments) {
+		super(nickname, instruments);
+		this.id = id;
+	}
+
 	public Instrumentation(String id, String nickname, ArrayList<Item> instruments) {
 		super(nickname, instruments);
 		this.id = id;

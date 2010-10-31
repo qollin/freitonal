@@ -1,5 +1,6 @@
 (ns de.cr.freitonal.server.search-test
   (:use [de.cr.freitonal.server.search])
+  (:use [de.cr.freitonal.server.tools])
   (:use [de.cr.freitonal.server.testtools])
   (:use [de.cr.freitonal.server.insert])
   (:use [de.cr.freitonal.server.javainterop])
@@ -136,5 +137,24 @@
       (is (= 1 (count (searchResult "piece-type+instrumentation"))))
       (is (= (.getID piece+instrumentation-type) (str (first (first (searchResult "piece-type+instrumentation")))))))))
 
-(defn test-ns-hook [] (check-that-search-returns-piece+instrumentation-types))
+(deftest check-that-instrumentations-are-returned-in-the-right-format []
+  (dbtest ""
+    (let [violin (insert-instrument (VolatileItem. "Violin"))
+          piano (insert-instrument (VolatileItem. "Piano"))
+          composer (insert-composer (VolatileItem. "Mozart"))
+          instrumentation (insert-instrumentation (VolatileInstrumentation. "violin piano combo" (create-ArrayList violin piano)))
+          piece (insert-piece (VolatilePiece. composer instrumentation))
+          jsonResult (search {})
+          searchResult (read-json jsonResult)]
+      (is (= 1 (count (searchResult "piece-instrumentations"))))
+      (is (= (.getID instrumentation) (str (get (first (searchResult "piece-instrumentations")) "id"))))
+      (is (= [[(.getID violin) (.getValue violin)] [(.getID piano) (.getValue piano)]] 
+            (map #(assoc % 0 (str (first %))) (get (first (searchResult "piece-instrumentations")) "instruments")))))))
 
+(deftest test-merge-instrumentRecords-into-instrumentations []
+  (let [mergedRecords (merge-instrumentRecords-into-instrumentations [{:id 1 :nickname "bla" :instruments [[5 "piano"]]},
+                                                                      {:id 1 :nickname "bla" :instruments [[7 "violin"]]}, 
+                                                                      {:id 2 :nickname "blub" :instruments [[6 "viola"]]}])]
+    (is (= 2 (count mergedRecords)))
+    (is (= 1 (:id (first mergedRecords))))
+    (is (= [[5 "piano"] [7 "violin"]] (:instruments (first mergedRecords))))))  

@@ -124,6 +124,9 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 			}
 			switchToViewMode();
 			break;
+		case DependendView:
+			switchToDependedViewMode();
+			break;
 		case Select:
 			switchToSelectMode();
 			break;
@@ -146,10 +149,31 @@ public class ListBoxView extends Composite implements ListBoxPresenter.View {
 	}
 
 	protected void switchToViewMode() {
-		label.setText(getSelectedItem().getValue());
+		switchToDependedViewMode();
+		closeImage.setVisible(true);
+	}
+
+	private String getFirstNonSpecialItem() {
+		int indexOfFirstNonSpecialItem = specialItems.size();
+		if (list.getItemCount() == indexOfFirstNonSpecialItem) { //only special items
+			return "";
+		} else {
+			return list.getItemText(indexOfFirstNonSpecialItem);
+		}
+	}
+
+	protected void switchToDependedViewMode() {
+		Item selectedItem = getSelectedItem();
+		String text;
+		if (selectedItem != null) {
+			text = selectedItem.getValue();
+		} else {
+			text = getFirstNonSpecialItem();
+		}
+
+		label.setText(text);
 		list.setVisible(false);
 
 		label.setVisible(true);
-		closeImage.setVisible(true);
 	}
 }

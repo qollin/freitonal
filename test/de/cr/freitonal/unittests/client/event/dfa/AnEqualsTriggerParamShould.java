@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
 
-public class AEqualsTriggerParamShould {
+public class AnEqualsTriggerParamShould {
 
 	private EqualsTriggerParam equalsTriggerParam;
 

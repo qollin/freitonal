@@ -21,7 +21,6 @@ public class ScalarPresenter extends BasePresenter {
 
 	@SuppressWarnings("unused")
 	private View view;
-	private DisplayMode mode = DisplayMode.Select;
 
 	public ScalarPresenter(HandlerManager eventBus, View view) {
 		super(eventBus);
@@ -53,11 +52,10 @@ public class ScalarPresenter extends BasePresenter {
 	}
 
 	public DisplayMode getDisplayMode() {
-		return mode;
+		return listBoxPresenter.getDisplayMode();
 	}
 
 	public void setDisplayMode(DisplayMode mode) {
-		this.mode = mode;
 		listBoxPresenter.setDisplayMode(mode);
 	}
 

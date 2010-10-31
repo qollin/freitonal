@@ -1,6 +1,7 @@
 package de.cr.freitonal.client.models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import de.cr.freitonal.shared.models.Item;
 
@@ -20,6 +21,10 @@ public class ItemSet {
 			throw new IllegalArgumentException("items must not be null");
 		}
 		this.items = items;
+	}
+
+	public ItemSet(HashSet<Item> instruments) {
+		this(new ArrayList<Item>(instruments));
 	}
 
 	/**
@@ -54,6 +59,6 @@ public class ItemSet {
 	}
 
 	public Item getItem(int index) {
-		return getItems().get(0);
+		return getItems().get(index);
 	}
 }

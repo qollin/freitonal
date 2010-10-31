@@ -1,11 +1,16 @@
 package de.cr.freitonal.client.event.dfa;
 
-
 public class DFA {
 	private boolean debug;
 
 	private final DeltaMap delta = new DeltaMap();
 	private String currentState;
+
+	public void addTransition(String[] fromStates, String trigger, String toState, AbstractTransitionAction transitionAction) {
+		for (String fromState : fromStates) {
+			addTransition(fromState, trigger, toState, transitionAction);
+		}
+	}
 
 	public void addTransition(String fromState, String trigger, String toState) {
 		addTransition(fromState, trigger, toState, null);
@@ -15,19 +20,26 @@ public class DFA {
 		addTransitionWithTriggerParam(fromState, trigger, null, toState, transitionAction);
 	}
 
+	public void addTransitionWithTriggerParam(String[] fromStates, String triggerString, TriggerParam triggerParam, String toState,
+			AbstractTransitionAction transitionAction) {
+		for (String fromState : fromStates) {
+			addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, transitionAction);
+		}
+	}
+
 	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState,
 			TransitionAction transitionAction) {
 		delta.addTransition(fromState, triggerString, triggerParam, toState, transitionAction);
 	}
 
-	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState) {
-		addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, null);
+	public void addTransitionWithTriggerParam(String[] fromStates, String triggerString, TriggerParam triggerParam, String toState) {
+		for (String fromState : fromStates) {
+			addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState);
+		}
 	}
 
-	public void addTransition(String[] fromStates, String trigger, String toState, AbstractTransitionAction transitionAction) {
-		for (String fromState : fromStates) {
-			addTransition(fromState, trigger, toState, transitionAction);
-		}
+	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState) {
+		addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, null);
 	}
 
 	public void start(String startState) {

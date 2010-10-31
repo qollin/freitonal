@@ -94,7 +94,6 @@ public class PieceSearchMask {
 		composers.copyItemSelectionTo(target.composers);
 		catalogs.copyItemSelectionTo(target.catalogs);
 		pieceTypeSet.copyItemSelectionTo(target.pieceTypeSet);
-		instrumentationSet.copyItemSelectionTo(target.instrumentationSet);
 		publicationDateSet.copyItemSelectionTo(target.publicationDateSet);
 	}
 

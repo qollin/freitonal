@@ -1,6 +1,7 @@
 package de.cr.freitonal.shared.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class VolatileInstrumentation {
 	private ArrayList<Item> instruments = new ArrayList<Item>();
@@ -9,6 +10,11 @@ public class VolatileInstrumentation {
 	public VolatileInstrumentation(String nickname, ArrayList<Item> instruments) {
 		this.nickname = nickname;
 		this.instruments = instruments;
+	}
+
+	public VolatileInstrumentation(String nickname, Item... instruments) {
+		this.nickname = nickname;
+		this.instruments = new ArrayList<Item>(Arrays.asList(instruments));
 	}
 
 	public String getNickname() {

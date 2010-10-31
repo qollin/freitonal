@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.widgets.base;
+package de.cr.freitonal.unittests.client.widgets.base.listbox;
 
 import java.util.ArrayList;
 
@@ -46,8 +46,7 @@ public class ListBoxViewMock implements View {
 	}
 
 	public void setItems(ArrayList<Item> items) {
-		// TODO Auto-generated method stub
-
+		trace.add("setItems:" + items);
 	}
 
 	public void setSelectedItem(Item selected) {

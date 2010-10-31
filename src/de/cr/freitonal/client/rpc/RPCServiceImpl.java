@@ -11,7 +11,7 @@ import de.cr.freitonal.client.rpc.dto.DTOParser;
 import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class RPCServiceImpl implements RPCService {
-	protected final ModelFactory modelFactory;
+	protected ModelFactory modelFactory;
 
 	private RequestBuilderFactory requestBuilderFactory = new RequestBuilderFactory();
 
@@ -72,5 +72,9 @@ public class RPCServiceImpl implements RPCService {
 
 	public void save(VolatilePiece piece) {
 		throw new IllegalStateException("not implemented yet");
+	}
+
+	public void setModelFactory(ModelFactory modelFactory) {
+		this.modelFactory = modelFactory;
 	}
 }

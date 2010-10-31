@@ -1,7 +1,5 @@
 package de.cr.freitonal.client.rpc;
 
-import java.util.ArrayList;
-
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.models.InstrumentationSet;
@@ -10,20 +8,23 @@ import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
-import de.cr.freitonal.client.rpc.dto.DTOArray;
+import de.cr.freitonal.client.models.factories.CatalogSetFactory;
+import de.cr.freitonal.client.models.factories.ComposerSetFactory;
+import de.cr.freitonal.client.models.factories.InstrumentationSetFactory;
+import de.cr.freitonal.client.models.factories.MusicKeySetFactory;
+import de.cr.freitonal.client.models.factories.OrdinalSetFactory;
+import de.cr.freitonal.client.models.factories.PieceTypeSetFactory;
+import de.cr.freitonal.client.models.factories.PublicationDateSetFactory;
+import de.cr.freitonal.client.models.factories.SubtitleSetFactory;
 import de.cr.freitonal.client.rpc.dto.DTOObject;
 import de.cr.freitonal.client.rpc.dto.DTOParser;
 import de.cr.freitonal.client.rpc.dto.DTOValue;
-import de.cr.freitonal.shared.models.Item;
 
 public class ModelFactory {
 	private final DTOParser parser;
 
-	private static final ArrayList<Item> NoItems = new ArrayList<Item>();
-
 	public ModelFactory(DTOParser parser) {
 		this.parser = parser;
-
 	}
 
 	public SearchResult createSearchResult(String jsonString) {
@@ -38,66 +39,55 @@ public class ModelFactory {
 	private PieceSearchMask createPieceSearchMask(DTOObject rpcObject) {
 		PieceSearchMask pieceSearchMask = new PieceSearchMask();
 
-		pieceSearchMask.setComposers(createComposerSet(rpcObject.get("piece-composer").isArray()));
-		pieceSearchMask
-				.setCatalogs(createCatalogSet(rpcObject.get("piece-catalog__name").isArray(), rpcObject.get("piece-catalog__number").isArray()));
-		pieceSearchMask.setPieceTypes(createPieceTypeSet(rpcObject.get("piece-piece_type").isArray(), rpcObject.get("piece-type+instrumentation")
-				.isArray()));
-		pieceSearchMask.setInstrumentations(createInstrumentationSet(rpcObject.get("piece-instrumentations__instruments").isArray()));
-		pieceSearchMask.setSubtitles(createSubtitleSet(rpcObject.get("piece-subtitle").isArray()));
-		pieceSearchMask.setOrdinals(createOrdinalSet(rpcObject.get("piece-type_ordinal").isArray()));
-		pieceSearchMask.setMusicKeys(createMusicKeySet(rpcObject.get("piece-music_key").isArray()));
-		pieceSearchMask.setPublicationDates(createPublicationDateSet(rpcObject.get("piece-publication_date").isArray()));
+		pieceSearchMask.setComposers(createComposerSet(rpcObject));
+		pieceSearchMask.setCatalogs(createCatalogSet(rpcObject));
+		pieceSearchMask.setPieceTypes(createPieceTypeSet(rpcObject));
+		pieceSearchMask.setInstrumentations(createInstrumentationSet(rpcObject));
+		pieceSearchMask.setSubtitles(createSubtitleSet(rpcObject));
+		pieceSearchMask.setOrdinals(createOrdinalSet(rpcObject));
+		pieceSearchMask.setMusicKeys(createMusicKeySet(rpcObject));
+		pieceSearchMask.setPublicationDates(createPublicationDateSet(rpcObject));
 
 		return pieceSearchMask;
 	}
 
-	private MusicKeySet createMusicKeySet(DTOArray array) {
-		return new MusicKeySet(createItemListFromRPCArray(array));
+	private MusicKeySet createMusicKeySet(DTOObject jsonObject) {
+		MusicKeySetFactory factory = new MusicKeySetFactory();
+		return factory.createMusicKeySet(jsonObject);
 	}
 
-	private PublicationDateSet createPublicationDateSet(DTOArray array) {
-		return new PublicationDateSet(createItemListFromRPCArray(array));
+	private PublicationDateSet createPublicationDateSet(DTOObject jsonObject) {
+		PublicationDateSetFactory factory = new PublicationDateSetFactory();
+		return factory.createPublicationDateSet(jsonObject);
 	}
 
-	private OrdinalSet createOrdinalSet(DTOArray array) {
-		return new OrdinalSet(createItemListFromRPCArray(array));
+	private OrdinalSet createOrdinalSet(DTOObject jsonObject) {
+		OrdinalSetFactory factory = new OrdinalSetFactory();
+		return factory.createOrdinalSet(jsonObject);
 	}
 
-	private SubtitleSet createSubtitleSet(DTOArray array) {
-		return new SubtitleSet(createItemListFromRPCArray(array));
+	private SubtitleSet createSubtitleSet(DTOObject jsonObject) {
+		SubtitleSetFactory factory = new SubtitleSetFactory();
+		return factory.createSubtitleSet(jsonObject);
 	}
 
-	private InstrumentationSet createInstrumentationSet(DTOArray array) {
-		return new InstrumentationSet(createItemListFromRPCArray(array));
+	public InstrumentationSet createInstrumentationSet(DTOObject jsonObject) {
+		InstrumentationSetFactory factory = new InstrumentationSetFactory();
+		return factory.createInstrumentationSet(jsonObject);
 	}
 
-	private PieceTypeSet createPieceTypeSet(DTOArray pieceTypes, DTOArray piecePlusInstrumentationTypes) {
-		return new PieceTypeSet(createItemListFromRPCArray(pieceTypes), createItemListFromRPCArray(piecePlusInstrumentationTypes));
+	private PieceTypeSet createPieceTypeSet(DTOObject jsonObject) {
+		PieceTypeSetFactory factory = new PieceTypeSetFactory();
+		return factory.createPieceTypeSet(jsonObject);
 	}
 
-	private CatalogSet createCatalogSet(DTOArray nameArray, DTOArray numberArray) {
-		return new CatalogSet(createItemListFromRPCArray(nameArray), createItemListFromRPCArray(numberArray));
+	private CatalogSet createCatalogSet(DTOObject jsonObject) {
+		CatalogSetFactory factory = new CatalogSetFactory();
+		return factory.createCatalogSet(jsonObject);
 	}
 
-	private ComposerSet createComposerSet(DTOArray rpcArray) {
-		return new ComposerSet(createItemListFromRPCArray(rpcArray));
-	}
-
-	private ArrayList<Item> createItemListFromRPCArray(DTOArray rpcArray) {
-		ArrayList<Item> items = new ArrayList<Item>();
-
-		for (int i = 0; i < rpcArray.size(); i++) {
-			String id;
-			if (rpcArray.get(i).isArray().get(0).isNumber() != null) {
-				id = String.valueOf((int) rpcArray.get(i).isArray().get(0).isNumber().doubleValue());
-			} else {
-				id = rpcArray.get(i).isArray().get(0).isString().stringValue();
-			}
-			String name = rpcArray.get(i).isArray().get(1).isString().stringValue();
-			items.add(new Item(id, name));
-		}
-
-		return items;
+	private ComposerSet createComposerSet(DTOObject jsonObject) {
+		ComposerSetFactory factory = new ComposerSetFactory();
+		return factory.createComposerSet(jsonObject);
 	}
 }

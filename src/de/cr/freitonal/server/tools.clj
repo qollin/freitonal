@@ -26,3 +26,16 @@
       countMap
       (let [elem (first sequ*)]
         (recur (rest sequ*) (assoc countMap elem (+ 1 (get countMap elem 0))))))))
+
+(defn remove-duplicates
+  ([sequ] (remove-duplicates (rest sequ) (vector (first sequ)) (conj (hash-set) (first sequ))))
+  ([sequ new-sequ acc]
+    (if (empty? sequ)
+      new-sequ
+      (let [elem (first sequ)
+            new-acc (conj acc elem)
+            new-new-sequ (if (contains? acc elem)
+                           new-sequ
+                           (conj new-sequ elem))]
+      (remove-duplicates (rest sequ) new-new-sequ new-acc)))))
+      

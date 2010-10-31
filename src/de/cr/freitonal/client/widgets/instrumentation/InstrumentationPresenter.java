@@ -2,6 +2,8 @@ package de.cr.freitonal.client.widgets.instrumentation;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
 
+import java.util.HashSet;
+
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,6 +24,8 @@ import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
 import de.cr.freitonal.client.widgets.base.SelectablePresenter;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
+import de.cr.freitonal.shared.models.Instrumentation;
+import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
 public class InstrumentationPresenter extends CompositePresenter {
@@ -34,7 +38,6 @@ public class InstrumentationPresenter extends CompositePresenter {
 
 	private final View view;
 	private final DFA dfa = new DFA();
-	private InstrumentationSet currentInstrumentationSet;
 	private InstrumentationSet fullInstrumentationSet;
 	private boolean enabled = true;
 
@@ -106,17 +109,20 @@ public class InstrumentationPresenter extends CompositePresenter {
 	}
 
 	private void updateItemSetOfInstrument(SelectablePresenter instrumentPresenter, InstrumentationSet instrumentationSet) {
-		currentInstrumentationSet = instrumentationSet;
-		ItemSet instruments = createBasicItemSetFromItemSetMultiSelection(instrumentationSet);
+		ItemSet instruments = extractInstrumentsFromInstrumentationSet(instrumentationSet);
 		instrumentPresenter.setItems(instruments);
 	}
 
-	private void updateInstrumentationItemSet() {
-		currentInstrumentationSet.setSelectedList(getSelectedItems());
+	private ItemSet extractInstrumentsFromInstrumentationSet(InstrumentationSet instrumentationSet) {
+		HashSet<Item> instruments = new HashSet<Item>();
+		for (Instrumentation instrumentation : instrumentationSet.getInstrumentations()) {
+			instruments.addAll(instrumentation.getInstruments());
+		}
+
+		return new ItemSet(instruments);
 	}
 
 	private void search() {
-		updateInstrumentationItemSet();
 		getEventBus().fireEvent(new SearchFieldChangedEvent());
 	}
 
@@ -186,4 +192,9 @@ public class InstrumentationPresenter extends CompositePresenter {
 			presenter.setEnabled(enabled);
 		}
 	}
+
+	public DFA getDFA() {
+		return dfa;
+	}
+
 }

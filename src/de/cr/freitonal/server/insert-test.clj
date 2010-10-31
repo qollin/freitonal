@@ -7,7 +7,7 @@
   (:use [clojure.test])
   (:use [clojure.contrib.sql :as sql :only ()])
   
-  (:import (de.cr.freitonal.shared.models VolatileInstrumentation Instrumentation VolatileItem Item)))
+  (:import (de.cr.freitonal.shared.models VolatileInstrumentation Instrumentation VolatileItem Item VolatilePiece)))
 
 (deftest test-insert-instrumentation []
   (dbtest "test that two times the same instrument becomes one entry in the DB"
@@ -27,8 +27,8 @@
         ["SELECT * FROM classical_instrumentationmember WHERE instrumentation_id = ? ORDER BY ordinal" 
          (.getID instrumentation)]
         (is (= 2 (count res)))
-        (is (.getID violin) (str (:instrument_id (first res))))
-        (is (.getID piano) (str (:instrument_id (nth res 1))))))))
+        (is (= (.getID violin) (str (:instrument_id (first res)))))
+        (is (= (.getID piano) (str (:instrument_id (nth res 1)))))))))
 
 (deftest test-insert-piecetype []
   (dbtest "test the insertion of a piece type"
@@ -38,3 +38,8 @@
         (is (= 1 (count res)))
         (is (= (.getValue piecetype) (:name (first res))))))))
 
+(deftest test-create-structure-for-volatile-piece []
+  (is (= {:composer_id "1" :piece_type_id "2"}
+        (create-structure-for-volatile-piece (VolatilePiece. (Item. "1" "Mozart") nil (Item. "2" "Sonate")))))
+  (is (= {:composer_id "1"}
+        (create-structure-for-volatile-piece (VolatilePiece. (Item. "1" "Mozart") nil)))))

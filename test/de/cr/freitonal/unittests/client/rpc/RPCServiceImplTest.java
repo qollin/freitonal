@@ -2,13 +2,17 @@ package de.cr.freitonal.unittests.client.rpc;
 
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.AMajor;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.CatalogOrdinal27_1;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Eroica;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.KV;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Opus;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Ordinal4a;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Violin;
+import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.createPieceMask;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+
+import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,17 +21,16 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestBuilder.Method;
 import com.google.gwt.http.client.RequestCallback;
 
-import de.cr.freitonal.client.rpc.ModelFactory;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCServiceImpl;
 import de.cr.freitonal.client.rpc.RequestBuilderFactory;
 import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.client.rpc.java.DTOParserJava;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.unittests.client.test.data.TestResources;
 
 public class RPCServiceImplTest {
-
 	private RPCServiceImpl rpcService;
 	private PieceSearchMask pieceSearchMask;
 	private TestResources resources;
@@ -36,10 +39,8 @@ public class RPCServiceImplTest {
 	public void setUp() {
 		rpcService = new RPCServiceImpl(new DTOParserJava(), new URLEncoderMock());
 		resources = new TestResources();
-		ModelFactory modelFactory = new ModelFactory(new DTOParserJava());
-		SearchResult searchResult = modelFactory.createSearchResult(resources.getFullSearchJSON().getText());
 
-		pieceSearchMask = searchResult.getPieceSearchMask();
+		pieceSearchMask = createPieceMask();
 	}
 
 	private void assertNextSearchStringMatches(String parameters) {
@@ -56,64 +57,62 @@ public class RPCServiceImplTest {
 				};
 			}
 		});
+		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testComposerSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
 		assertNextSearchStringMatches("piece-composer=" + Beethoven.getID());
-		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testComposerAndInstrumentSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
-		pieceSearchMask.getInstrumentations().setSelectedList(Piano, Violin);
+		ArrayList<Item> instruments = new ArrayList<Item>();
+		instruments.add(Piano);
+		instruments.add(Violin);
+		pieceSearchMask.getInstrumentations().setSearchPattern(new VolatileInstrumentation(null, instruments));
 		assertNextSearchStringMatches("piece-composer=" + Beethoven.getID() + "\\&piece-instrumentations__instrument=" + Piano.getID()
 				+ "\\&piece-instrumentations__instrument=" + Violin.getID());
-		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testSubtitleSearch() {
 		pieceSearchMask.getSubtitles().setSelected(Eroica);
 		assertNextSearchStringMatches("piece-subtitle=" + Eroica.getID());
-		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testOrdinalSearch() {
 		pieceSearchMask.getOrdinals().setSelected(Ordinal4a);
 		assertNextSearchStringMatches("piece-type_ordinal=" + Ordinal4a.getID());
-		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testMusicKeySearch() {
 		pieceSearchMask.getMusicKeys().setSelected(AMajor);
 		assertNextSearchStringMatches("piece-music_key=" + AMajor.getID());
-		rpcService.search(pieceSearchMask, null);
 	}
 
 	@Test
 	public void testCatalogNameSearch() {
-		pieceSearchMask.getCatalogs().getNames().setSelected(KV);
-		assertNextSearchStringMatches("piece-catalog__name=" + KV.getID());
-		rpcService.search(pieceSearchMask, null);
+		pieceSearchMask.getCatalogs().getNames().setSelected(Opus);
+		assertNextSearchStringMatches("piece-catalog__name=" + Opus.getID());
 	}
 
 	@Test
 	public void testCatalogSearch() {
-		Item ordinal = new Item("210", "1");
-		pieceSearchMask.getCatalogs().getNames().setSelected(KV);
-		pieceSearchMask.getCatalogs().getNumbers().setSelected(ordinal);
-		assertNextSearchStringMatches("piece-catalog=" + ordinal.getID());
-		rpcService.search(pieceSearchMask, null);
+		pieceSearchMask.getCatalogs().getNames().setSelected(Opus);
+		pieceSearchMask.getCatalogs().getNumbers().setSelected(CatalogOrdinal27_1);
+		assertNextSearchStringMatches("piece-catalog=" + CatalogOrdinal27_1.getID());
 	}
 
 	@Test
 	public void testSelectedItemsInSearchMaskStaySelectedAfterSearch() {
 		pieceSearchMask.getComposers().setSelected(Beethoven);
+
+		rpcService.setModelFactory(new ModelFactoryMock());
 		SearchResult searchResult = rpcService.createSearchResult(pieceSearchMask, resources.getSearchForBeethovenJSON().getText());
 		assertEquals(Beethoven, searchResult.getPieceSearchMask().getComposers().getSelected());
 	}

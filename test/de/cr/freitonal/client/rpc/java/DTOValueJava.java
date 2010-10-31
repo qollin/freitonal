@@ -12,6 +12,9 @@ public class DTOValueJava implements DTOValue {
 	private final JsonElement jsonElement;
 
 	public DTOValueJava(JsonElement jsonElement) {
+		if (jsonElement == null) {
+			throw new IllegalArgumentException("wrapped jsonElement cannot be null");
+		}
 		this.jsonElement = jsonElement;
 	}
 

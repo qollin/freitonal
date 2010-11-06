@@ -5,13 +5,12 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.event.shared.HandlerManager;
-
 import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.unittests.client.widgets.PresenterTest;
 
-public class PublicationDatePresenterTest {
+public class PublicationDatePresenterTest extends PresenterTest {
 	private PublicationDatePresenter publicationDatePresenter;
 
 	private static final Item Date1880 = new Item("1880", "1880");
@@ -20,7 +19,7 @@ public class PublicationDatePresenterTest {
 	@Before
 	public void setUp() {
 		PublicationDatePresenter.View view = new PublicationDateViewMock();
-		publicationDatePresenter = new PublicationDatePresenter(new HandlerManager(null), view);
+		publicationDatePresenter = new PublicationDatePresenter(eventBus, view);
 		PublicationDateSet dates = new PublicationDateSet(Date1880, Date1900);
 		publicationDatePresenter.setItems(dates);
 	}

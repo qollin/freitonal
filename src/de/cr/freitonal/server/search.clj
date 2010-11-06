@@ -3,7 +3,7 @@
   (:use [de.cr.freitonal.server.javainterop])
   
   (:use [clojure.contrib.sql :as sql :only ()])
-  (:use [clojure.contrib.json.write :only (print-json)]))
+  (:use [clojure.contrib.json :only (json-str)]))
 
 (defn create-placeholder-string [values]
   (str "(" (apply str (interpose ", " (repeat (count values) "?"))) ")"))
@@ -65,7 +65,7 @@
     :default (throw (new IllegalArgumentException (str searchParam " is not implemented yet as a search parameter")))))
 
 (defn combine-search-clauses [searchClauses]
-  {:from (vec (apply hash-set (flatten (map #(% :from) searchClauses))))
+  {:from (vec (set (flatten (map #(% :from) searchClauses))))
    :where (apply str (map #(% :where)  searchClauses))
    :values (vec (flatten (map #(% :values) (filter #(not (nil? (% :values))) searchClauses))))})
 
@@ -88,7 +88,7 @@
 (defn run-search-query [sql render-fn searchParams & debug]
   (let [query (create-query sql searchParams)]
     (try
-      (when debug (d query))
+      (when *debug* (d query))
       (sql/with-query-results res
         query
         (doall (map render-fn res)))
@@ -297,26 +297,25 @@
 
 (defn search [searchParams]
   (let [processedSearchParams (process-search-params searchParams)]
-    (with-out-str
-      (print-json (hash-map 
-                    "piece-composer" (search-composer processedSearchParams)
-                    "piece-subtitle" (search-subtitle processedSearchParams)
-                    "piece-type_ordinal" (search-piece-type_ordinal processedSearchParams)
-                    "piece-piece_type" (search-piece-piece_type processedSearchParams)
-                    "piece-instrumentations__instruments" (search-piece-instruments processedSearchParams)
-                    "piece-instrumentations" (search-piece-instrumentations processedSearchParams)
-                    "piece-music_key" (search-piece-music-key processedSearchParams)
-                    "piece-catalog__name" (search-piece-catalog-name processedSearchParams)
-                    "piece-catalog__number" (search-piece-catalog-number processedSearchParams)
-                    "piece-type+instrumentation" (search-piece-type+instrumentation processedSearchParams)
-                    "piece-publication_date" (search-piece-publication-date processedSearchParams)
-                    
-                    "performance-location" (search-performance-location processedSearchParams)
-                    "performance-date" (search-performance-date processedSearchParams)
-                    "performance-instrumentation__allocated_instruments__performers" (search-performance-performers processedSearchParams)
-                    
-                    "recording-label" (search-label processedSearchParams)
-                    "recording-type" (search-recording-type processedSearchParams))))))
+    (json-str (hash-map 
+                "piece-composer" (search-composer processedSearchParams)
+                "piece-subtitle" (search-subtitle processedSearchParams)
+                "piece-type_ordinal" (search-piece-type_ordinal processedSearchParams)
+                "piece-piece_type" (search-piece-piece_type processedSearchParams)
+                "piece-instrumentations__instruments" (search-piece-instruments processedSearchParams)
+                "piece-instrumentations" (search-piece-instrumentations processedSearchParams)
+                "piece-music_key" (search-piece-music-key processedSearchParams)
+                "piece-catalog__name" (search-piece-catalog-name processedSearchParams)
+                "piece-catalog__number" (search-piece-catalog-number processedSearchParams)
+                "piece-type+instrumentation" (search-piece-type+instrumentation processedSearchParams)
+                "piece-publication_date" (search-piece-publication-date processedSearchParams)
+                
+                "performance-location" (search-performance-location processedSearchParams)
+                "performance-date" (search-performance-date processedSearchParams)
+                "performance-instrumentation__allocated_instruments__performers" (search-performance-performers processedSearchParams)
+                
+                "recording-label" (search-label processedSearchParams)
+                "recording-type" (search-recording-type processedSearchParams)))))
 
 (defn doSearch [conf-file searchParams]
   (sql/with-connection (load-file conf-file)

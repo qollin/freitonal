@@ -1,7 +1,8 @@
 package de.cr.freitonal.client;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.cr.freitonal.client.event.OldDFA;
@@ -16,7 +17,7 @@ import de.cr.freitonal.client.widgets.piece.PiecePresenter;
 public class AppController {
 	private final PiecePresenter piecePresenter;
 	private RPCService rpcService;
-	private final HandlerManager eventBus = new HandlerManager(null);
+	private final EventBus eventBus = new SimpleEventBus();
 	private OldDFA oldDFA;
 	private PieceSearchMask currentPieceSearchMask;
 

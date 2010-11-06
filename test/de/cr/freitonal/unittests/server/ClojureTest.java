@@ -36,10 +36,12 @@ public class ClojureTest {
 		try {
 			@SuppressWarnings("rawtypes")
 			Map map = (Map) runTests.invoke(testPackage);
-			if ((map.get(":fail") != null && (Integer) map.get(":fail") > 0) || (map.get(":error") != null && (Integer) map.get(":error") > 0)) {
+			if (map == null || (map.get(":fail") != null && (Integer) map.get(":fail") > 0)
+					|| (map.get(":error") != null && (Integer) map.get(":error") > 0)) {
 				fail();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			fail("an exception was thrown: " + e);
 		}
 	}

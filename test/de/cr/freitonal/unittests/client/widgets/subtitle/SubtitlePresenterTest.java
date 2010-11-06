@@ -5,13 +5,12 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.event.shared.HandlerManager;
-
 import de.cr.freitonal.client.models.SubtitleSet;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.unittests.client.widgets.PresenterTest;
 
-public class SubtitlePresenterTest {
+public class SubtitlePresenterTest extends PresenterTest {
 	private SubtitlePresenter subtitlePresenter;
 
 	private static final Item Eroica = new Item("Eroica", "Eroica");
@@ -21,7 +20,7 @@ public class SubtitlePresenterTest {
 	@Before
 	public void setUp() {
 		SubtitlePresenter.View view = new SubtitleViewMock();
-		subtitlePresenter = new SubtitlePresenter(new HandlerManager(null), view);
+		subtitlePresenter = new SubtitlePresenter(eventBus, view);
 		SubtitleSet subtitleSet = new SubtitleSet(Eroica, Waldstein, Rasumovsky);
 		subtitlePresenter.setItems(subtitleSet);
 	}

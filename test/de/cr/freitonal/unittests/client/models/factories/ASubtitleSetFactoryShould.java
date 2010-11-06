@@ -1,13 +1,13 @@
-package de.cr.freitonal.client.models.factories;
+package de.cr.freitonal.unittests.client.models.factories;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import de.cr.freitonal.client.models.SubtitleSet;
+import de.cr.freitonal.client.models.factories.SubtitleSetFactory;
 import de.cr.freitonal.client.rpc.dto.DTOObject;
 import de.cr.freitonal.shared.models.Item;
-import de.cr.freitonal.unittests.client.models.factories.FactoryTest;
 
 public class ASubtitleSetFactoryShould extends FactoryTest {
 

@@ -3,19 +3,18 @@ package de.cr.freitonal.client.event;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.GwtEvent.Type;
-
 
 public class OldDFA {
 	private final State initialState;
 	private State currentState;
-	private final HandlerManager eventBus;
+	private final EventBus eventBus;
 	private final HashSet<Type<?>> registeredEventTypes = new HashSet<Type<?>>();
 	private final HashMap<State, HashMap<Type<?>, State>> transitions = new HashMap<State, HashMap<Type<?>, State>>();
 
-	public OldDFA(State initialState, HandlerManager eventBus) {
+	public OldDFA(State initialState, EventBus eventBus) {
 		this.initialState = initialState;
 		this.eventBus = eventBus;
 		currentState = initialState;

@@ -1,6 +1,6 @@
 package de.cr.freitonal.client.widgets.composer;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
 
@@ -10,7 +10,7 @@ public class ComposerPresenter extends ScalarPresenter {
 
 	}
 
-	public ComposerPresenter(HandlerManager eventBus, View view) {
+	public ComposerPresenter(EventBus eventBus, View view) {
 		super(eventBus, view);
 	}
 }

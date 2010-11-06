@@ -2,7 +2,7 @@ package de.cr.freitonal.client.widgets.base;
 
 import java.util.ArrayList;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.shared.models.Item;
@@ -11,7 +11,7 @@ public abstract class CompositePresenter extends BasePresenter {
 	private final ArrayList<SelectablePresenter> presenters = new ArrayList<SelectablePresenter>();
 	private final ArrayList<View> views = new ArrayList<View>();
 
-	protected CompositePresenter(HandlerManager eventBus) {
+	protected CompositePresenter(EventBus eventBus) {
 		super(eventBus);
 	}
 

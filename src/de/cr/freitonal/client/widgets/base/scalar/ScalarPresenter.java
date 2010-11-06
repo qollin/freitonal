@@ -1,6 +1,6 @@
 package de.cr.freitonal.client.widgets.base.scalar;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasText;
 
 import de.cr.freitonal.client.event.DisplayMode;
@@ -22,7 +22,7 @@ public class ScalarPresenter extends BasePresenter {
 	@SuppressWarnings("unused")
 	private View view;
 
-	public ScalarPresenter(HandlerManager eventBus, View view) {
+	public ScalarPresenter(EventBus eventBus, View view) {
 		super(eventBus);
 		this.view = view;
 		this.listBoxPresenter = new SearchFieldPresenter(eventBus, view.getListBoxView());

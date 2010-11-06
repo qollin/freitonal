@@ -9,13 +9,11 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.event.shared.HandlerManager;
-
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.SelectablePresenter;
+import de.cr.freitonal.unittests.client.widgets.PresenterTest;
 
-public class ACompositePresenterWithTwoSubPresentersShould {
-	private final HandlerManager eventBus = new HandlerManager(null);
+public class ACompositePresenterWithTwoSubPresentersShould extends PresenterTest {
 	private CompositePresenter compositePresenter;
 	private final SelectablePresenter selectablePresenter1 = new SelectablePresenterMock();
 	private final SelectablePresenter selectablePresenter2 = new SelectablePresenterMock();

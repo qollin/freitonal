@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.SearchFieldChangedHandler;
 
 public class PresenterTest {
-	protected final HandlerManager eventBus = new HandlerManager(null);
+	protected final EventBus eventBus = new SimpleEventBus();
 	protected final ArrayList<String> trace = new ArrayList<String>();
 
 	@Before

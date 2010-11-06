@@ -1,3 +1,4 @@
+(def *debug* false)
 (ns de.cr.freitonal.server.search-test
   (:use [de.cr.freitonal.server.search])
   (:use [de.cr.freitonal.server.tools])
@@ -6,8 +7,8 @@
   (:use [de.cr.freitonal.server.javainterop])
   
   (:use [clojure.contrib.sql :as sql :only ()])
-  (:use [clojure.contrib.json.read :only (read-json)])
-  (:use [clojure.contrib.json.write :only (print-json)])
+  (:use [clojure.contrib.json :only (read-json)])
+  (:use [clojure.contrib.json :only (print-json)])
   (:use	[clojure.contrib.duck-streams :only (slurp*)])
   (:use [clojure.test])
   (:use [clojure.set])
@@ -16,20 +17,6 @@
                                           VolatileItem 
                                           VolatileInstrumentation
                                           VolatilePiecePlusInstrumentationType)))
-
-(defn db-run [fun]
-  (sql/with-connection (load-file "conf/db-test.clj") 
-    (let [result (fun)]
-      result)))
-
-(defn search-and-verify-results [searchParams resultFile]
-  (let [full-search-json (read-json (slurp* (str "test/de/cr/freitonal/unittests/client/test/data/" resultFile ".json")))
-        search-result (read-json (search searchParams))]
-    (doseq [key (filter #(not (or (= % "piece") (= % "recording") (= % "performance"))) (keys full-search-json))]
-      (is (= (count (full-search-json key)) (count (search-result key))) 
-        (str "comparison for " key " failed: different lengths"))
-      (is (= (set (full-search-json key)) (set (search-result key)))
-        (str "comparison for " key " failed: sets are not equal: " (difference (set (full-search-json key)) (set (search-result key))))))))
 
 (deftest test-add-search-clause []
   (is (= {:where " AND piece.composer_id IN (?, ?)"
@@ -76,36 +63,6 @@
            :where "a.b = b.id"}
            {"piece-composer" ["1", "2"]}))))
 
-(deftest full-search []
-  (search-and-verify-results {} "fullSearch"))
-
-(deftest search-for-beethoven []
-  (search-and-verify-results {"piece-composer" ["1"]} "searchForBeethoven"))
-
-(deftest search-for-piano []
-  (search-and-verify-results {"piece-instrumentations__instrument" ["4"]} "searchForPiano"))
-
-(deftest search-for-quartett []
-  (search-and-verify-results {"piece-piece_type" ["1"]} "searchForQuartett"))
-
-(deftest search-for-opus []
-  (search-and-verify-results {"piece-catalog__name" ["1"]} "searchForOpus"))
-
-(deftest search-for-opus-10-2 []
-  (search-and-verify-results {"piece-catalog__name" ["1"] "piece-catalog__number" ["85"]} "searchForOpus10-2"))
-
-(deftest search-for-eroica []
-  (search-and-verify-results {"piece-subtitle" ["Eroica"]} "searchForEroica"))
-
-(deftest search-for-ordinal4a []
-  (search-and-verify-results {"piece-type_ordinal" ["4a"]} "searchForOrdinal4a"))
-
-(deftest search-for-amajor []
-  (search-and-verify-results {"piece-music_key" ["31"]} "searchForAMajor"))
-
-(deftest search-for-piano-and-violin []
-  (search-and-verify-results {"piece-instrumentations__instrument" ["4", "1"]} "searchForPianoAndViolin"))
-
 (deftest search-for-violin-and-violin []
   (dbtest "test that searching for two violins does not find an instrumentation with one violin"
     (let [violin (insert-instrument (VolatileItem. "Violin"))
@@ -121,7 +78,7 @@
           pieceB (insert-piece (VolatilePiece. composerB instrumentationB))
           
           ;do the search:
-          searchResult (read-json (search {"piece-instrumentations__instrument" [(.getID violin), (.getID violin)]}))]
+          searchResult (read-json (search {"piece-instrumentations__instrument" [(.getID violin), (.getID violin)]}) false)]
       (is (= 1 (count (searchResult "piece-composer"))))
       (is (= (.getID composerB) (str (first (first (searchResult "piece-composer")))))))))
 
@@ -133,7 +90,7 @@
           piecetype (insert-piecetype (VolatileItem. "Sonate"))
           piece (insert-piece (VolatilePiece. composer instrumentation piecetype))
           piece+instrumentation-type (insert-piece+instrumentation-type (VolatilePiecePlusInstrumentationType. "Violinsonate" piecetype instrumentation))
-          searchResult (read-json (search {}))]
+          searchResult (read-json (search {}) false)]
       (is (= 1 (count (searchResult "piece-type+instrumentation"))))
       (is (= (.getID piece+instrumentation-type) (str (first (first (searchResult "piece-type+instrumentation")))))))))
 
@@ -145,7 +102,7 @@
           instrumentation (insert-instrumentation (VolatileInstrumentation. "violin piano combo" (create-ArrayList violin piano)))
           piece (insert-piece (VolatilePiece. composer instrumentation))
           jsonResult (search {})
-          searchResult (read-json jsonResult)]
+          searchResult (read-json jsonResult false)]
       (is (= 1 (count (searchResult "piece-instrumentations"))))
       (is (= (.getID instrumentation) (str (get (first (searchResult "piece-instrumentations")) "id"))))
       (is (= [[(.getID violin) (.getValue violin)] [(.getID piano) (.getValue piano)]] 
@@ -157,4 +114,7 @@
                                                                       {:id 2 :nickname "blub" :instruments [[6 "viola"]]}])]
     (is (= 2 (count mergedRecords)))
     (is (= 1 (:id (first mergedRecords))))
-    (is (= [[5 "piano"] [7 "violin"]] (:instruments (first mergedRecords))))))  
+    (is (= [[5 "piano"] [7 "violin"]] (:instruments (first mergedRecords))))))
+
+(comment defn test-ns-hook []
+  (search-for-violin-and-violin))

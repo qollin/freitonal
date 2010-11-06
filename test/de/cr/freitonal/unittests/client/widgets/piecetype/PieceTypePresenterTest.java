@@ -4,33 +4,27 @@ import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Q
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Sonate;
 import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Symphonie;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.event.shared.HandlerManager;
-
 import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedEvent;
 import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedHandler;
 import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.unittests.client.widgets.PresenterTest;
 
-public class PieceTypePresenterTest {
+public class PieceTypePresenterTest extends PresenterTest {
 	private PieceTypePresenter pieceTypePresenter;
-	private HandlerManager eventBus;
-	private ArrayList<String> trace;
 
 	private static final Item StringQuartett = new Item("17", "Streichquartett");
 
 	@Before
 	public void setUp() {
-		trace = new ArrayList<String>();
-
-		eventBus = new HandlerManager(null);
-
 		PieceTypePresenter.View view = new PieceTypeViewMock();
 		pieceTypePresenter = new PieceTypePresenter(eventBus, view);
 
@@ -60,7 +54,6 @@ public class PieceTypePresenterTest {
 			}
 		});
 		pieceTypePresenter.fireOnNewItemSelected(StringQuartett);
-		assertEquals(1, trace.size());
-		assertEquals("onPiecePlusInstrumentationTypeSelected", trace.get(0));
+		assertTrue(trace.contains("onPiecePlusInstrumentationTypeSelected"));
 	}
 }

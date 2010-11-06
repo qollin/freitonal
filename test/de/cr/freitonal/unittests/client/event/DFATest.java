@@ -6,21 +6,23 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.event.shared.UmbrellaException;
 
 import de.cr.freitonal.client.event.OldDFA;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.State;
 
 public class DFATest {
-	private HandlerManager eventBus;
+	private EventBus eventBus;
 	private State a;
 	private State b;
 	private OldDFA oldDFA;
 
 	@Before
 	public void setUp() {
-		eventBus = new HandlerManager(null);
+		eventBus = new SimpleEventBus();
 		a = new State("A");
 		b = new State("B");
 		oldDFA = new OldDFA(a, eventBus);
@@ -35,7 +37,8 @@ public class DFATest {
 		try {
 			eventBus.fireEvent(new SearchFieldChangedEvent());
 			fail("there are no transitions away from B");
-		} catch (IllegalStateException e) {
+		} catch (UmbrellaException e) {
+			assertTrue(e.getCause() instanceof IllegalStateException);
 		}
 	}
 

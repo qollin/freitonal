@@ -1,17 +1,16 @@
 package de.cr.freitonal.client.widgets.base;
 
-import com.google.gwt.event.shared.HandlerManager;
-
+import com.google.gwt.event.shared.EventBus;
 
 public abstract class BasePresenter implements Presenter {
 
-	private final HandlerManager eventBus;
+	private final EventBus eventBus;
 
-	public BasePresenter(HandlerManager eventBus) {
-		this.eventBus = eventBus;
+	public BasePresenter(EventBus eventBus2) {
+		this.eventBus = eventBus2;
 	}
 
-	protected HandlerManager getEventBus() {
+	protected EventBus getEventBus() {
 		return eventBus;
 	}
 }

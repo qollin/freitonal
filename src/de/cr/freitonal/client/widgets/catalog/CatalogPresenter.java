@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
@@ -32,7 +32,7 @@ public class CatalogPresenter extends CompositePresenter {
 		public ListBoxPresenter.View getNumberListBoxView();
 	}
 
-	public CatalogPresenter(HandlerManager eventBus, View view) {
+	public CatalogPresenter(EventBus eventBus, View view) {
 		super(eventBus);
 		this.view = view;
 

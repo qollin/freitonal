@@ -1,12 +1,12 @@
 package de.cr.freitonal.client.widgets.base;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 
 public class SearchFieldPresenter extends ListBoxPresenter {
-	public SearchFieldPresenter(HandlerManager eventBus, View view) {
+	public SearchFieldPresenter(EventBus eventBus, View view) {
 		super(eventBus, view);
 	}
 

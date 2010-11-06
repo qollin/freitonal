@@ -12,13 +12,6 @@
     v1
     (append (conj v1 (first v2)) (rest v2))))
 
-(defn flatten [x]
-  "if x is nil returns an empty list, otherwise returns a recursively flattened list of all elements"
-  (if (nil? x)
-    (list)
-    (let [s? #(instance? clojure.lang.Sequential %)]
-      (filter (complement s?) (tree-seq s? seq x)))))
-
 (defn create-countmap [sequ]
   (loop [sequ* sequ
          countMap (hash-map)]

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
@@ -61,7 +61,7 @@ public class PiecePresenter {
 		public PublicationDatePresenter.View getPublicationDateView();
 	}
 
-	public PiecePresenter(View view, HandlerManager eventBus, RPCService rpcService) {
+	public PiecePresenter(View view, EventBus eventBus, RPCService rpcService) {
 		this.view = view;
 		this.rpcService = rpcService;
 

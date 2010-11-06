@@ -5,13 +5,12 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.gwt.event.shared.HandlerManager;
-
 import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.unittests.client.widgets.PresenterTest;
 
-public class OrdinalPresenterTest {
+public class OrdinalPresenterTest extends PresenterTest {
 	private OrdinalPresenter ordinalPresenter;
 
 	private static final Item one = new Item("1", "1");
@@ -20,7 +19,7 @@ public class OrdinalPresenterTest {
 	@Before
 	public void setUp() {
 		OrdinalPresenter.View view = new OrdinalViewMock();
-		ordinalPresenter = new OrdinalPresenter(new HandlerManager(null), view);
+		ordinalPresenter = new OrdinalPresenter(eventBus, view);
 		OrdinalSet ordinalSet = new OrdinalSet(one, fourA);
 		ordinalPresenter.setItems(ordinalSet);
 	}

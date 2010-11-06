@@ -2,7 +2,7 @@ package de.cr.freitonal.client.widgets.piecetype;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedEvent;
 import de.cr.freitonal.client.models.PieceTypeSet;
@@ -12,7 +12,7 @@ import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
 public class PieceTypePresenter extends ScalarPresenter {
 	private PieceTypeSet pieceTypes;
 
-	public PieceTypePresenter(HandlerManager eventBus, View view) {
+	public PieceTypePresenter(EventBus eventBus, View view) {
 		super(eventBus, view);
 		MultiSourceSearchFieldPresenter searchFieldPresenter = new MultiSourceSearchFieldPresenter(eventBus, view.getListBoxView());
 		setListBoxPresenter(searchFieldPresenter);

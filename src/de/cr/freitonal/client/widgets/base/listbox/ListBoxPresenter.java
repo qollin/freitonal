@@ -13,7 +13,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
 
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
@@ -47,7 +47,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 		void setDisplayMode(DisplayMode mode);
 	}
 
-	public ListBoxPresenter(HandlerManager eventBus, View view) {
+	public ListBoxPresenter(EventBus eventBus, View view) {
 		super(eventBus);
 		this.view = view;
 		bind();

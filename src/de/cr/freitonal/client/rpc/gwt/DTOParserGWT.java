@@ -8,6 +8,6 @@ import de.cr.freitonal.client.rpc.dto.DTOValue;
 public class DTOParserGWT implements DTOParser {
 
 	public DTOValue parse(String jsonString) {
-		return new DTOValueGWT(JSONParser.parse(jsonString));
+		return new DTOValueGWT(JSONParser.parseStrict(jsonString));
 	}
 }

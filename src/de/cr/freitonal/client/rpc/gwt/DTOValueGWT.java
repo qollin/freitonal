@@ -31,4 +31,9 @@ public class DTOValueGWT implements DTOValue {
 	public DTOString isString() {
 		return jsonValue.isString() != null ? new DTOStringGWT(jsonValue.isString()) : null;
 	}
+
+	@Override
+	public String toString() {
+		return jsonValue.toString();
+	}
 }

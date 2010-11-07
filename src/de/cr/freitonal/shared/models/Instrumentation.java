@@ -2,7 +2,11 @@ package de.cr.freitonal.shared.models;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Instrumentation extends VolatileInstrumentation {
+	private static final String SecondLevelSeparator = " und ";
+	private static final String FirstLevelSeparator = ", ";
 	private final String id;
 
 	public Instrumentation(String id, String nickname, Item... instruments) {
@@ -30,4 +34,36 @@ public class Instrumentation extends VolatileInstrumentation {
 		}
 		return id.equals(((Instrumentation) other).id);
 	};
+
+	@Override
+	public String toString() {
+		String nickname = getNickname();
+		if (nickname != null && !nickname.equals("")) {
+			return nickname;
+		} else {
+			ArrayList<Item> instruments = getInstruments();
+			if (instruments.size() == 1) {
+				return instruments.get(0).getValue();
+			} else {
+				int beforeLastPos = instruments.size() - 2;
+				String lastTwoInstruments = StringUtils.join(createValueList(instruments, beforeLastPos, instruments.size()), SecondLevelSeparator);
+				if (instruments.size() == 2) {
+					return lastTwoInstruments;
+				} else {
+					String firstInstruments = StringUtils.join(createValueList(instruments, 0, beforeLastPos), FirstLevelSeparator);
+					return firstInstruments + FirstLevelSeparator + lastTwoInstruments;
+				}
+
+			}
+		}
+	}
+
+	private ArrayList<String> createValueList(ArrayList<Item> items, int from, int to) {
+		ArrayList<String> strings = new ArrayList<String>();
+		for (Item item : items.subList(from, to)) {
+			strings.add(item.getValue());
+		}
+
+		return strings;
+	}
 }

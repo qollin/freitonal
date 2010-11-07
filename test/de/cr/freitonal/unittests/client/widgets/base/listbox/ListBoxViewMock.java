@@ -20,6 +20,9 @@ public class ListBoxViewMock implements View {
 	}
 
 	public ListBoxViewMock(ArrayList<String> trace) {
+		if (trace == null) {
+			throw new IllegalArgumentException("trace must not be null");
+		}
 		this.trace = trace;
 	}
 
@@ -50,8 +53,7 @@ public class ListBoxViewMock implements View {
 	}
 
 	public void setSelectedItem(Item selected) {
-		// TODO Auto-generated method stub
-
+		trace.add("setSelectedItem:" + selected);
 	}
 
 	public HandlerRegistration addChangeHandler(ChangeHandler handler) {

@@ -8,6 +8,9 @@ public class ComposerSetFactory extends AbstractFactory {
 
 	public ComposerSet createComposerSet(DTOObject jsonObject) {
 		DTOArray array = jsonObject.get("piece-composer").isArray();
+		if (array == null) {
+			throw new IllegalArgumentException(jsonObject.get("piece-composer") + " is not an array");
+		}
 		return new ComposerSet(createItemListFromRPCArray(array));
 	}
 }

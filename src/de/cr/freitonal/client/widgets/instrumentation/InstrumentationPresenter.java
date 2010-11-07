@@ -17,9 +17,10 @@ import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedHandler;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
+import de.cr.freitonal.client.event.dfa.Trigger;
+import de.cr.freitonal.client.event.dfa.TriggerParam;
 import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.models.ItemSet;
-import de.cr.freitonal.client.models.ItemSetMultiSelection;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
 import de.cr.freitonal.client.widgets.base.SelectablePresenter;
@@ -58,6 +59,18 @@ public class InstrumentationPresenter extends CompositePresenter {
 				updateItemSetOfInstrument(getPresenter(0), (InstrumentationSet) parameters[0]);
 			}
 		});
+		TriggerParam triggerOnInstrumentationSetWithZeroOrOneItem = new TriggerParam() {
+			public boolean matches(Object[] transitionParameters) {
+				return ((InstrumentationSet) transitionParameters[0]).size() <= 1;
+			}
+		};
+		dfa.addTransitionWithTriggerParam(	"Main", "setInstrumentations", triggerOnInstrumentationSetWithZeroOrOneItem, "DependendView",
+											new AbstractTransitionAction() {
+												@Override
+												public void onTransition(Object[] parameters) {
+													setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
+												}
+											});
 		dfa.addTransition("Main", "setInstrumentations", "Main", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
@@ -104,8 +117,11 @@ public class InstrumentationPresenter extends CompositePresenter {
 		dfa.start("Initial");
 	}
 
-	private ItemSet createBasicItemSetFromItemSetMultiSelection(ItemSetMultiSelection itemSet) {
-		return new ItemSet(itemSet.getItems());
+	private void setDisplayItemOnFirstPresenter(InstrumentationSet instrumentationSet) {
+		Instrumentation instrumentation = instrumentationSet.getInstrumentations().get(0);
+
+		Item displayItem = new Item(instrumentation.getID(), instrumentation.toString());
+		getPresenter(0).setItems(new ItemSet(displayItem));
 	}
 
 	private void updateItemSetOfInstrument(SelectablePresenter instrumentPresenter, InstrumentationSet instrumentationSet) {
@@ -161,7 +177,7 @@ public class InstrumentationPresenter extends CompositePresenter {
 	}
 
 	public void setInstrumentations(InstrumentationSet instrumentationSet) {
-		dfa.transition("setInstrumentations", instrumentationSet);
+		dfa.transition(new Trigger("setInstrumentations", instrumentationSet), instrumentationSet);
 	}
 
 	public ListBoxPresenter getInstrumentPresenter(int i) {

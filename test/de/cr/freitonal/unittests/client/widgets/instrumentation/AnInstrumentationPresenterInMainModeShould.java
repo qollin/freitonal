@@ -18,8 +18,15 @@ public class AnInstrumentationPresenterInMainModeShould extends InstrumentationP
 	}
 
 	@Test
-	public void StayInMainStateWhenGivenANewInstrumentationSet() {
-		instrumentationPresenter.setInstrumentations(createInstrumentationSet(1));
+	public void StayInMainStateWhenGivenANewInstrumentationSetWithTwoInstrumentations() {
+		instrumentationPresenter.setInstrumentations(createInstrumentationSet(2));
 		assertEquals("Main", instrumentationPresenter.getDFA().getState());
 	}
+
+	@Test
+	public void SwitchToDependendViewModeWhenGivenAnInstrumentationSetWithOneInstrumentation() {
+		instrumentationPresenter.setInstrumentations(createInstrumentationSet(1));
+		assertEquals("DependendView", instrumentationPresenter.getDFA().getState());
+	}
+
 }

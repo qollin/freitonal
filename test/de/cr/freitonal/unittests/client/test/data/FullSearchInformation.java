@@ -33,6 +33,7 @@ public class FullSearchInformation {
 
 	public static final Item Piano = new Item("4", "Klavier");
 	public static final Item Violin = new Item("1", "Violine");
+	public static final Item Oboe = new Item("17", "Oboe");
 
 	public static final Instrumentation InstrumentationPiano = new Instrumentation("13", "solo piano", Piano);
 	public static final Instrumentation InstrumentationViolinPlusPiano = new Instrumentation("14", "violin + piano", Violin, Piano);

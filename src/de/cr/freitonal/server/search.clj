@@ -44,10 +44,9 @@
      :where (str " AND piece.catalog_id = classical_catalog.id 
        AND classical_catalog.name_id IN " (create-placeholder-string values))
      :values values}
-    (= searchParam "piece-catalog__number")
-    {:from ["classical_piece piece", "classical_catalog"]
-     :where (str " AND piece.catalog_id = classical_catalog.id
-       AND classical_catalog.ordinal IN " (create-placeholder-string values))
+    (= searchParam "piece-catalog")
+    {:from ["classical_piece piece"]
+     :where (str " AND piece.catalog_id IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-subtitle")
     {:from ["classical_piece piece"]
@@ -85,17 +84,17 @@
     (let [extendedSQL (add-search-clauses sql searchParams)]
       (append [(create-sql-string extendedSQL)] (extendedSQL :values)))))
 
-(defn run-search-query [sql render-fn searchParams & debug]
+(defn run-search-query [sql render-fn searchParams]
   (let [query (create-query sql searchParams)]
     (try
-      (when *debug* (d query))
+      (when (debug) (d query))
       (sql/with-query-results res
         query
         (doall (map render-fn res)))
       (catch Exception e
         (d "something went wrong when executing")
         (d query)
-        (d (.getMessage e))))))
+        (d (.printStackTrace e))))))
 
 (defn process-search-params [searchParams]
   (if (contains? searchParams "piece-instrumentations__instrument")

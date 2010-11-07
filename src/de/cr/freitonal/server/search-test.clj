@@ -1,4 +1,3 @@
-(def *debug* false)
 (ns de.cr.freitonal.server.search-test
   (:use [de.cr.freitonal.server.search])
   (:use [de.cr.freitonal.server.tools])
@@ -22,7 +21,11 @@
   (is (= {:where " AND piece.composer_id IN (?, ?)"
           :from ["classical_piece piece"]
           :values ["1", "2"]}
-        (add-search-clause ["piece-composer" ["1", "2"]]))))
+        (add-search-clause ["piece-composer" ["1", "2"]])))
+  (is (= {:where " AND piece.catalog_id IN (?)" 
+          :from ["classical_piece piece"]
+          :values ["110"]}
+        (add-search-clause ["piece-catalog" ["110"]]))))
 
 (deftest test-combine-search-clauses []
   (is (= {:from ["a" "b"]

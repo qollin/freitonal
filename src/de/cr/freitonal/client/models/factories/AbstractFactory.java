@@ -20,6 +20,10 @@ public abstract class AbstractFactory {
 	protected ArrayList<Item> createItemListFromRPCArray(DTOArray rpcArray) {
 		ArrayList<Item> items = new ArrayList<Item>();
 
+		if (rpcArray == null) {
+			return items;
+		}
+
 		for (int i = 0; i < rpcArray.size(); i++) {
 			String id = forceString(rpcArray.get(i).isArray().get(0));
 			String name = rpcArray.get(i).isArray().get(1).isString().stringValue();

@@ -1,6 +1,9 @@
 package de.cr.freitonal.client.rpc;
 
+import java.util.ArrayList;
+
 import de.cr.freitonal.client.models.ItemSet;
+import de.cr.freitonal.client.rpc.factories.CatalogHTTPParameterFactory;
 import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
@@ -36,15 +39,10 @@ public class JSONFactory {
 	}
 
 	private void catalogToHTTPParameter() {
-		Item number = searchMask.getCatalogs().getNumbers().getSelected();
-		if (number != null) {
-			addHTTPParameter("piece-catalog", number.getID());
-		} else {
-			Item name = searchMask.getCatalogs().getNames().getSelected();
-			if (name != null) {
-				addHTTPParameter("piece-catalog__name", name.getID());
-			}
-		}
+		CatalogHTTPParameterFactory factory = new CatalogHTTPParameterFactory(urlEncoder);
+		ArrayList<String> httpParams = factory.createHTTPParameters(searchMask.getCatalogs());
+		addHTTPParameters(httpParams);
+
 	}
 
 	private void composerToHTTPParameter() {
@@ -70,8 +68,18 @@ public class JSONFactory {
 		}
 	}
 
+	private void addHTTPParameters(ArrayList<String> httpParameters) {
+		for (String httpParameter : httpParameters) {
+			addHTTPParameter(httpParameter);
+		}
+	}
+
 	private void addHTTPParameter(String key, String value) {
-		parameters += (firstParameter ? "?" : "&") + urlEncoder.encodeParam(key) + "=" + urlEncoder.encodeParam(value);
+		addHTTPParameter(urlEncoder.encodeParam(key) + "=" + urlEncoder.encodeParam(value));
+	}
+
+	private void addHTTPParameter(String httpParameter) {
+		parameters += (firstParameter ? "?" : "&") + httpParameter;
 		firstParameter = false;
 	}
 

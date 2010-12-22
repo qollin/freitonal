@@ -19,18 +19,18 @@ public class AListBoxPresenterAfterInitialLoadingShould extends ListBoxPresenter
 	@Before
 	public void setupListBoxPresenterAfterInitialLoading() {
 		listBoxPresenter = new ListBoxPresenter(eventBus, view);
-		listBoxPresenter.setItems(twoElementItemSet);
+		listBoxPresenter.setItemSet(twoElementItemSet);
 	}
 
 	@Test
 	public void CallSetDisplayModeWhenGivenAnEmptyItemSet() {
-		listBoxPresenter.setItems(new ItemSet());
+		listBoxPresenter.setItemSet(new ItemSet());
 		assertTrue(trace + " does not contain the call to setDisplayMode", trace.contains("setDisplayMode:" + DependendView));
 	}
 
 	@Test
 	public void CallSetDisplayModeWhenGivenASingleItemItemSet() {
-		listBoxPresenter.setItems(oneElementItemSet);
+		listBoxPresenter.setItemSet(oneElementItemSet);
 
 		assertTrue(trace + " does not contain the call to setDisplayMode", trace.contains("setDisplayMode:" + DependendView));
 	}

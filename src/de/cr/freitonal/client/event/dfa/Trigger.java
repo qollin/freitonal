@@ -19,7 +19,7 @@ public class Trigger {
 
 	@Override
 	public String toString() {
-		return getTriggerString() + "-" + (getTriggerParam() != null ? getTriggerParam().toString() : "");
+		return getTriggerString() + "-" + (triggerParam != null ? triggerParam.toString() : "");
 	};
 
 	@Override

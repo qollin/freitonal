@@ -2,6 +2,7 @@ package de.cr.freitonal.unittests.client.widgets.base.listbox;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
 import static de.cr.freitonal.client.event.DisplayMode.View;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -16,7 +17,7 @@ public class AListBoxPresenterInViewModeShould extends ListBoxPresenterTest {
 	public void setupListBoxPresenterInViewMode() {
 		listBoxPresenter = new ListBoxPresenter(null, view);
 
-		listBoxPresenter.setItems(twoElementItemSet);
+		listBoxPresenter.setItemSet(twoElementItemSet);
 		listBoxPresenter.fireOnNewItemSelected(secondItem);
 	}
 
@@ -24,5 +25,11 @@ public class AListBoxPresenterInViewModeShould extends ListBoxPresenterTest {
 	public void SwitchToCreateModeWhenTheSetDisplayModeIsCalled() {
 		listBoxPresenter.setDisplayMode(Create);
 		assertTrue(trace.contains("setDisplayMode:" + View));
+	}
+
+	@Test
+	public void SaveAGivenItemSet() {
+		listBoxPresenter.setItemSet(oneElementItemSet);
+		assertEquals(oneElementItemSet, listBoxPresenter.getCurrentItemSet());
 	}
 }

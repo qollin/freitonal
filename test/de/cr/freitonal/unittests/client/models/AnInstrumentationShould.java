@@ -1,8 +1,8 @@
 package de.cr.freitonal.unittests.client.models;
 
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Oboe;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Violin;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Oboe;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Piano;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Violin;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

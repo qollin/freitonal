@@ -17,7 +17,7 @@ public class ASearchFieldPresenterAfterInitialLoadingShould extends ListBoxPrese
 	@Before
 	public void setUp() {
 		presenter = new SearchFieldPresenter(eventBus, view);
-		presenter.setItems(oneElementItemSet);
+		presenter.setItemSet(oneElementItemSet);
 	}
 
 	@Test

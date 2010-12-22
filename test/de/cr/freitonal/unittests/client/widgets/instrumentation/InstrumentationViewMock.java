@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 
-import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.unittests.client.event.HasClickHandlersMock;
 import de.cr.freitonal.unittests.client.widgets.base.listbox.ListBoxViewMock;
@@ -21,11 +21,15 @@ public class InstrumentationViewMock implements InstrumentationPresenter.View {
 		this.trace = new ArrayList<String>();
 	}
 
-	public SearchFieldPresenter.View addInstrumentList() {
+	public IListBoxView addInstrumentList() {
 		return new ListBoxViewMock(trace);
 	}
 
 	public HasClickHandlers getAddInstrumentButton() {
 		return addInstrumentButtonMock;
+	}
+
+	public void setAddInstrumentButtonVisible(boolean visible) {
+		trace.add("setAddInstrumentButtonVisible:" + visible);
 	}
 }

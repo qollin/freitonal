@@ -2,7 +2,7 @@ package de.cr.freitonal.shared.models;
 
 import java.util.ArrayList;
 
-import org.apache.commons.lang.StringUtils;
+import de.cr.freitonal.client.utils.StringUtils;
 
 public class Instrumentation extends VolatileInstrumentation {
 	private static final String SecondLevelSeparator = " und ";
@@ -38,23 +38,27 @@ public class Instrumentation extends VolatileInstrumentation {
 	@Override
 	public String toString() {
 		String nickname = getNickname();
-		if (nickname != null && !nickname.equals("")) {
+		if (StringUtils.isNotEmpty(nickname)) {
 			return nickname;
 		} else {
-			ArrayList<Item> instruments = getInstruments();
-			if (instruments.size() == 1) {
-				return instruments.get(0).getValue();
-			} else {
-				int beforeLastPos = instruments.size() - 2;
-				String lastTwoInstruments = StringUtils.join(createValueList(instruments, beforeLastPos, instruments.size()), SecondLevelSeparator);
-				if (instruments.size() == 2) {
-					return lastTwoInstruments;
-				} else {
-					String firstInstruments = StringUtils.join(createValueList(instruments, 0, beforeLastPos), FirstLevelSeparator);
-					return firstInstruments + FirstLevelSeparator + lastTwoInstruments;
-				}
+			return renderInstruments();
+		}
+	}
 
+	private String renderInstruments() {
+		ArrayList<Item> instruments = getInstruments();
+		if (instruments.size() == 1) {
+			return instruments.get(0).getValue();
+		} else {
+			int beforeLastPos = instruments.size() - 2;
+			String lastTwoInstruments = StringUtils.join(createValueList(instruments, beforeLastPos, instruments.size()), SecondLevelSeparator);
+			if (instruments.size() == 2) {
+				return lastTwoInstruments;
+			} else {
+				String firstInstruments = StringUtils.join(createValueList(instruments, 0, beforeLastPos), FirstLevelSeparator);
+				return firstInstruments + FirstLevelSeparator + lastTwoInstruments;
 			}
+
 		}
 	}
 

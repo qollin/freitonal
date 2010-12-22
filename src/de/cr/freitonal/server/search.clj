@@ -1,6 +1,7 @@
 (ns de.cr.freitonal.server.search
   (:use [de.cr.freitonal.server.tools])
-  (:use [de.cr.freitonal.server.javainterop])
+  (:use [de.cr.freitonal.server.javainterop])  
+  (:use [de.cr.freitonal.server.render])
   
   (:use [clojure.contrib.sql :as sql :only ()])
   (:use [clojure.contrib.json :only (json-str)]))
@@ -76,7 +77,9 @@
 (defn create-sql-string [sql]
   (str "SELECT " (sql :select)
     " FROM " (apply str (interpose ", " (sql :from)))
-    " WHERE " (sql :where)))
+    " WHERE " (sql :where)
+    (if (sql :order)
+      (str " ORDER BY " (sql :order)))))
 
 (defn create-query [sql searchParams]
   (if (empty? searchParams)
@@ -87,7 +90,7 @@
 (defn run-search-query [sql render-fn searchParams]
   (let [query (create-query sql searchParams)]
     (try
-      (when (debug) (d query))
+      (comment (d query))
       (sql/with-query-results res
         query
         (doall (map render-fn res)))
@@ -244,8 +247,8 @@
                              :where "classical_piece_instrumentations.piece_id = piece.id
                                AND classical_piece_instrumentations.instrumentation_id = classical_instrumentation.id
                                AND instruments.instrumentation_id = classical_instrumentation.id
-                               AND instruments.instrument_id = instrument.id
-                               ORDER BY instruments.ordinal"}
+                               AND instruments.instrument_id = instrument.id"
+                             :order "instruments.ordinal"}
                             render-instrumentation searchParams)]
     (merge-instrumentRecords-into-instrumentations instrumentRecords)))
 
@@ -265,7 +268,9 @@
     render-name searchParams))
 
 (defn render-catalog-number [rec]
-  (vector (:id rec) (str (:ordinal rec) (if (re-matches #"[^ ]" (:sub_ordinal rec)) (str "-" (:sub_ordinal rec))))))
+  (vector 
+    (:id rec) 
+    (create-string-from-ordinal-and-subordinal (:ordinal rec) (:sub_ordinal rec)))) 
 
 (defn search-piece-catalog-number [searchParams]
   (run-search-query
@@ -273,7 +278,8 @@
      :from ["classical_catalog", "classical_piece piece"] 
      :where "piece.catalog_id = classical_catalog.id
        AND classical_catalog.ordinal IS NOT NULL
-       AND classical_catalog.ordinal <> ''"}
+       AND classical_catalog.ordinal <> ''"
+     :order "classical_catalog.ordinal, classical_catalog.sub_ordinal"}
     render-catalog-number searchParams))
 
 (defn search-piece-type+instrumentation [searchParams]

@@ -22,6 +22,7 @@ public class RPCServiceImpl implements RPCService {
 		modelFactory = new ModelFactory(parser);
 	}
 
+	@Override
 	public void search(final PieceSearchMask searchMask, final AsyncCallback<SearchResult> callback) {
 		String url = urlEncoder.encode("/search");
 		if (searchMask != null) {
@@ -77,4 +78,5 @@ public class RPCServiceImpl implements RPCService {
 	public void setModelFactory(ModelFactory modelFactory) {
 		this.modelFactory = modelFactory;
 	}
+
 }

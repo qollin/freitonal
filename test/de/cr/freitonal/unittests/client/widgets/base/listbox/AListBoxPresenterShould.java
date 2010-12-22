@@ -12,8 +12,8 @@ public class AListBoxPresenterShould extends ListBoxPresenterTest {
 	public void ReturnTheDependendViewDisplayModeWhenInThatState() {
 		ListBoxPresenter listBoxPresenter = new ListBoxPresenter(null, view);
 
-		listBoxPresenter.setItems(twoElementItemSet);
-		listBoxPresenter.setItems(oneElementItemSet);
+		listBoxPresenter.setItemSet(twoElementItemSet);
+		listBoxPresenter.setItemSet(oneElementItemSet);
 
 		assertEquals(DependendView, listBoxPresenter.getDisplayMode());
 	}

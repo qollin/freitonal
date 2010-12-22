@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.shared.models.Item;
 
-public class ListBoxView extends Composite implements ListBoxPresenter.View {
+public class ListBoxView extends Composite implements IListBoxView {
 	interface Binder extends UiBinder<HTMLPanel, ListBoxView> {
 	}
 

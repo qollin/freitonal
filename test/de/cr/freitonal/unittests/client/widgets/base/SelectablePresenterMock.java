@@ -28,7 +28,7 @@ public class SelectablePresenterMock implements SelectablePresenter {
 		return null;
 	}
 
-	public void setItems(ItemSet instruments) {
+	public void setItemSet(ItemSet instruments) {
 		// TODO Auto-generated method stub
 
 	}

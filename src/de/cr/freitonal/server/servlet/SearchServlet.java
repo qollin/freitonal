@@ -13,7 +13,6 @@ import clojure.lang.RT;
 import clojure.lang.Var;
 
 public class SearchServlet extends HttpServlet {
-	private static File srcDir = new File("../src");
 	private static File confDir = new File("../conf");
 
 	/**

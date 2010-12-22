@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxView;
-import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter.View;
 
 public class InstrumentationView extends Composite implements InstrumentationPresenter.View {
 	interface Binder extends UiBinder<HTMLPanel, InstrumentationView> {
@@ -41,7 +41,7 @@ public class InstrumentationView extends Composite implements InstrumentationPre
 		label.setText(labelText);
 	}
 
-	public View addInstrumentList() {
+	public IListBoxView addInstrumentList() {
 		ListBoxView instrumentList = new ListBoxView();
 		instrumentList.setName(labelText);
 		instrumentLists.add(instrumentList);
@@ -50,11 +50,15 @@ public class InstrumentationView extends Composite implements InstrumentationPre
 		return instrumentList;
 	}
 
-	public View getInstrumentView(int i) {
+	public IListBoxView getInstrumentView(int i) {
 		return instrumentLists.get(i);
 	}
 
 	public HasClickHandlers getAddInstrumentButton() {
 		return addInstrumentButton;
+	}
+
+	public void setAddInstrumentButtonVisible(boolean visible) {
+		addInstrumentButton.setVisible(visible);
 	}
 }

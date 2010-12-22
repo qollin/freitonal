@@ -7,6 +7,7 @@ import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.widgets.base.BasePresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.shared.models.Item;
 
@@ -14,7 +15,7 @@ public class ScalarPresenter extends BasePresenter {
 	private ListBoxPresenter listBoxPresenter;
 
 	public interface View {
-		public ListBoxPresenter.View getListBoxView();
+		public IListBoxView getListBoxView();
 
 		public HasText getLabel();
 	}
@@ -37,7 +38,7 @@ public class ScalarPresenter extends BasePresenter {
 	}
 
 	public void setItems(ItemSet items) {
-		listBoxPresenter.setItems(items);
+		listBoxPresenter.setItemSet(items);
 	}
 
 	public int getItemCount() {

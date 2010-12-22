@@ -1,6 +1,7 @@
 package de.cr.freitonal.unittests.client.models;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,5 +23,12 @@ public class AnItemSetShould {
 	public void ReturnTheCorrectItem() {
 		assertEquals(item1, itemSet.getItem(0));
 		assertEquals(item2, itemSet.getItem(1));
+	}
+
+	@Test
+	public void AllowRemovingTheSelection() {
+		itemSet.setSelected(item1);
+		itemSet.removeSelection();
+		assertNull(itemSet.getSelected());
 	}
 }

@@ -1,14 +1,13 @@
 package de.cr.freitonal.shared.models;
 
-import de.cr.freitonal.client.models.Catalog;
-
 public class VolatilePiece {
 	private Item composer;
-	public Catalog catalog;
+	private Catalog catalog;
 	public Item musicKey;
 	private Item type;
 	public Item subtitle;
 	public Item ordinal;
+	private Piece parent;
 	private VolatileInstrumentation instrumentation;
 
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation) {
@@ -19,6 +18,16 @@ public class VolatilePiece {
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, Item pieceType) {
 		this(composer, instrumentation);
 		this.type = pieceType;
+	}
+
+	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, Catalog catalog) {
+		this(composer, instrumentation);
+		this.setCatalog(catalog);
+	}
+
+	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, Catalog catalog, Piece parent) {
+		this(composer, instrumentation, catalog);
+		this.parent = parent;
 	}
 
 	public VolatilePiece() {
@@ -67,5 +76,21 @@ public class VolatilePiece {
 
 	public void setPieceType(Item pieceType) {
 		this.type = pieceType;
+	}
+
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
+	}
+
+	public Catalog getCatalog() {
+		return catalog;
+	}
+
+	public void setParent(Piece parent) {
+		this.parent = parent;
+	}
+
+	public Piece getParent() {
+		return parent;
 	}
 }

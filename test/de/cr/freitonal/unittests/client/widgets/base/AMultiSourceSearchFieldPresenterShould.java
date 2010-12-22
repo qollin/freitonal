@@ -19,7 +19,7 @@ public class AMultiSourceSearchFieldPresenterShould extends ListBoxPresenterTest
 
 	@Test
 	public void RetainTheSourceOfTheSelectedItem() {
-		presenter.setItems(new MultiSourceItemSet(oneElementItemSet, twoElementItemSet));
+		presenter.setItemSet(new MultiSourceItemSet(oneElementItemSet, twoElementItemSet));
 
 		presenter.fireOnNewItemSelected(secondItem);
 		assertEquals(secondItem, presenter.getSelectedItem());

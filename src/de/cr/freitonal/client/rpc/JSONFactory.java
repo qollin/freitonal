@@ -61,8 +61,8 @@ public class JSONFactory {
 		itemSetToHTTPParameter(searchMask.getMusicKeys(), "piece-music_key");
 	}
 
-	private void itemSetToHTTPParameter(ItemSet set, String parameterName) {
-		Item item = set.getSelected();
+	private void itemSetToHTTPParameter(ItemSet itemSet, String parameterName) {
+		Item item = itemSet.getSelected();
 		if (item != null) {
 			addHTTPParameter(parameterName, item.getID());
 		}

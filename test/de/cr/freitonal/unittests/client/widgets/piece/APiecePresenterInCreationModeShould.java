@@ -1,14 +1,14 @@
 package de.cr.freitonal.unittests.client.widgets.piece;
 
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.AMajor;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Eroica;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Opus27_1;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Ordinal4a;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Piano;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Quartett;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.VolatileInstrumentationPianoSolo;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.createPieceMask;
+import static de.cr.freitonal.unittests.client.test.data.TestData.AMajor;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Beethoven;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Eroica;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Opus27_1;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Ordinal4a;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Piano;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Quartett;
+import static de.cr.freitonal.unittests.client.test.data.TestData.VolatileInstrumentationPianoSolo;
+import static de.cr.freitonal.unittests.client.test.data.TestData.createPieceMask;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -45,7 +45,7 @@ public class APiecePresenterInCreationModeShould extends PiecePresenterTest {
 			public void save(VolatilePiece piece) {
 				assertNotNull("the piece to save should not be null", piece);
 				assertEquals("the saved composer should be Beethoven", Beethoven, piece.getComposer());
-				assertEquals("the saved catalog should be Opus 27-1", Opus27_1, piece.catalog);
+				assertEquals("the saved catalog should be Opus 27-1", Opus27_1, piece.getCatalog());
 				assertEquals("the saved musickey should be A major", AMajor, piece.musicKey);
 				assertEquals("the saved piece type should be Quartett", Quartett, piece.getPieceType());
 				assertEquals("the saved subtitle should be Eroica", Eroica, piece.subtitle);

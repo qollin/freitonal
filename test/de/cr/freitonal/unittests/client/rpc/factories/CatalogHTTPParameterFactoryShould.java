@@ -13,7 +13,7 @@ import de.cr.freitonal.client.rpc.URLEncoder;
 import de.cr.freitonal.client.rpc.factories.CatalogHTTPParameterFactory;
 import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.unittests.client.rpc.URLEncoderMock;
-import de.cr.freitonal.unittests.client.test.data.FullSearchInformation;
+import de.cr.freitonal.unittests.client.test.data.TestData;
 
 public class CatalogHTTPParameterFactoryShould {
 	private URLEncoder urlEncoder;
@@ -26,7 +26,7 @@ public class CatalogHTTPParameterFactoryShould {
 	public void setupCatalogHTTPParameterFactory() {
 		urlEncoder = new URLEncoderMock();
 		factory = new CatalogHTTPParameterFactory(urlEncoder);
-		catalogSet = FullSearchInformation.createCatalogSet();
+		catalogSet = TestData.createCatalogSet();
 		name = catalogSet.getNames().getItem(0);
 		number = catalogSet.getNumbers().getItem(0);
 	}

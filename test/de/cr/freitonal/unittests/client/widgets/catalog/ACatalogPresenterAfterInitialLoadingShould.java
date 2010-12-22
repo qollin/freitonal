@@ -1,5 +1,6 @@
 package de.cr.freitonal.unittests.client.widgets.catalog;
 
+import static de.cr.freitonal.unittests.client.test.data.TestData.createCatalogSet;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;
@@ -8,11 +9,10 @@ import static junit.framework.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 
 public class ACatalogPresenterAfterInitialLoadingShould extends CatalogPresenterTest {
-	private CatalogPresenter catalogPresenter;
-
 	@Before
 	public void setupCatalogPresenterAfterInitialLoading() {
 		catalogPresenter = new CatalogPresenter(eventBus, view);
@@ -40,6 +40,13 @@ public class ACatalogPresenterAfterInitialLoadingShould extends CatalogPresenter
 	@Test
 	public void ShouldEnableTheNumberDropdownAfterANameWasSelected() {
 		catalogPresenter.getNameListBoxPresenter().fireOnNewItemSelected(catalogs.getNames().getItem(0));
+		assertTrue("After selecting a name, the number dropdown should be enabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
+	}
+
+	@Test
+	public void ShouldEnableTheNumberDropdownAfterASingleNameWasGivenViaSetCatalogs() {
+		CatalogSet oneCatalog = createCatalogSet(1);
+		catalogPresenter.setCatalogs(oneCatalog);
 		assertTrue("After selecting a name, the number dropdown should be enabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
 	}
 }

@@ -13,11 +13,12 @@ import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
 import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
 import de.cr.freitonal.client.event.dfa.Trigger;
-import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
+import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Item;
 
 public class CatalogPresenter extends CompositePresenter {
@@ -27,9 +28,9 @@ public class CatalogPresenter extends CompositePresenter {
 	private final DFA dfa = new DFA();
 
 	public interface View {
-		public ListBoxPresenter.View getNameListBoxView();
+		public IListBoxView getNameListBoxView();
 
-		public ListBoxPresenter.View getNumberListBoxView();
+		public IListBoxView getNumberListBoxView();
 	}
 
 	public CatalogPresenter(EventBus eventBus, View view) {
@@ -74,8 +75,13 @@ public class CatalogPresenter extends CompositePresenter {
 	}
 
 	public void setCatalogs(CatalogSet catalogs) {
-		nameListBoxPresenter.setItems(catalogs.getNames());
-		numberListBoxPresenter.setItems(catalogs.getNumbers());
+		nameListBoxPresenter.setItemSet(catalogs.getNames());
+
+		if (nameListBoxPresenter.isInAViewMode()) {
+			numberListBoxPresenter.setEnabled(true);
+		}
+
+		numberListBoxPresenter.setItemSet(catalogs.getNumbers());
 	}
 
 	public int getNameItemCount() {
@@ -95,14 +101,17 @@ public class CatalogPresenter extends CompositePresenter {
 	}
 
 	public void fireOnNewItemSelected(Catalog catalog) {
-		nameListBoxPresenter.fireOnNewItemSelected(catalog.name);
-		numberListBoxPresenter.fireOnNewItemSelected(catalog.number);
+		nameListBoxPresenter.fireOnNewItemSelected(catalog.getCatalogName());
+		numberListBoxPresenter.fireOnNewItemSelected(catalog.getCatalogNumber());
 	}
 
 	public Catalog getSelectedItem() {
 		ArrayList<Item> items = getSelectedItems();
 
-		return new Catalog(items.get(0), items.get(1));
+		Item name = items.get(0);
+		Item number = items.get(1);
+
+		return new Catalog(name, number);
 	}
 
 	@Override

@@ -1,9 +1,10 @@
 package de.cr.freitonal.unittests.client.widgets.composer;
 
 import static de.cr.freitonal.client.event.DisplayMode.Select;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Beethoven;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.createComposerSet;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Beethoven;
+import static de.cr.freitonal.unittests.client.test.data.TestData.createComposerSet;
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -32,6 +33,12 @@ public class AComposerPresenterInViewModeShould extends ComposerPresenterTest {
 	public void ShowAllItemsWhenTheComposerIsDeselected() {
 		composerPresenter.getListBoxPresenter().fireHandleClickEventOnCloseImage_TEST();
 		assertEquals(createComposerSet().size(), composerPresenter.getItemCount());
+	}
+
+	@Test
+	public void NotHaveAComposerSelectedAfterTheComposerDeselectionWhenASearchIsExecuted() {
+		composerPresenter.getListBoxPresenter().fireHandleClickEventOnCloseImage_TEST();
+		assertNull(composerPresenter.getSelectedItem());
 	}
 
 	@Test

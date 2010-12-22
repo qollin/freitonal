@@ -9,7 +9,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Label;
 
-import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxView;
 
 public class ScalarView extends Composite implements ScalarPresenter.View {
@@ -32,7 +32,7 @@ public class ScalarView extends Composite implements ScalarPresenter.View {
 		list.setName(labelText);
 	}
 
-	public SearchFieldPresenter.View getListBoxView() {
+	public IListBoxView getListBoxView() {
 		return list;
 	}
 

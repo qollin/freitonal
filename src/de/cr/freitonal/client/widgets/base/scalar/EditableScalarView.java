@@ -9,8 +9,8 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Label;
 
-import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
 import de.cr.freitonal.client.widgets.base.listbox.EditableListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 
 public class EditableScalarView extends Composite implements ScalarPresenter.View {
 	interface Binder extends UiBinder<HTMLPanel, EditableScalarView> {
@@ -32,7 +32,7 @@ public class EditableScalarView extends Composite implements ScalarPresenter.Vie
 		list.setName(labelText);
 	}
 
-	public SearchFieldPresenter.View getListBoxView() {
+	public IListBoxView getListBoxView() {
 		return list;
 	}
 

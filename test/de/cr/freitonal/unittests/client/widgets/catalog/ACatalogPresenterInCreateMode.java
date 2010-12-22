@@ -9,10 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
+import de.cr.freitonal.shared.models.Catalog;
+import de.cr.freitonal.shared.models.Item;
 
 public class ACatalogPresenterInCreateMode extends CatalogPresenterTest {
-	private CatalogPresenter catalogPresenter;
-
 	@Before
 	public void setupCatalogPresenterInCreateMode() {
 		catalogPresenter = new CatalogPresenter(eventBus, view);
@@ -44,4 +44,16 @@ public class ACatalogPresenterInCreateMode extends CatalogPresenterTest {
 		assertTrue("After selecting a name, the number dropdown should be enabled", catalogPresenter.getNumberListBoxPresenter().isEnabled());
 	}
 
+	@Test
+	public void ShouldReturnACatalogObjectAfterANameAndNumberHaveBeenChosen() {
+		Item name = catalogs.getNames().getItem(0);
+		Item number = catalogs.getNumbers().getItem(0);
+		catalogPresenter.getNameListBoxPresenter().fireOnNewItemSelected(name);
+		catalogPresenter.getNumberListBoxPresenter().fireOnNewItemSelected(number);
+
+		Catalog selectedCatalog = catalogPresenter.getSelectedItem();
+		assertEquals("catalogs ID should be the ID of the selected number", number.getID(), selectedCatalog.getID());
+		assertEquals("catalogs name should be the selected name", name, selectedCatalog.getCatalogName());
+		assertEquals("catalogs ordinal should be the selected number", number.getValue(), selectedCatalog.getOrdinal());
+	}
 }

@@ -1,31 +1,56 @@
 package de.cr.freitonal.unittests.client.widgets.instrumentation;
 
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.createInstrumentationSet;
+import static de.cr.freitonal.unittests.client.test.data.TestData.createInstrumentationSet;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.shared.models.Item;
 
 public class AnInstrumentationPresenterInDependendViewModeShould extends InstrumentationPresenterTest {
 	private InstrumentationPresenter instrumentationPresenter;
+	private InstrumentationSet oneInstrumentation;
 
-	@Test
-	public void ShowTheGivenInstrumentation() {
+	@Before
+	public void setupInstrumentationPresenterInDependendViewMode() {
 		instrumentationPresenter = new InstrumentationPresenter(eventBus, view);
 		//go to main mode
 		instrumentationPresenter.setInstrumentations(createInstrumentationSet(2));
 
-		InstrumentationSet oneInstrumentation = createInstrumentationSet(1);
-		ArrayList<Item> items = extractDisplayItem(oneInstrumentation);
+		oneInstrumentation = createInstrumentationSet(1);
 		//go to dependend view mode
 		instrumentationPresenter.setInstrumentations(oneInstrumentation);
+	}
 
+	@Test
+	public void ShowTheGivenInstrumentation() {
+		ArrayList<Item> items = extractDisplayItem(oneInstrumentation);
 		assertTrue(trace.toString(), trace.contains("setItems:" + items));
+	}
+
+	@Test
+	public void HideTheAddInstrumentationButton() {
+		assertTrue(trace.toString(), trace.contains("setAddInstrumentButtonVisible:" + false));
+	}
+
+	@Test
+	public void GoToSelectModeWhenSetInstrumentationsIsCalled() {
+		instrumentationPresenter.setInstrumentations(createInstrumentationSet(2));
+		assertEquals(DisplayMode.Select, instrumentationPresenter.getDisplayMode());
+	}
+
+	@Test
+	public void ShowASingleDropDownBoxAfterSetInstrumentationsIsCalled() {
+		instrumentationPresenter.setInstrumentations(createInstrumentationSet(2));
+		assertEquals(1, instrumentationPresenter.getNumberOfInstrumentPresenters());
+		assertEquals(DisplayMode.Select, instrumentationPresenter.getInstrumentPresenter(0).getDisplayMode());
 	}
 
 	private ArrayList<Item> extractDisplayItem(InstrumentationSet instrumentationSet) {

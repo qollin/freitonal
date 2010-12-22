@@ -1,6 +1,5 @@
 package de.cr.freitonal.client.event.dfa;
 
-
 public class Transition implements Comparable<Transition> {
 	private final TriggerParam triggerParam;
 	private final String targetState;
@@ -13,9 +12,9 @@ public class Transition implements Comparable<Transition> {
 	}
 
 	public int compareTo(Transition other) {
-		if (other.getTriggerParam() == null && getTriggerParam() != null) {
+		if (other.triggerParam == null && triggerParam != null) {
 			return -1;
-		} else if (other.getTriggerParam() != null && getTriggerParam() == null) {
+		} else if (other.triggerParam != null && triggerParam == null) {
 			return 1;
 		} else {
 			return 0;

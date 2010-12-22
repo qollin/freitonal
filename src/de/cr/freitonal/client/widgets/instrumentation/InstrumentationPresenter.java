@@ -22,8 +22,8 @@ import de.cr.freitonal.client.event.dfa.TriggerParam;
 import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
-import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
 import de.cr.freitonal.client.widgets.base.SelectablePresenter;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
@@ -34,7 +34,9 @@ public class InstrumentationPresenter extends CompositePresenter {
 	public interface View {
 		HasClickHandlers getAddInstrumentButton();
 
-		SearchFieldPresenter.View addInstrumentList();
+		IListBoxView addInstrumentList();
+
+		void setAddInstrumentButtonVisible(boolean visible);
 	}
 
 	private final View view;
@@ -69,9 +71,10 @@ public class InstrumentationPresenter extends CompositePresenter {
 												@Override
 												public void onTransition(Object[] parameters) {
 													setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
+													hideAddInstrumentButton();
 												}
 											});
-		dfa.addTransition("Main", "setInstrumentations", "Main", new AbstractTransitionAction() {
+		dfa.addTransition(new String[] { "Main", "DependendView" }, "setInstrumentations", "Main", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
 				updateItemSetOfInstrument(getPresenter(0), (InstrumentationSet) parameters[0]);
@@ -117,16 +120,20 @@ public class InstrumentationPresenter extends CompositePresenter {
 		dfa.start("Initial");
 	}
 
+	private void hideAddInstrumentButton() {
+		view.setAddInstrumentButtonVisible(false);
+	}
+
 	private void setDisplayItemOnFirstPresenter(InstrumentationSet instrumentationSet) {
 		Instrumentation instrumentation = instrumentationSet.getInstrumentations().get(0);
 
 		Item displayItem = new Item(instrumentation.getID(), instrumentation.toString());
-		getPresenter(0).setItems(new ItemSet(displayItem));
+		getPresenter(0).setItemSet(new ItemSet(displayItem));
 	}
 
 	private void updateItemSetOfInstrument(SelectablePresenter instrumentPresenter, InstrumentationSet instrumentationSet) {
 		ItemSet instruments = extractInstrumentsFromInstrumentationSet(instrumentationSet);
-		instrumentPresenter.setItems(instruments);
+		instrumentPresenter.setItemSet(instruments);
 	}
 
 	private ItemSet extractInstrumentsFromInstrumentationSet(InstrumentationSet instrumentationSet) {

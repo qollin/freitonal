@@ -1,12 +1,18 @@
 (ns de.cr.freitonal.server.testtools
   (:use [de.cr.freitonal.server.tools])
+  (:use [de.cr.freitonal.server.insert])
+  
   (:use [clojure.test])
   (:use [clojure.contrib.java-utils :only (read-properties)])
   (:use [clojure.contrib.sql :as sql :only ()])
   
   (:import
    (clojure.lang RT)
-   (java.sql DriverManager)))
+   (java.sql DriverManager))
+
+  (:import (de.cr.freitonal.unittests.client.test.data
+             TestData)))
+
 
 (defmacro tables []
   ''(classical_allocatedinstrument
@@ -44,12 +50,21 @@
   (apply sql/do-commands (map #(str "DELETE FROM " %) (tables))))
 
 (defmacro dbtest [description & body]
-  `(sql/with-connection (load-file "conf/db-empty.clj")
+  `(sql/with-connection db
      (delete-all-tables)
-    ~@body))
+     (let [~'opus (insert-catalogname TestData/Opus)
+           ~'opus27-1 (insert-catalog TestData/Opus27_1)
+           ~'beethoven (insert-composer TestData/Beethoven)
+           ~'mozart (insert-composer TestData/Mozart)
+           ~'piano (insert-instrument TestData/Piano)
+           ~'violin (insert-instrument TestData/Violin)
+           ~'piano-solo (insert-instrumentation "solo piano" ~'piano)]
+       ~@body)))
 
 (defn runTests [package]
   "given a clojure package as a String it runs all tests in this package"
   ;(sql/with-connection (load-file "conf/db.clj")
     (let [summary (run-tests (symbol package))]
       (zipmap (map #(str %) (keys summary)) (vals summary))))
+
+(def db (load-file "conf/db-empty.clj"))

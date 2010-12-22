@@ -1,8 +1,8 @@
 package de.cr.freitonal.unittests.client.widgets.piecetype;
 
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Quartett;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Sonate;
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.Symphonie;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Quartett;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Sonate;
+import static de.cr.freitonal.unittests.client.test.data.TestData.Symphonie;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

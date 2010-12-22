@@ -3,7 +3,6 @@ package de.cr.freitonal.unittests.client.test.data;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import de.cr.freitonal.client.models.Catalog;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.models.InstrumentationSet;
@@ -14,11 +13,12 @@ import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
+import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
-public class FullSearchInformation {
+public class TestData {
 	public static int NumberOfComposers = 3;
 	public static int NumberOfCatalogNames = 3;
 	public static int NumberOfCatalogNumbers = 319;
@@ -90,7 +90,17 @@ public class FullSearchInformation {
 	}
 
 	public static CatalogSet createCatalogSet() {
-		return new CatalogSet(new ItemSet(Opus), new ItemSet(CatalogOrdinal27_1));
+		return createCatalogSet(1);
+	}
+
+	public static CatalogSet createCatalogSet(int i) {
+		switch (i) {
+		case 1:
+			return new CatalogSet(new ItemSet(Opus), new ItemSet(CatalogOrdinal27_1));
+		default:
+			throw new IllegalArgumentException("not implemented yet for i = " + i);
+		}
+
 	}
 
 	public static PieceTypeSet createPieceTypeSet() {
@@ -108,4 +118,5 @@ public class FullSearchInformation {
 	public static ComposerSet createComposerSet() {
 		return new ComposerSet(Beethoven, Mozart);
 	}
+
 }

@@ -8,5 +8,5 @@ public interface SelectablePresenter extends Presenter {
 
 	public View getView();
 
-	public void setItems(ItemSet instruments);
+	public void setItemSet(ItemSet itemSet);
 }

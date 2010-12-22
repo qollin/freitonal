@@ -61,4 +61,8 @@ public class ItemSet {
 	public Item getItem(int index) {
 		return getItems().get(index);
 	}
+
+	public void removeSelection() {
+		selected = null;
+	}
 }

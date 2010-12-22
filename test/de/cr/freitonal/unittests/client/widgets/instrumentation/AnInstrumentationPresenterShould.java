@@ -1,6 +1,6 @@
 package de.cr.freitonal.unittests.client.widgets.instrumentation;
 
-import static de.cr.freitonal.unittests.client.test.data.FullSearchInformation.createInstrumentationSet;
+import static de.cr.freitonal.unittests.client.test.data.TestData.createInstrumentationSet;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;

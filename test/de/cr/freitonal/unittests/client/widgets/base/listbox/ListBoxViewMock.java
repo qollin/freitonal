@@ -8,13 +8,14 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 import de.cr.freitonal.client.event.DisplayMode;
-import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter.View;
+import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.shared.models.Item;
 
-public class ListBoxViewMock implements View {
+public class ListBoxViewMock implements IListBoxView {
 
 	private boolean enabled;
 	private ArrayList<String> trace = new ArrayList<String>();
+	private boolean visible;
 
 	public ListBoxViewMock() {
 	}
@@ -69,6 +70,10 @@ public class ListBoxViewMock implements View {
 	public HandlerRegistration addClickHandler(ClickHandler handler) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isVisible() {
+		return visible;
 	}
 
 }

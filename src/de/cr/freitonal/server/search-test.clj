@@ -68,16 +68,16 @@
 
 (deftest search-for-violin-and-violin []
   (dbtest "test that searching for two violins does not find an instrumentation with one violin"
-    (let [violin (insert-instrument (VolatileItem. "Violin"))
+    (let [violin (insert-instrument "Violin")
           
           ;insert a piece that should not be found (it only includes _one_ violin):
           composerA (insert-composer (VolatileItem. "Alkan"))
-          instrumentationA (insert-instrumentation (VolatileInstrumentation. "one violin" (create-ArrayList violin)))
+          instrumentationA (insert-instrumentation "one violin" violin)
           pieceA (insert-piece (VolatilePiece. composerA instrumentationA))
           
           ;insert the piece that should be found (it includes two violins):
           composerB (insert-composer (VolatileItem. "Bartok"))
-          instrumentationB (insert-instrumentation (VolatileInstrumentation. "two violins" (create-ArrayList violin violin)))
+          instrumentationB (insert-instrumentation "two violins" violin violin)
           pieceB (insert-piece (VolatilePiece. composerB instrumentationB))
           
           ;do the search:
@@ -87,9 +87,9 @@
 
 (deftest check-that-search-returns-piece+instrumentation-types []
   (dbtest "test that a full search returns stuff from the piece plus instrumentation types table"
-    (let [violin (insert-instrument (VolatileItem. "Violin"))
+    (let [violin (insert-instrument "Violin")
           composer (insert-composer (VolatileItem. "Mozart"))
-          instrumentation (insert-instrumentation (VolatileInstrumentation. "one violin" (create-ArrayList violin)))
+          instrumentation (insert-instrumentation "one violin" violin)
           piecetype (insert-piecetype (VolatileItem. "Sonate"))
           piece (insert-piece (VolatilePiece. composer instrumentation piecetype))
           piece+instrumentation-type (insert-piece+instrumentation-type (VolatilePiecePlusInstrumentationType. "Violinsonate" piecetype instrumentation))
@@ -99,10 +99,10 @@
 
 (deftest check-that-instrumentations-are-returned-in-the-right-format []
   (dbtest ""
-    (let [violin (insert-instrument (VolatileItem. "Violin"))
-          piano (insert-instrument (VolatileItem. "Piano"))
+    (let [violin (insert-instrument "Violin")
+          piano (insert-instrument "Piano")
           composer (insert-composer (VolatileItem. "Mozart"))
-          instrumentation (insert-instrumentation (VolatileInstrumentation. "violin piano combo" (create-ArrayList violin piano)))
+          instrumentation (insert-instrumentation "violin piano combo" violin piano)
           piece (insert-piece (VolatilePiece. composer instrumentation))
           jsonResult (search {})
           searchResult (read-json jsonResult false)]
@@ -110,6 +110,34 @@
       (is (= (.getID instrumentation) (str (get (first (searchResult "piece-instrumentations")) "id"))))
       (is (= [[(.getID violin) (.getValue violin)] [(.getID piano) (.getValue piano)]] 
             (map #(assoc % 0 (str (first %))) (get (first (searchResult "piece-instrumentations")) "instruments")))))))
+
+(deftest check-that-instrumentations-can-be-filtered-by-composer []
+  (dbtest ""
+    (let [violin+piano (insert-instrumentation "violin piano combo" violin piano)
+          piece1 (insert-piece (VolatilePiece. beethoven violin+piano))
+          piece2 (insert-piece (VolatilePiece. mozart piano-solo))
+          fullSearchResult (read-json (search {}) false)
+          composerSearchResult (read-json (search {"piece-composer" [(.getID beethoven)]}) false)]
+      (is (= 2 (count (fullSearchResult "piece-instrumentations"))))
+      (is (= 1 (count (composerSearchResult "piece-instrumentations")))))))
+
+(deftest check-that-catalog-numbers-are-ordered-correctly []
+  (dbtest ""
+    (let [catalogname (insert-catalogname "Opus")
+          catalog1 (insert-catalog catalogname "2", "a")
+          catalog2 (insert-catalog catalogname "1", "a")
+          piece1 (insert-piece (VolatilePiece. beethoven piano-solo catalog1))
+          piece2 (insert-piece (VolatilePiece. beethoven piano-solo catalog2))
+          fullSearchResult (read-json (search {}) false)]
+      (is (= (second (first (fullSearchResult "piece-catalog__number"))) "1-a"))
+      (is (= (second (second (fullSearchResult "piece-catalog__number"))) "2-a")))))
+
+(deftest check-that-only-top-level-pieces-are-returned-by-search []
+  (dbtest ""
+    (let [parent-piece (insert-piece (VolatilePiece. beethoven piano-solo opus27-1))
+          piece (insert-piece (VolatilePiece. mozart piano-solo opus27-1 parent-piece))
+          fullSearchResult (read-json (search {}) false)]
+      (is (= 1 (count (fullSearchResult "piece-composer")))))))
 
 (deftest test-merge-instrumentRecords-into-instrumentations []
   (let [mergedRecords (merge-instrumentRecords-into-instrumentations [{:id 1 :nickname "bla" :instruments [[5 "piano"]]},
@@ -119,5 +147,5 @@
     (is (= 1 (:id (first mergedRecords))))
     (is (= [[5 "piano"] [7 "violin"]] (:instruments (first mergedRecords))))))
 
-(comment defn test-ns-hook []
-  (search-for-violin-and-violin))
+(defn test-ns-hook []
+  (check-that-instrumentations-can-be-filtered-by-composer))

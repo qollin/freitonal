@@ -1,6 +1,6 @@
 package de.cr.freitonal.shared.models;
 
-public class Piece extends VolatilePiece {
+public class Piece extends VolatilePiece implements UID {
 	private final String id;
 
 	public Piece(String id, VolatilePiece piece) {

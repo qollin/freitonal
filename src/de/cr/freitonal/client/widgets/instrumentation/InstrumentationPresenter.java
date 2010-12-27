@@ -99,7 +99,7 @@ public class InstrumentationPresenter extends CompositePresenter {
 				updateItemSetOfInstrument(instrumentPresenter, (InstrumentationSet) parameters[0]);
 			}
 		});
-		dfa.addTransition(new String[] { "Main", "Search" }, "setDisplayMode", "Create", new AbstractTransitionAction() {
+		dfa.addTransition(new String[] { "Main", "Search", "DependendView", "View" }, "setDisplayMode", "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
 				DisplayMode mode = (DisplayMode) parameters[0];

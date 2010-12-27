@@ -1,6 +1,6 @@
 package de.cr.freitonal.shared.models;
 
-public class Item extends VolatileItem {
+public class Item extends VolatileItem implements UID {
 	private final String id;
 
 	public Item(String id, String value) {

@@ -4,9 +4,9 @@
  
  <ui:style>
  	.overlay {
-	    position: absolute;
-    	top: 0%;
-    	right: 10%;
+	    position: relative;
+    	top: -100%;
+    	right: -10%;
     	z-index: 5;
     }
  </ui:style>

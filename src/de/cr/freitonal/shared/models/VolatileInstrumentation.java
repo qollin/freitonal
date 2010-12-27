@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class VolatileInstrumentation {
-	private ArrayList<Item> instruments = new ArrayList<Item>();
-	private final String nickname;
+	protected ArrayList<Item> instruments = new ArrayList<Item>();
+	protected final String nickname;
 
 	public VolatileInstrumentation(String nickname, ArrayList<Item> instruments) {
 		this.nickname = nickname;

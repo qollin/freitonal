@@ -1,5 +1,6 @@
 package de.cr.freitonal.unittests.client.widgets.instrumentation;
 
+import static de.cr.freitonal.client.event.DisplayMode.Create;
 import static de.cr.freitonal.unittests.client.test.data.TestData.createInstrumentationSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,6 +54,12 @@ public class AnInstrumentationPresenterInDependendViewModeShould extends Instrum
 		assertEquals(DisplayMode.Select, instrumentationPresenter.getInstrumentPresenter(0).getDisplayMode());
 	}
 
+	@Test
+	public void GoToCreateModeWhenSetDisplayModeWithCreateIsCalled() {
+		instrumentationPresenter.setDisplayMode(Create);
+		assertEquals(DisplayMode.Create, instrumentationPresenter.getDisplayMode());
+	}
+
 	private ArrayList<Item> extractDisplayItem(InstrumentationSet instrumentationSet) {
 		String instrumentationTitle = instrumentationSet.getInstrumentations().get(0).toString();
 		String instrumentationID = instrumentationSet.getInstrumentations().get(0).getID();
@@ -62,4 +69,5 @@ public class AnInstrumentationPresenterInDependendViewModeShould extends Instrum
 
 		return items;
 	}
+
 }

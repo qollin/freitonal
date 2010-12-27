@@ -87,11 +87,9 @@
 
 (deftest check-that-search-returns-piece+instrumentation-types []
   (dbtest "test that a full search returns stuff from the piece plus instrumentation types table"
-    (let [violin (insert-instrument "Violin")
-          composer (insert-composer (VolatileItem. "Mozart"))
-          instrumentation (insert-instrumentation "one violin" violin)
+    (let [instrumentation (insert-instrumentation "one violin" violin)
           piecetype (insert-piecetype (VolatileItem. "Sonate"))
-          piece (insert-piece (VolatilePiece. composer instrumentation piecetype))
+          piece (insert-piece (VolatilePiece. mozart instrumentation piecetype))
           piece+instrumentation-type (insert-piece+instrumentation-type (VolatilePiecePlusInstrumentationType. "Violinsonate" piecetype instrumentation))
           searchResult (read-json (search {}) false)]
       (is (= 1 (count (searchResult "piece-type+instrumentation"))))
@@ -99,17 +97,13 @@
 
 (deftest check-that-instrumentations-are-returned-in-the-right-format []
   (dbtest ""
-    (let [violin (insert-instrument "Violin")
-          piano (insert-instrument "Piano")
-          composer (insert-composer (VolatileItem. "Mozart"))
-          instrumentation (insert-instrumentation "violin piano combo" violin piano)
-          piece (insert-piece (VolatilePiece. composer instrumentation))
+    (let [instrumentation (insert-instrumentation "violin piano combo" violin violin piano)
+          piece (insert-piece (VolatilePiece. mozart instrumentation))
           jsonResult (search {})
           searchResult (read-json jsonResult false)]
-      (is (= 1 (count (searchResult "piece-instrumentations"))))
-      (is (= (.getID instrumentation) (str (get (first (searchResult "piece-instrumentations")) "id"))))
-      (is (= [[(.getID violin) (.getValue violin)] [(.getID piano) (.getValue piano)]] 
-            (map #(assoc % 0 (str (first %))) (get (first (searchResult "piece-instrumentations")) "instruments")))))))
+      (is (some #(= % (Integer/valueOf (.getID instrumentation))) (map #(get % "id") (searchResult "piece-instrumentations"))))
+      (is (some #(= % [(conj (item-vector violin) 2) (conj (item-vector piano) 1)])
+            (map #(get % "instruments") (searchResult "piece-instrumentations")))))))
 
 (deftest check-that-instrumentations-can-be-filtered-by-composer []
   (dbtest ""
@@ -136,8 +130,15 @@
   (dbtest ""
     (let [parent-piece (insert-piece (VolatilePiece. beethoven piano-solo opus27-1))
           piece (insert-piece (VolatilePiece. mozart piano-solo opus27-1 parent-piece))
+          fullSearchResult (read-json (search {"piece-catalog" [(.getID opus27-1)]}) false)]
+      (is (not (containing? mozart (fullSearchResult "piece-composer")))))))
+
+(deftest check-that-instruments-not-referenced-by-any-piece-are-returned-from-initial-loading []
+  (dbtest ""
+    (let [baryton (insert-instrument (VolatileItem. "Baryton"))
+          baryton-solo (insert-instrumentation "baryton-solo" baryton)
           fullSearchResult (read-json (search {}) false)]
-      (is (= 1 (count (fullSearchResult "piece-composer")))))))
+      (is (containing? baryton-solo (fullSearchResult "piece-instrumentations") #(% "id"))))))
 
 (deftest test-merge-instrumentRecords-into-instrumentations []
   (let [mergedRecords (merge-instrumentRecords-into-instrumentations [{:id 1 :nickname "bla" :instruments [[5 "piano"]]},
@@ -147,5 +148,5 @@
     (is (= 1 (:id (first mergedRecords))))
     (is (= [[5 "piano"] [7 "violin"]] (:instruments (first mergedRecords))))))
 
-(defn test-ns-hook []
-  (check-that-instrumentations-can-be-filtered-by-composer))
+(comment defn test-ns-hook []
+  (check-that-instrumentations-are-returned-in-the-right-format))

@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
@@ -30,6 +31,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	private final ArrayList<ChangeHandler> changeHandlers = new ArrayList<ChangeHandler>();
 	private ItemSet completeItemSet;
 	protected final DFA dfa = new DFA();
+	private final ArrayList<HandlerRegistration> viewHandlers = new ArrayList<HandlerRegistration>();
 
 	public ListBoxPresenter(EventBus eventBus, IListBoxView view) {
 		super(eventBus);
@@ -39,17 +41,23 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	}
 
 	private void bind() {
-		view.addChangeHandler(new ChangeHandler() {
+		viewHandlers.add(view.addChangeHandler(new ChangeHandler() {
 			public void onChange(ChangeEvent event) {
 				fireOnNewItemSelected(view.getSelectedItem());
 			}
-		});
+		}));
 
-		view.addClickHandler(new ClickHandler() {
+		viewHandlers.add(view.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				fireHandleClickEventOnExitViewMode();
 			}
-		});
+		}));
+	}
+
+	public void deregisterFromView() {
+		for (HandlerRegistration handler : viewHandlers) {
+			handler.removeHandler();
+		}
 	}
 
 	protected void initializeDFA() {

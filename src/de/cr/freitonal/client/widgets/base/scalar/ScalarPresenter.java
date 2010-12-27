@@ -29,8 +29,9 @@ public class ScalarPresenter extends BasePresenter {
 		this.listBoxPresenter = new SearchFieldPresenter(eventBus, view.getListBoxView());
 	}
 
-	public void setListBoxPresenter(ListBoxPresenter searchFieldPresenter) {
-		this.listBoxPresenter = searchFieldPresenter;
+	public void setListBoxPresenter(ListBoxPresenter listBoxPresenter) {
+		this.listBoxPresenter.deregisterFromView();
+		this.listBoxPresenter = listBoxPresenter;
 	}
 
 	public void setView(View view) {

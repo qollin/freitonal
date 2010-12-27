@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.models;
+package de.cr.freitonal.unittests.shared.models;
 
 import static de.cr.freitonal.unittests.client.test.data.TestData.Oboe;
 import static de.cr.freitonal.unittests.client.test.data.TestData.Piano;
@@ -38,6 +38,13 @@ public class AnInstrumentationShould {
 	public void RenderTheListOfInstrumentsWithThreeInstruments() {
 		Instrumentation instrumentation = new Instrumentation("1", null, Piano, Violin, Oboe);
 		assertEquals(Piano.getValue() + ", " + Violin.getValue() + " und " + Oboe.getValue(), instrumentation.toString());
+	}
+
+	@Test
+	public void properlyRenderAnInstrumentThatAppearsMoreThanOnce() {
+		Instrumentation instrumentation = new Instrumentation("1", null, Piano, Violin, Oboe);
+		instrumentation.setInstrumentCount(Piano, 2);
+		assertEquals("2 " + Piano.getValue() + ", " + Violin.getValue() + " und " + Oboe.getValue(), instrumentation.toString());
 	}
 
 }

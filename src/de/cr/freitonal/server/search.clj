@@ -76,21 +76,30 @@
 
 (defn create-sql-string [sql]
   (str "SELECT " (sql :select)
-    " FROM " (apply str (interpose ", " (sql :from)))
-    " WHERE " (sql :where)
+    (if (or (sql :where) (not (sql :initial-loading-from))) ;where clause is given nor initial loading clause is present
+      (str " FROM " (apply str (interpose ", " (sql :from))))
+      (str " FROM " (apply str (interpose ", " (sql :initial-loading-from)))))
+    (if (sql :where)
+      (str " WHERE " (sql :where))
+      (if (sql :initial-loading-where)
+        (str " WHERE " (sql :initial-loading-where))))
     (if (sql :order)
       (str " ORDER BY " (sql :order)))))
 
+(defn add-global-search-constraints [sql]
+  (assoc sql :where (str (sql :where) " AND piece.parent_id IS NULL")))
+
 (defn create-query [sql searchParams]
-  (if (empty? searchParams)
-    (vector (create-sql-string sql))
-    (let [extendedSQL (add-search-clauses sql searchParams)]
-      (append [(create-sql-string extendedSQL)] (extendedSQL :values)))))
+  (let [sql (add-global-search-constraints sql)]
+    (if (empty? searchParams)
+      (vector (create-sql-string (dissoc sql :where)))
+      (let [extendedSQL (add-search-clauses sql searchParams)]
+        (append [(create-sql-string extendedSQL)] (extendedSQL :values))))))
 
 (defn run-search-query [sql render-fn searchParams]
   (let [query (create-query sql searchParams)]
     (try
-      (comment (d query))
+      ;(d query)
       (sql/with-query-results res
         query
         (doall (map render-fn res)))
@@ -206,22 +215,10 @@
        AND performance.piece_id = piece.id"}
     render-composer searchParams))
 
-(defn search-piece-instruments [searchParams]
-  (run-search-query 
-    {:select "DISTINCT instrument.id, instrument.name"
-     :from ["classical_instrument instrument", "classical_piece piece", 
-            "classical_piece_instrumentations", "classical_instrumentationmember instruments",
-            "classical_instrumentation"]
-     :where "instruments.instrument_id = instrument.id
-       AND instruments.instrumentation_id = classical_instrumentation.id
-       AND classical_piece_instrumentations.piece_id = piece.id
-       AND classical_instrumentation.id = classical_piece_instrumentations.instrumentation_id"}
-    render-name searchParams))
-
 (defn render-instrumentation [rec]
   (hash-map :id (:id rec) 
             :nickname (:nickname rec)
-            :instruments (vector (vector (:instrument_id rec) (:name rec)))))
+            :instruments (vector (vector (:instrument_id rec) (:name rec) (:numberofinstruments rec)))))
 
 (defn merge-instrumentRecords-into-instrumentations 
   ([instrumentRecords] 
@@ -241,12 +238,16 @@
                             {:select "DISTINCT classical_instrumentation.id, 
                                                classical_instrumentation.nickname, 
                                                instruments.instrument_id,
+                                               instruments.numberOfInstruments,
                                                instrument.name"
                              :from ["classical_piece piece", "classical_instrumentation", "classical_piece_instrumentations",
                                     "classical_instrumentationmember instruments", "classical_instrument instrument"]
+                             :initial-loading-from ["classical_instrumentation", "classical_instrumentationmember instruments", "classical_instrument instrument"]
                              :where "classical_piece_instrumentations.piece_id = piece.id
                                AND classical_piece_instrumentations.instrumentation_id = classical_instrumentation.id
                                AND instruments.instrumentation_id = classical_instrumentation.id
+                               AND instruments.instrument_id = instrument.id"
+                             :initial-loading-where "instruments.instrumentation_id = classical_instrumentation.id
                                AND instruments.instrument_id = instrument.id"
                              :order "instruments.ordinal"}
                             render-instrumentation searchParams)]
@@ -307,7 +308,6 @@
                 "piece-subtitle" (search-subtitle processedSearchParams)
                 "piece-type_ordinal" (search-piece-type_ordinal processedSearchParams)
                 "piece-piece_type" (search-piece-piece_type processedSearchParams)
-                "piece-instrumentations__instruments" (search-piece-instruments processedSearchParams)
                 "piece-instrumentations" (search-piece-instrumentations processedSearchParams)
                 "piece-music_key" (search-piece-music-key processedSearchParams)
                 "piece-catalog__name" (search-piece-catalog-name processedSearchParams)

@@ -1,4 +1,4 @@
-package de.cr.freitonal.unittests.client.models;
+package de.cr.freitonal.unittests.shared.models;
 
 import static de.cr.freitonal.unittests.client.test.data.TestData.CatalogOrdinal27_1;
 import static de.cr.freitonal.unittests.client.test.data.TestData.Opus;

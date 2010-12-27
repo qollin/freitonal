@@ -11,9 +11,13 @@
    (java.sql DriverManager))
 
   (:import (de.cr.freitonal.unittests.client.test.data
-             TestData)))
+             TestData))
 
-
+  (:import (de.cr.freitonal.shared.models 
+             Item 
+             UID
+             Instrumentation))) 
+ 
 (defmacro tables []
   ''(classical_allocatedinstrument
       classical_allocatedinstrument_performers 
@@ -60,6 +64,15 @@
            ~'violin (insert-instrument TestData/Violin)
            ~'piano-solo (insert-instrumentation "solo piano" ~'piano)]
        ~@body)))
+
+(defn item-vector [#^Item item]
+  (vector (Integer/valueOf (.getID item)) (.getValue item)))
+
+(defn containing? 
+  ([uid s access]
+    (some #(= (Integer/valueOf (.getID uid)) (access %)) s))
+  ([uid s]
+    (containing? uid s #(first %))))
 
 (defn runTests [package]
   "given a clojure package as a String it runs all tests in this package"

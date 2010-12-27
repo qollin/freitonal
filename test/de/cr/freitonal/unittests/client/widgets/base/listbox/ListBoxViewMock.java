@@ -58,8 +58,7 @@ public class ListBoxViewMock implements IListBoxView {
 	}
 
 	public HandlerRegistration addChangeHandler(ChangeHandler handler) {
-		// TODO Auto-generated method stub
-		return null;
+		return new HandlerRegistrationMock();
 	}
 
 	public void fireEvent(GwtEvent<?> event) {
@@ -68,8 +67,7 @@ public class ListBoxViewMock implements IListBoxView {
 	}
 
 	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		// TODO Auto-generated method stub
-		return null;
+		return new HandlerRegistrationMock();
 	}
 
 	public boolean isVisible() {

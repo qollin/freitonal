@@ -1,13 +1,15 @@
 package de.cr.freitonal.shared.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.cr.freitonal.client.utils.StringUtils;
 
-public class Instrumentation extends VolatileInstrumentation {
+public class Instrumentation extends VolatileInstrumentation implements UID {
 	private static final String SecondLevelSeparator = " und ";
 	private static final String FirstLevelSeparator = ", ";
 	private final String id;
+	private final HashMap<Item, Integer> instrumentCounts = new HashMap<Item, Integer>();
 
 	public Instrumentation(String id, String nickname, Item... instruments) {
 		super(nickname, instruments);
@@ -37,7 +39,6 @@ public class Instrumentation extends VolatileInstrumentation {
 
 	@Override
 	public String toString() {
-		String nickname = getNickname();
 		if (StringUtils.isNotEmpty(nickname)) {
 			return nickname;
 		} else {
@@ -46,9 +47,8 @@ public class Instrumentation extends VolatileInstrumentation {
 	}
 
 	private String renderInstruments() {
-		ArrayList<Item> instruments = getInstruments();
 		if (instruments.size() == 1) {
-			return instruments.get(0).getValue();
+			return renderInstrument(instruments.get(0));
 		} else {
 			int beforeLastPos = instruments.size() - 2;
 			String lastTwoInstruments = StringUtils.join(createValueList(instruments, beforeLastPos, instruments.size()), SecondLevelSeparator);
@@ -62,12 +62,34 @@ public class Instrumentation extends VolatileInstrumentation {
 		}
 	}
 
+	private String renderInstrument(Item instrument) {
+		String name = instrument.getValue();
+
+		if (instrumentCounts.containsKey(instrument)) {
+			return instrumentCounts.get(instrument) + " " + name;
+		} else {
+			return name;
+		}
+	}
+
 	private ArrayList<String> createValueList(ArrayList<Item> items, int from, int to) {
 		ArrayList<String> strings = new ArrayList<String>();
 		for (Item item : items.subList(from, to)) {
-			strings.add(item.getValue());
+			strings.add(renderInstrument(item));
 		}
 
 		return strings;
+	}
+
+	public void setInstrumentCount(Item instrument, int count) {
+		instrumentCounts.put(instrument, count);
+	}
+
+	public int getInstrumentCount(Item instrument) {
+		if (instrumentCounts.containsKey(instrument)) {
+			return instrumentCounts.get(instrument);
+		} else {
+			return 1;
+		}
 	}
 }

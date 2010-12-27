@@ -23,4 +23,18 @@ public class AnInstrumentationSetFactoryShould extends FactoryTest {
 		assertEquals(new Item("1", "piano"), instrumentation.getInstruments().get(0));
 		assertEquals(new Item("2", "violin"), instrumentation.getInstruments().get(1));
 	}
+
+	@Test
+	public void ReturnACorrectInstrumentationSetWhenInstrumentCountsAreGiven() {
+		DTOObject jsonObject = parse("{'piece-instrumentations': [{'id': 1, 'nickname': 'two pianos', 'instruments': [['1', 'piano', 2]]}]}");
+		InstrumentationSetFactory factory = new InstrumentationSetFactory();
+		InstrumentationSet instrumentationSet = factory.createInstrumentationSet(jsonObject);
+
+		Instrumentation instrumentation = instrumentationSet.getInstrumentations().get(0);
+		assertEquals("1", instrumentation.getID());
+		assertEquals("two pianos", instrumentation.getNickname());
+		Item piano = instrumentation.getInstruments().get(0);
+		assertEquals(new Item("1", "piano"), piano);
+		assertEquals(2, instrumentation.getInstrumentCount(piano));
+	}
 }

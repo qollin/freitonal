@@ -10,6 +10,7 @@ import org.junit.Test;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
 import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
+import de.cr.freitonal.client.event.dfa.Transition;
 import de.cr.freitonal.client.event.dfa.Trigger;
 
 public class ADFAWithATriggerParamTransitionAndANormalTransitionShould {
@@ -27,12 +28,13 @@ public class ADFAWithATriggerParamTransitionAndANormalTransitionShould {
 				trace.add("transition 1");
 			}
 		});
-		dfa.addTransitionWithTriggerParam("start", "trigger", new EqualsTriggerParam("param"), "finish", new AbstractTransitionAction() {
+		Transition transition = new Transition(new EqualsTriggerParam("param"), "finish", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
 				trace.add("transition 2");
 			}
 		});
+		dfa.addTransitionWithTriggerParam("start", "trigger", transition);
 
 		dfa.start("start");
 	}

@@ -3,12 +3,17 @@ package de.cr.freitonal.client.models;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
-public class InstrumentationSet {
-	private final ArrayList<Instrumentation> instrumentations;
+public class InstrumentationSet implements IsSerializable {
+	private ArrayList<Instrumentation> instrumentations;
 	private VolatileInstrumentation searchPattern;
+
+	private InstrumentationSet() {
+	}
 
 	public InstrumentationSet(ArrayList<Instrumentation> instrumentations) {
 		this.instrumentations = instrumentations;

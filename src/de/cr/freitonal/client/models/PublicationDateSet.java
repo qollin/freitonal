@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import de.cr.freitonal.shared.models.Item;
 
 public class PublicationDateSet extends ItemSet {
+
+	private PublicationDateSet() {
+	}
+
 	public PublicationDateSet(ArrayList<Item> items) {
 		super(items);
 	}

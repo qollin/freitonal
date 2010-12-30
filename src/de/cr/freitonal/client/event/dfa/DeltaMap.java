@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
 public class DeltaMap {
 	private final HashMap<String, HashMap<String, ArrayList<Transition>>> map;
 	private final HashSet<String> states;
@@ -20,21 +19,21 @@ public class DeltaMap {
 	}
 
 	public void addTransition(String fromState, String trigger, TriggerParam triggerParam, String toState) {
-		addTransition(fromState, trigger, triggerParam, toState, null);
+		addTransition(fromState, trigger, new Transition(triggerParam, toState, null));
 	}
 
 	public void addTransition(String fromState, String trigger, String toState, TransitionAction action) {
-		addTransition(fromState, trigger, null, toState, action);
+		addTransition(fromState, trigger, new Transition(null, toState, action));
 	}
 
-	public void addTransition(String fromState, String trigger, TriggerParam triggerParam, String toState, TransitionAction action) {
+	public void addTransition(String fromState, String trigger, Transition transition) {
 		prepareAddingAState(fromState);
 		prepareAddingATrigger(fromState, trigger);
 
-		map.get(fromState).get(trigger).add(new Transition(triggerParam, toState, action));
+		map.get(fromState).get(trigger).add(transition);
 
 		states.add(fromState);
-		states.add(toState);
+		states.add(transition.getTargetState());
 	}
 
 	private void prepareAddingAState(String fromState) {

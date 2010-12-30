@@ -17,6 +17,7 @@ import de.cr.freitonal.client.event.PiecePlusInstrumentationTypeSelectedHandler;
 import de.cr.freitonal.client.event.SearchFieldChangedEvent;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
+import de.cr.freitonal.client.event.dfa.Transition;
 import de.cr.freitonal.client.event.dfa.Trigger;
 import de.cr.freitonal.client.event.dfa.TriggerParam;
 import de.cr.freitonal.client.models.InstrumentationSet;
@@ -66,14 +67,15 @@ public class InstrumentationPresenter extends CompositePresenter {
 				return ((InstrumentationSet) transitionParameters[0]).size() <= 1;
 			}
 		};
-		dfa.addTransitionWithTriggerParam(	"Main", "setInstrumentations", triggerOnInstrumentationSetWithZeroOrOneItem, "DependendView",
-											new AbstractTransitionAction() {
-												@Override
-												public void onTransition(Object[] parameters) {
-													setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
-													hideAddInstrumentButton();
-												}
-											});
+		Transition goToDependendendView = new Transition(triggerOnInstrumentationSetWithZeroOrOneItem, "DependendView",
+				new AbstractTransitionAction() {
+					@Override
+					public void onTransition(Object[] parameters) {
+						setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
+						hideAddInstrumentButton();
+					}
+				});
+		dfa.addTransitionWithTriggerParam("Main", "setInstrumentations", goToDependendendView);
 		dfa.addTransition(new String[] { "Main", "DependendView" }, "setInstrumentations", "Main", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {

@@ -46,6 +46,9 @@ public class InstrumentationSetFactory extends AbstractFactory {
 		DTOArray jsonArray = jsonObject.get("piece-instrumentations").isArray();
 		ArrayList<Instrumentation> instrumentations = new ArrayList<Instrumentation>();
 		for (int i = 0; i < jsonArray.size(); i++) {
+			if (jsonArray.get(i).isObject() == null) {
+				throw new IllegalArgumentException("cannot handle " + jsonArray.get(i));
+			}
 			Instrumentation instrumentation = createInstrumentation(jsonArray.get(i).isObject());
 			instrumentations.add(instrumentation);
 		}
@@ -53,5 +56,4 @@ public class InstrumentationSetFactory extends AbstractFactory {
 
 		return instrumentationSet;
 	}
-
 }

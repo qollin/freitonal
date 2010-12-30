@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class SearchTest extends ClojureTest {
 	public SearchTest() {
-		super("de.cr.freitonal.server.search-test");
+		super("search-test");
 	}
 
 	@Test

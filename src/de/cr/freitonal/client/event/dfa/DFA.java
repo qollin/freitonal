@@ -1,8 +1,6 @@
 package de.cr.freitonal.client.event.dfa;
 
 public class DFA {
-	private boolean debug;
-
 	private final DeltaMap delta = new DeltaMap();
 	private String currentState;
 
@@ -17,19 +15,17 @@ public class DFA {
 	}
 
 	public void addTransition(String fromState, String trigger, String toState, TransitionAction transitionAction) {
-		addTransitionWithTriggerParam(fromState, trigger, null, toState, transitionAction);
+		addTransitionWithTriggerParam(fromState, trigger, new Transition(null, toState, transitionAction));
 	}
 
-	public void addTransitionWithTriggerParam(String[] fromStates, String triggerString, TriggerParam triggerParam, String toState,
-			AbstractTransitionAction transitionAction) {
+	public void addTransitionWithTriggerParam(String[] fromStates, String triggerString, Transition transition) {
 		for (String fromState : fromStates) {
-			addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, transitionAction);
+			addTransitionWithTriggerParam(fromState, triggerString, transition);
 		}
 	}
 
-	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState,
-			TransitionAction transitionAction) {
-		delta.addTransition(fromState, triggerString, triggerParam, toState, transitionAction);
+	public void addTransitionWithTriggerParam(String fromState, String triggerString, Transition transition) {
+		delta.addTransition(fromState, triggerString, transition);
 	}
 
 	public void addTransitionWithTriggerParam(String[] fromStates, String triggerString, TriggerParam triggerParam, String toState) {
@@ -39,7 +35,7 @@ public class DFA {
 	}
 
 	public void addTransitionWithTriggerParam(String fromState, String triggerString, TriggerParam triggerParam, String toState) {
-		addTransitionWithTriggerParam(fromState, triggerString, triggerParam, toState, null);
+		addTransitionWithTriggerParam(fromState, triggerString, new Transition(triggerParam, toState, null));
 	}
 
 	public void start(String startState) {
@@ -89,9 +85,4 @@ public class DFA {
 	public String getState() {
 		return currentState;
 	}
-
-	public void setDebug(boolean debug) {
-		this.debug = debug;
-	}
-
 }

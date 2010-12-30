@@ -1,5 +1,7 @@
 package de.cr.freitonal.client.rpc;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ComposerSet;
 import de.cr.freitonal.client.models.InstrumentationSet;
@@ -10,7 +12,7 @@ import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
 
-public class PieceSearchMask {
+public class PieceSearchMask implements IsSerializable {
 	private ComposerSet composers;
 	private CatalogSet catalogs;
 	private PieceTypeSet pieceTypeSet;

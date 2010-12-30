@@ -7,6 +7,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
 import de.cr.freitonal.client.rpc.SearchResult;
+import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.VolatileItem;
 import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class RPCServiceMock implements RPCService {
@@ -30,6 +32,11 @@ public class RPCServiceMock implements RPCService {
 
 	public void save(VolatilePiece piece) {
 		trace.add("RPCServiceMock: save");
+	}
+
+	@Override
+	public void createComposer(VolatileItem composer, AsyncCallback<Item> callback) {
+		trace.add("RPCServiceMock: createComposer");
 	}
 
 }

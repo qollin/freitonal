@@ -6,9 +6,13 @@ import de.cr.freitonal.shared.models.Item;
 
 public class MultiSourceItemSet extends ItemSet {
 
-	private final ArrayList<ItemSet> itemSets = new ArrayList<ItemSet>();
+	private ArrayList<ItemSet> itemSets;
+
+	private MultiSourceItemSet() {
+	}
 
 	public MultiSourceItemSet(ItemSet... itemSets) {
+		this.itemSets = new ArrayList<ItemSet>();
 		for (ItemSet itemSet : itemSets) {
 			checkAndTransferSelection(itemSet);
 			this.itemSets.add(itemSet);

@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module rename-to='freitonalgui'>
-  <!-- Inherit the core Web Toolkit stuff.                        -->
-  <inherits name='com.google.gwt.user.User'/>
-  <inherits name='com.google.gwt.json.JSON'/>
-  <inherits name='com.google.gwt.http.HTTP'/>
-  <inherits name="com.google.gwt.logging.Logging"/>
-  <!-- Inherit the default GWT style sheet.  You can change       -->
-  <!-- the theme of your GWT application by uncommenting          -->
-  <!-- any one of the following lines.                            -->
-  <inherits name='com.google.gwt.user.theme.standard.Standard'/>
-  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
-  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.json.JSON' />
+	<inherits name='com.google.gwt.http.HTTP' />
+	<inherits name="com.google.gwt.logging.Logging" />
+	<!-- Inherit the default GWT style sheet. You can change -->
+	<!-- the theme of your GWT application by uncommenting -->
+	<!-- any one of the following lines. -->
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
 
-  <!-- Other module inherits                                      -->
+	<!-- Other module inherits -->
 
-  <!-- Specify the app entry point class.                         -->
-  <entry-point class='de.cr.freitonal.client.FreitonalGUI'/>
+	<!-- Specify the app entry point class. -->
+	<entry-point class='de.cr.freitonal.client.FreitonalGUI' />
 
-  <!-- Specify the paths for translatable code                    -->
-  <source path='client'/>
-  <source path='shared'/>
-  <source path='usertests'/>
+	<!-- Specify the paths for translatable code -->
+	<source path='client' />
+	<source path='shared' />
+	<source path='usertests' />
+
+	<servlet path="/search"
+		class="de.cr.freitonal.server.services.SearchServiceImplOnEmptyDB" />
+		
+	<servlet path="/create"
+		class="de.cr.freitonal.server.services.CreateServiceImplOnEmptyDB" />
+
+	<servlet path="/purge"
+		class="de.cr.freitonal.server.services.PurgeServiceImplOnEmptyDB" />
 
 </module>

@@ -13,9 +13,10 @@ import clojure.lang.Var;
 public class ClojureTest {
 	private static HashSet<String> init = new HashSet<String>();
 	private final String testPackage;
+	private final String packagePrefix = "de.cr.freitonal.unittests.server.";
 
 	public ClojureTest(String testPackage) {
-		this.testPackage = testPackage;
+		this.testPackage = packagePrefix + testPackage;
 	}
 
 	@Before
@@ -32,7 +33,7 @@ public class ClojureTest {
 	}
 
 	public void testAll() {
-		Var runTests = RT.var("de.cr.freitonal.server.testtools", "runTests");
+		Var runTests = RT.var(packagePrefix + "testtools", "runTests");
 		try {
 			@SuppressWarnings("rawtypes")
 			Map map = (Map) runTests.invoke(testPackage);

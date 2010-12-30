@@ -18,6 +18,7 @@ import de.cr.freitonal.client.event.DisplayMode;
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
 import de.cr.freitonal.client.event.dfa.EqualsTriggerParam;
+import de.cr.freitonal.client.event.dfa.Transition;
 import de.cr.freitonal.client.event.dfa.Trigger;
 import de.cr.freitonal.client.event.dfa.TriggerParam;
 import de.cr.freitonal.client.models.ItemSet;
@@ -74,15 +75,14 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				return ((ItemSet) transitionParameters[0]).size() <= 1;
 			}
 		};
-		dfa.addTransitionWithTriggerParam(	new String[] { "Select", "DependendView" }, "setItems", triggerOnItemSetWithZeroOrOneItem,
-											"DependendView",
-											new AbstractTransitionAction() {
-												@Override
-												public void onTransition(Object[] parameters) {
-													handleItemSetChange((ItemSet) parameters[0]);
-													view.setDisplayMode(DependendView);
-												}
-											});
+		Transition goToDependendView = new Transition(triggerOnItemSetWithZeroOrOneItem, "DependendView", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				handleItemSetChange((ItemSet) parameters[0]);
+				view.setDisplayMode(DependendView);
+			}
+		});
+		dfa.addTransitionWithTriggerParam(new String[] { "Select", "DependendView" }, "setItems", goToDependendView);
 		dfa.addTransition("Select", "setItems", "Select", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
@@ -100,8 +100,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				fireListBoxChangedEvent();
 			}
 		});
-		dfa.addTransitionWithTriggerParam(new String[] { "Select", "DependendView", "Create", "View" }, "setDisplayMode", new EqualsTriggerParam(
-				Create), "Create", new AbstractTransitionAction() {
+		Transition goToCreate = new Transition(new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
 				itemSet = completeItemSet;
@@ -109,6 +108,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				view.setDisplayMode(Create);
 			}
 		});
+		dfa.addTransitionWithTriggerParam(new String[] { "Select", "DependendView", "Create", "View" }, "setDisplayMode", goToCreate);
 		dfa.addTransition("View", "fireHandleClickEventOnExitViewMode", "Select", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {

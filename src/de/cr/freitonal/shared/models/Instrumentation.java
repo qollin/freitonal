@@ -3,22 +3,29 @@ package de.cr.freitonal.shared.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import de.cr.freitonal.client.utils.StringUtils;
 
-public class Instrumentation extends VolatileInstrumentation implements UID {
-	private static final String SecondLevelSeparator = " und ";
-	private static final String FirstLevelSeparator = ", ";
-	private final String id;
-	private final HashMap<Item, Integer> instrumentCounts = new HashMap<Item, Integer>();
+public class Instrumentation extends VolatileInstrumentation implements UID, IsSerializable {
+	private static final transient String SecondLevelSeparator = " und ";
+	private static final transient String FirstLevelSeparator = ", ";
+	private String id;
+	private HashMap<Item, Integer> instrumentCounts;
+
+	private Instrumentation() {
+	}
 
 	public Instrumentation(String id, String nickname, Item... instruments) {
 		super(nickname, instruments);
 		this.id = id;
+		instrumentCounts = new HashMap<Item, Integer>();
 	}
 
 	public Instrumentation(String id, String nickname, ArrayList<Item> instruments) {
 		super(nickname, instruments);
 		this.id = id;
+		instrumentCounts = new HashMap<Item, Integer>();
 	}
 
 	public Instrumentation(String id, VolatileInstrumentation vol) {

@@ -5,14 +5,19 @@ import java.util.ArrayList;
 import de.cr.freitonal.shared.models.Item;
 
 public class ItemSetMultiSelection extends ItemSet {
-	private final ArrayList<Item> selected = new ArrayList<Item>();
+	private ArrayList<Item> selected;
+
+	private ItemSetMultiSelection() {
+	}
 
 	public ItemSetMultiSelection(Item... items) {
 		super(items);
+		selected = new ArrayList<Item>();
 	}
 
 	public ItemSetMultiSelection(ArrayList<Item> items) {
 		super(items);
+		selected = new ArrayList<Item>();
 	}
 
 	@Override

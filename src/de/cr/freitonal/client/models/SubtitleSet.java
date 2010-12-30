@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import de.cr.freitonal.shared.models.Item;
 
 public class SubtitleSet extends ItemSet {
+	private SubtitleSet() {
+	}
 
 	public SubtitleSet(ArrayList<Item> items) {
 		super(items);

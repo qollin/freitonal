@@ -1,9 +1,9 @@
 package de.cr.freitonal.unittests.client.widgets.composer;
 
 import static de.cr.freitonal.client.event.DisplayMode.View;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Beethoven;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Mozart;
-import static de.cr.freitonal.unittests.client.test.data.TestData.createComposerSet;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Beethoven;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Mozart;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createComposerSet;
 import static junit.framework.Assert.assertEquals;
 
 import org.junit.Before;

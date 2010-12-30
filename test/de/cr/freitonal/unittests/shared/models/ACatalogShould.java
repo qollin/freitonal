@@ -1,7 +1,7 @@
 package de.cr.freitonal.unittests.shared.models;
 
-import static de.cr.freitonal.unittests.client.test.data.TestData.CatalogOrdinal27_1;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Opus;
+import static de.cr.freitonal.usertests.client.test.data.TestData.CatalogOrdinal27_1;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Opus;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

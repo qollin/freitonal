@@ -111,6 +111,7 @@ public class ListBoxView extends Composite implements IListBoxView {
 		list.setEnabled(enabled);
 	}
 
+	@Override
 	public void setDisplayMode(DisplayMode mode) {
 		if (this.mode == mode) {
 			return;
@@ -119,9 +120,6 @@ public class ListBoxView extends Composite implements IListBoxView {
 		this.mode = mode;
 		switch (mode) {
 		case View:
-			if (getSelectedItem() == null) {
-				throw new IllegalArgumentException("you may not switch to view mode without a selected item");
-			}
 			switchToViewMode();
 			break;
 		case DependendView:
@@ -149,6 +147,9 @@ public class ListBoxView extends Composite implements IListBoxView {
 	}
 
 	protected void switchToViewMode() {
+		if (getSelectedItem() == null) {
+			throw new IllegalArgumentException("you may not switch to view mode without a selected item");
+		}
 		switchToDependedViewMode();
 		closeImage.setVisible(true);
 	}

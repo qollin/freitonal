@@ -1,7 +1,7 @@
 package de.cr.freitonal.unittests.client.widgets.instrumentation;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
-import static de.cr.freitonal.unittests.client.test.data.TestData.createInstrumentationSet;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createInstrumentationSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

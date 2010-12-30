@@ -1,7 +1,13 @@
 package de.cr.freitonal.shared.models;
 
-public class VolatileItem {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class VolatileItem implements IsSerializable {
 	private String value;
+
+	protected VolatileItem() {
+
+	}
 
 	public VolatileItem(String value) {
 		this.value = value;

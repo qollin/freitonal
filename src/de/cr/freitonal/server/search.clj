@@ -125,6 +125,7 @@
   (run-search-query
     {:select "DISTINCT composer.id, composer.first_name, composer.middle_name, composer.last_name" 
      :from ["classical_composer composer", "classical_piece piece"]
+     :initial-loading-from ["classical_composer composer"]
      :where "piece.composer_id = composer.id"}
     render-composer searchParams))
 
@@ -136,6 +137,7 @@
     {:select "DISTINCT label.id, label.name"
      :from ["classical_recordlabel label", "classical_recording recording", 
             "classical_piece piece", "classical_performance performance", "classical_recording_performances"]
+     :initial-loading-from ["classical_recordlabel label"]
      :where "recording.label_id = label.id
        AND classical_recording_performances.recording_id = recording.id
        AND classical_recording_performances.performance_id = performance.id
@@ -149,7 +151,8 @@
   (run-search-query 
     {:select "DISTINCT piece.subtitle"
      :from ["classical_piece piece"]
-     :where "piece.subtitle IS NOT NULL AND piece.subtitle <> ''"}
+     :where "piece.subtitle IS NOT NULL AND piece.subtitle <> ''"
+     :initial-loading-where "piece.subtitle IS NOT NULL AND piece.subtitle <> ''"}
     render-subtitle searchParams))
 
 (defn search-recording-type [searchParams]
@@ -158,6 +161,7 @@
      :from ["classical_recording recording", "classical_recordtype type", 
             "classical_piece piece", "classical_performance performance",
             "classical_recording_performances"]
+     :initial-loading-from ["classical_recordtype type"]
      :where "recording.type_id = type.id
        AND classical_recording_performances.recording_id = recording.id
        AND classical_recording_performances.performance_id = performance.id
@@ -171,8 +175,10 @@
   (run-search-query
    {:select "DISTINCT performance.location"
     :from ["classical_performance performance", "classical_piece piece"]
+    :initial-loading-from ["classical_performance performance"]
     :where "performance.location IS NOT NULL AND performance.location <> ''
-       AND performance.piece_id = piece.id"} 
+       AND performance.piece_id = piece.id"
+    :initial-loading-where "performance.location IS NOT NULL AND performance.location <> ''"} 
    render-performance-location searchParams))
 
 (defn render-performance-date [rec]
@@ -182,8 +188,10 @@
   (run-search-query
     {:select "DISTINCT performance.date"
      :from ["classical_performance performance", "classical_piece piece"]
+     :initial-loading-from ["classical_performance performance"]
      :where "performance.date IS NOT NULL AND performance.date <> ''
-       AND performance.piece_id = piece.id"}
+       AND performance.piece_id = piece.id"
+     :initial-loading-where "performance.date IS NOT NULL AND performance.date <> ''"}
     render-performance-date searchParams))
 
 (defn render-piece-type_ordinal [rec]
@@ -193,13 +201,15 @@
   (run-search-query
     {:select "DISTINCT piece.type_ordinal"
      :from ["classical_piece piece"]
-     :where "piece.type_ordinal IS NOT NULL AND piece.type_ordinal <> ''"}
+     :where "piece.type_ordinal IS NOT NULL AND piece.type_ordinal <> ''"
+     :initial-loading-where "piece.type_ordinal IS NOT NULL AND piece.type_ordinal <> ''"}
     render-piece-type_ordinal searchParams))
 
 (defn search-piece-piece_type [searchParams]
   (run-search-query
     {:select "DISTINCT type.id, type.name"
      :from ["classical_piecetype type", "classical_piece piece"]
+     :initial-loading-from ["classical_piecetype type"]
      :where "piece.piece_type_id = type.id"}
     render-name searchParams))
 
@@ -209,6 +219,7 @@
      :from ["classical_performer performer", "classical_performance performance", 
             "classical_allocatedinstrument_performers", "classical_allocatedinstrumentation_allocated_instruments",
             "classical_piece piece"]
+     :initial-loading-from ["classical_performer performer"]
      :where "classical_allocatedinstrument_performers.performer_id = performer.id
        AND classical_allocatedinstrument_performers.allocatedinstrument_id = classical_allocatedinstrumentation_allocated_instruments.allocatedinstrument_id
        AND classical_allocatedinstrumentation_allocated_instruments.allocatedinstrumentation_id = performance.instrumentation_id
@@ -221,8 +232,10 @@
             :instruments (vector (vector (:instrument_id rec) (:name rec) (:numberofinstruments rec)))))
 
 (defn merge-instrumentRecords-into-instrumentations 
-  ([instrumentRecords] 
-    (merge-instrumentRecords-into-instrumentations (rest instrumentRecords) (hash-map (:id (first instrumentRecords)) (first instrumentRecords))))
+  ([instrumentRecords]
+    (if (empty? instrumentRecords)
+      '()
+      (merge-instrumentRecords-into-instrumentations (rest instrumentRecords) (hash-map (:id (first instrumentRecords)) (first instrumentRecords)))))
   ([instrumentRecords acc]
     (if (empty? instrumentRecords)
       (vals acc)
@@ -257,6 +270,7 @@
   (run-search-query
     {:select "DISTINCT classical_musickey.id, classical_musickey.generated_title AS name"
      :from ["classical_musickey", "classical_piece piece"]
+     :initial-loading-from ["classical_musickey"]
      :where "piece.music_key_id = classical_musickey.id"}
     render-name searchParams))
 
@@ -264,6 +278,7 @@
   (run-search-query
     {:select "DISTINCT type.id, type.name"
      :from ["classical_catalog", "classical_piece piece", "classical_catalogtype type"]
+     :initial-loading-from ["classical_catalogtype type"]
      :where "piece.catalog_id = classical_catalog.id
        AND classical_catalog.name_id = type.id"}
     render-name searchParams))
@@ -276,10 +291,12 @@
 (defn search-piece-catalog-number [searchParams]
   (run-search-query
     {:select "DISTINCT classical_catalog.id, classical_catalog.ordinal, classical_catalog.sub_ordinal"
-     :from ["classical_catalog", "classical_piece piece"] 
+     :from ["classical_catalog", "classical_piece piece"]
+     :initial-loading-from ["classical_catalog"]
      :where "piece.catalog_id = classical_catalog.id
        AND classical_catalog.ordinal IS NOT NULL
        AND classical_catalog.ordinal <> ''"
+     :initial-loading-where "classical_catalog.ordinal IS NOT NULL AND classical_catalog.ordinal <> ''"
      :order "classical_catalog.ordinal, classical_catalog.sub_ordinal"}
     render-catalog-number searchParams))
 
@@ -287,6 +304,7 @@
   (run-search-query
     {:select "DISTINCT classical_typeplusinstrumentation.id, classical_typeplusinstrumentation.nickname AS name"
      :from ["classical_typeplusinstrumentation", "classical_piece piece", "classical_piece_instrumentations"]
+     :initial-loading-from ["classical_typeplusinstrumentation"]
      :where "classical_typeplusinstrumentation.type_id = piece.piece_type_id
        AND classical_typeplusinstrumentation.instrumentation_id = classical_piece_instrumentations.instrumentation_id"}
     render-name searchParams))
@@ -298,7 +316,8 @@
   (run-search-query 
     {:select "DISTINCT piece.pub_date"
      :from ["classical_piece piece"]
-     :where "piece.pub_date IS NOT NULL AND piece.pub_date <> ''"}
+     :where "piece.pub_date IS NOT NULL AND piece.pub_date <> ''"
+     :initial-loading-where "piece.pub_date IS NOT NULL AND piece.pub_date <> ''"}
     render-publication-date searchParams))
 
 (defn search [searchParams]

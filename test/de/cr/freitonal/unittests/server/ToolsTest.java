@@ -5,7 +5,7 @@ import org.junit.Test;
 public class ToolsTest extends ClojureTest {
 
 	public ToolsTest() {
-		super("de.cr.freitonal.server.tools-test");
+		super("tools-test");
 	}
 
 	@Test

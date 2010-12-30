@@ -9,8 +9,6 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 import de.cr.freitonal.client.rpc.RPCService;
 import de.cr.freitonal.client.rpc.RPCServiceImpl;
-import de.cr.freitonal.client.rpc.URLEncoderImpl;
-import de.cr.freitonal.client.rpc.gwt.DTOParserGWT;
 import de.cr.freitonal.client.widgets.piece.PieceView;
 
 /**
@@ -34,7 +32,7 @@ public class FreitonalGUI implements EntryPoint {
 		RootLayoutPanel root = RootLayoutPanel.get();
 		root.add(htmlPanel);
 
-		rpcService = new RPCServiceImpl(new DTOParserGWT(), new URLEncoderImpl(GWT.getHostPageBaseURL()));
+		rpcService = new RPCServiceImpl();
 		appController = new AppController(pieceView, rpcService);
 		appController.go();
 	}

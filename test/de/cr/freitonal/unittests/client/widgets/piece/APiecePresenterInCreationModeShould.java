@@ -1,14 +1,14 @@
 package de.cr.freitonal.unittests.client.widgets.piece;
 
-import static de.cr.freitonal.unittests.client.test.data.TestData.AMajor;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Beethoven;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Eroica;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Opus27_1;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Ordinal4a;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Piano;
-import static de.cr.freitonal.unittests.client.test.data.TestData.Quartett;
-import static de.cr.freitonal.unittests.client.test.data.TestData.VolatileInstrumentationPianoSolo;
-import static de.cr.freitonal.unittests.client.test.data.TestData.createPieceMask;
+import static de.cr.freitonal.usertests.client.test.data.TestData.AMajor;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Beethoven;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Eroica;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Opus27_1;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Ordinal4a;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Piano;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Quartett;
+import static de.cr.freitonal.usertests.client.test.data.TestData.VolatileInstrumentationPianoSolo;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createPieceMask;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

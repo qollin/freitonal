@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class InsertTest extends ClojureTest {
 	public InsertTest() {
-		super("de.cr.freitonal.server.insert-test");
+		super("insert-test");
 	}
 
 	@Test

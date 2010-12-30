@@ -1,6 +1,6 @@
 package de.cr.freitonal.unittests.client.widgets.catalog;
 
-import static de.cr.freitonal.unittests.client.test.data.TestData.createCatalogSet;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createCatalogSet;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNull;

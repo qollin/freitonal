@@ -2,12 +2,17 @@ package de.cr.freitonal.client.models;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import de.cr.freitonal.shared.models.Item;
 
-public class PieceTypeSet {
-	private final ItemSet pieceTypes;
-	private final ItemSet piecePlusInstrumentationTypes;
-	private final MultiSourceItemSet allTypes;
+public class PieceTypeSet implements IsSerializable {
+	private ItemSet pieceTypes;
+	private ItemSet piecePlusInstrumentationTypes;
+	private MultiSourceItemSet allTypes;
+
+	private PieceTypeSet() {
+	}
 
 	public PieceTypeSet(ArrayList<Item> pieceTypes, ArrayList<Item> piecePlusInstrumentationTypes) {
 		this.pieceTypes = new ItemSet(pieceTypes);

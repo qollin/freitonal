@@ -1,7 +1,7 @@
 package de.cr.freitonal.unittests.client.widgets.piecetype;
 
 import static de.cr.freitonal.client.event.DisplayMode.Create;
-import static de.cr.freitonal.unittests.client.test.data.TestData.createPieceTypeSet;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createPieceTypeSet;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;

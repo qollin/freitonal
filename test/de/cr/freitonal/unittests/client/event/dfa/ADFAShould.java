@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
+import de.cr.freitonal.client.event.dfa.Transition;
 import de.cr.freitonal.client.event.dfa.Trigger;
 import de.cr.freitonal.client.event.dfa.TriggerParam;
 
@@ -47,12 +48,13 @@ public class ADFAShould {
 
 	@Test
 	public void AcceptTransitionsWithTriggerParamsAndActionsAndMultipleSourceStates() {
-		dfa.addTransitionWithTriggerParam(new String[] { "a", "b" }, "trigger", alwaysTrue, "c", new AbstractTransitionAction() {
+		Transition transition = new Transition(alwaysTrue, "c", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
 				trace.add("onTransition");
 			}
 		});
+		dfa.addTransitionWithTriggerParam(new String[] { "a", "b" }, "trigger", transition);
 
 		dfa.start("a");
 		dfa.transition(new Trigger("trigger", null));
@@ -65,5 +67,4 @@ public class ADFAShould {
 		assertEquals("c", dfa.getState());
 		assertTrue(trace.contains("onTransition"));
 	}
-
 }

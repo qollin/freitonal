@@ -3,9 +3,14 @@ package de.cr.freitonal.shared.models;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class VolatileInstrumentation {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class VolatileInstrumentation implements IsSerializable {
 	protected ArrayList<Item> instruments = new ArrayList<Item>();
-	protected final String nickname;
+	protected String nickname;
+
+	protected VolatileInstrumentation() {
+	}
 
 	public VolatileInstrumentation(String nickname, ArrayList<Item> instruments) {
 		this.nickname = nickname;

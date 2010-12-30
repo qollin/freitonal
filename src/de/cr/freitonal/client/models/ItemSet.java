@@ -3,11 +3,16 @@ package de.cr.freitonal.client.models;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import de.cr.freitonal.shared.models.Item;
 
-public class ItemSet {
-	private final ArrayList<Item> items;
+public class ItemSet implements IsSerializable {
+	private ArrayList<Item> items;
 	private Item selected;
+
+	private ItemSet() {
+	}
 
 	public ItemSet(Item... items) {
 		this.items = new ArrayList<Item>(items.length);

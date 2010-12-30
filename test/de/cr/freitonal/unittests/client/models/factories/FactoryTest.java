@@ -4,7 +4,7 @@ import org.junit.Before;
 
 import de.cr.freitonal.client.rpc.dto.DTOObject;
 import de.cr.freitonal.client.rpc.dto.DTOParser;
-import de.cr.freitonal.client.rpc.java.DTOParserJava;
+import de.cr.freitonal.unittests.client.rpc.java.DTOParserJava;
 
 public class FactoryTest {
 	protected DTOParser parser;

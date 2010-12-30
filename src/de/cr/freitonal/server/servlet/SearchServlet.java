@@ -34,7 +34,9 @@ public class SearchServlet extends HttpServlet {
 		Var searchFunction = RT.var("de.cr.freitonal.server.search", "doSearch");
 		String result;
 		try {
+			System.err.println("invoking search");
 			result = (String) searchFunction.invoke(confDir.getAbsolutePath() + "/db.clj", httpServletRequest.getParameterMap());
+			System.err.println("writing result:\n" + result);
 			httpServletResponse.getWriter().write(result);
 		} catch (Exception e) {
 			e.printStackTrace();

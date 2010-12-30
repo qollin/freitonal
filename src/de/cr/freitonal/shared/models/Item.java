@@ -1,7 +1,13 @@
 package de.cr.freitonal.shared.models;
 
-public class Item extends VolatileItem implements UID {
-	private final String id;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class Item extends VolatileItem implements UID, IsSerializable {
+	private String id;
+
+	private Item() {
+
+	}
 
 	public Item(String id, String value) {
 		super(value);

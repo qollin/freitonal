@@ -6,6 +6,9 @@ import de.cr.freitonal.shared.models.Item;
 
 public class ComposerSet extends ItemSet {
 
+	private ComposerSet() {
+	}
+
 	public ComposerSet(ArrayList<Item> items) {
 		super(items);
 	}

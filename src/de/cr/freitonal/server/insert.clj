@@ -49,6 +49,10 @@
   (let [id (insert-simple-object :classical_composer {:first_name "" :middle_name "" :last_name (.getValue composer)})]
     (Item. (str id) composer)))
 
+(defn doCreateComposer [conf-file #^VolatileItem composer]
+  (sql/with-connection (load-file conf-file)
+    (insert-composer composer)))
+
 (defn insert-piecetype [#^VolatileItem piecetype]
   (let [id (insert-simple-object :classical_piecetype {:name (.getValue piecetype)})]
     (Item. (str id) piecetype)))

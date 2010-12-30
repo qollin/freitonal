@@ -2,12 +2,17 @@ package de.cr.freitonal.client.models;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 import de.cr.freitonal.shared.models.Item;
 
-public class CatalogSet {
+public class CatalogSet implements IsSerializable {
 
-	private final ItemSet names;
-	private final ItemSet numbers;
+	private ItemSet names;
+	private ItemSet numbers;
+
+	private CatalogSet() {
+	}
 
 	public CatalogSet(ItemSet names, ItemSet numbers) {
 		this.names = names;

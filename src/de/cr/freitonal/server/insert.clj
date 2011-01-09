@@ -24,6 +24,10 @@
 (defmethod #^Item insert-instrument VolatileItem [instrument]
   (insert-instrument (.getValue instrument)))
 
+(defn doCreateInstrument [conf-file #^VolatileItem instrument]
+  (sql/with-connection (load-file conf-file)
+    (insert-instrument instrument)))
+
 (defn insert-instrumentation* [nickname]
   (insert-simple-object :classical_instrumentation {:nickname nickname}))
 
@@ -45,6 +49,10 @@
             (recur (rest instruments) (inc counter)))))
       (Instrumentation. (str id) instrumentation))))
 
+(defn doCreateInstrumentation [conf-file #^VolatileInstrumentation instrumentation]
+  (sql/with-connection (load-file conf-file)
+    (insert-instrumentation instrumentation)))
+
 (defn insert-composer [#^VolatileItem composer]
   (let [id (insert-simple-object :classical_composer {:first_name "" :middle_name "" :last_name (.getValue composer)})]
     (Item. (str id) composer)))
@@ -57,12 +65,20 @@
   (let [id (insert-simple-object :classical_piecetype {:name (.getValue piecetype)})]
     (Item. (str id) piecetype)))
 
+(defn doCreatePieceType [conf-file #^VolatileItem piecetype]
+  (sql/with-connection (load-file conf-file)
+    (insert-piecetype piecetype)))
+
 (defmulti insert-catalogname class)
 (defmethod #^Item insert-catalogname String [catalogname]
   (let [id (insert-simple-object :classical_catalogtype {:name catalogname})]
     (Item. (str id) catalogname)))
 (defmethod #^Item insert-catalogname VolatileItem [catalog]
   (insert-catalogname (.getValue catalog)))
+
+(defn doCreateCatalogName [conf-file #^VolatileItem catalogName]
+  (sql/with-connection (load-file conf-file)
+    (insert-catalogname catalogName)))
 
 (defmulti insert-catalog (fn [param & _] (class param)))
 (defmethod #^Catalog insert-catalog VolatileItem [catalogname ordinal sub-ordinal]
@@ -71,6 +87,10 @@
 (defmethod #^Catalog insert-catalog VolatileCatalog [catalog]
   (let [[ordinal sub-ordinal] (create-ordinal-and-subordinal-from-string (.getOrdinal catalog))]
     (insert-catalog (.getCatalogName catalog) ordinal sub-ordinal)))
+
+(defn doCreateCatalog [conf-file #^VolatileCatalog catalog]
+  (sql/with-connection (load-file conf-file)
+    (insert-catalog catalog)))
 
 (defn create-structure-for-volatile-piece [#^VolatilePiece piece]
   (let [mandatoryStructure {:composer_id (.getID (.getComposer piece))}

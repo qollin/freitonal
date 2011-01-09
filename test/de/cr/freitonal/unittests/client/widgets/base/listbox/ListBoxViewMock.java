@@ -14,7 +14,7 @@ import de.cr.freitonal.shared.models.Item;
 public class ListBoxViewMock implements IListBoxView {
 
 	private boolean enabled;
-	private ArrayList<String> trace = new ArrayList<String>();
+	protected ArrayList<String> trace = new ArrayList<String>();
 	private boolean visible;
 
 	public ListBoxViewMock() {

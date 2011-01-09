@@ -7,8 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
-
-public class EditableListBoxView extends ListBoxView {
+public class EditableListBoxView extends ListBoxView implements IEditableListBoxView {
 	interface Binder extends UiBinder<HTMLPanel, EditableListBoxView> {
 	}
 
@@ -36,5 +35,14 @@ public class EditableListBoxView extends ListBoxView {
 		super.switchToCreateMode();
 		list.setVisible(false);
 		entry.setVisible(true);
+	}
+
+	public void setEnteredText(String text) {
+		entry.setText(text);
+	}
+
+	@Override
+	public String getText() {
+		return entry.getText();
 	}
 }

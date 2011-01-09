@@ -1,6 +1,7 @@
 package de.cr.freitonal.server.services;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +42,11 @@ public class SearchServiceImpl extends RemoteServiceServlet implements SearchSer
 	public SearchResult search(PieceSearchMask pieceSearchMask) {
 		Var searchFunction = RT.var("de.cr.freitonal.server.search", "doSearch");
 		try {
-			Map<String, String> parameters;
+			Map<String, ArrayList<String>> parameters;
 			if (pieceSearchMask != null) {
 				parameters = new MapBuilder(pieceSearchMask).getMap();
 			} else {
-				parameters = new HashMap<String, String>();
+				parameters = new HashMap<String, ArrayList<String>>();
 			}
 			String jsonString = (String) searchFunction.invoke(confDir.getAbsolutePath() + "/" + getDatabaseConfigFile(), parameters);
 

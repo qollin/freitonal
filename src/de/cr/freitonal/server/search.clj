@@ -94,7 +94,7 @@
     (if (empty? searchParams)
       (vector (create-sql-string (dissoc sql :where)))
       (let [extendedSQL (add-search-clauses sql searchParams)]
-        (append [(create-sql-string extendedSQL)] (extendedSQL :values))))))
+        (into [(create-sql-string extendedSQL)] (extendedSQL :values))))))
 
 (defn run-search-query [sql render-fn searchParams]
   (let [query (create-query sql searchParams)]
@@ -343,4 +343,4 @@
 
 (defn doSearch [conf-file searchParams]
   (sql/with-connection (load-file conf-file)
-    (search (java-to-clojure searchParams))))
+    (search searchParams)))

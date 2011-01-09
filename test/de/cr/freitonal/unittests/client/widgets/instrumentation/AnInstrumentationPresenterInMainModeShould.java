@@ -2,6 +2,7 @@ package de.cr.freitonal.unittests.client.widgets.instrumentation;
 
 import static de.cr.freitonal.usertests.client.test.data.TestData.createInstrumentationSet;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,4 +30,8 @@ public class AnInstrumentationPresenterInMainModeShould extends InstrumentationP
 		assertEquals("DependendView", instrumentationPresenter.getDFA().getState());
 	}
 
+	@Test
+	public void TheAddInstrumentButtonShouldBeDisabledInMainMode() {
+		assertTrue(trace.contains("setAddInstrumentButtonVisible:" + false));
+	}
 }

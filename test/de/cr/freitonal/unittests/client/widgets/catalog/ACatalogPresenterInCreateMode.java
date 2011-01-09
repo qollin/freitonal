@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
-import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.VolatileCatalog;
 
 public class ACatalogPresenterInCreateMode extends CatalogPresenterTest {
 	@Before
@@ -49,10 +49,9 @@ public class ACatalogPresenterInCreateMode extends CatalogPresenterTest {
 		Item name = catalogs.getNames().getItem(0);
 		Item number = catalogs.getNumbers().getItem(0);
 		catalogPresenter.getNameListBoxPresenter().fireOnNewItemSelected(name);
-		catalogPresenter.getNumberListBoxPresenter().fireOnNewItemSelected(number);
+		catalogPresenter.getNumberListBoxPresenter().setEnteredText(number.getValue());
 
-		Catalog selectedCatalog = catalogPresenter.getSelectedItem();
-		assertEquals("catalogs ID should be the ID of the selected number", number.getID(), selectedCatalog.getID());
+		VolatileCatalog selectedCatalog = catalogPresenter.getEnteredItem();
 		assertEquals("catalogs name should be the selected name", name, selectedCatalog.getCatalogName());
 		assertEquals("catalogs ordinal should be the selected number", number.getValue(), selectedCatalog.getOrdinal());
 	}

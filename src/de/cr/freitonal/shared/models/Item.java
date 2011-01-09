@@ -5,8 +5,9 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class Item extends VolatileItem implements UID, IsSerializable {
 	private String id;
 
+	@SuppressWarnings("unused")
 	private Item() {
-
+		//needed because of GWT Serialization
 	}
 
 	public Item(String id, String value) {

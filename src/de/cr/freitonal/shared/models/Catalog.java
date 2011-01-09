@@ -1,7 +1,14 @@
 package de.cr.freitonal.shared.models;
 
-public class Catalog extends VolatileCatalog {
-	private final String id;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class Catalog extends VolatileCatalog implements IsSerializable {
+	private String id;
+
+	@SuppressWarnings("unused")
+	private Catalog() {
+		//needed because of GWT serialization
+	}
 
 	public Catalog(String id, Item catalogName, String ordinal) {
 		super(catalogName, ordinal);

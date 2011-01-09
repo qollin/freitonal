@@ -31,6 +31,9 @@ public class ListBoxView extends Composite implements IListBoxView {
 	protected Label label;
 
 	@UiField
+	protected HTMLPanel labelPanel;
+
+	@UiField
 	Image closeImage;
 
 	private final ArrayList<Item> specialItems = new ArrayList<Item>();
@@ -104,7 +107,7 @@ public class ListBoxView extends Composite implements IListBoxView {
 			}
 		}
 
-		throw new IllegalArgumentException("the item " + selected + " is unknown for ");
+		throw new IllegalArgumentException("the item " + selected + " is unknown; list size = " + list.getItemCount());
 	}
 
 	public void setEnabled(boolean enabled) {
@@ -137,7 +140,7 @@ public class ListBoxView extends Composite implements IListBoxView {
 	}
 
 	protected void switchToSelectMode() {
-		label.setVisible(false);
+		hideLabel();
 		closeImage.setVisible(false);
 
 		list.setVisible(true);
@@ -175,6 +178,15 @@ public class ListBoxView extends Composite implements IListBoxView {
 		label.setText(text);
 		list.setVisible(false);
 
-		label.setVisible(true);
+		showLabel();
 	}
+
+	private void showLabel() {
+		labelPanel.setVisible(true);
+	}
+
+	private void hideLabel() {
+		labelPanel.setVisible(false);
+	}
+
 }

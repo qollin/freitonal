@@ -127,7 +127,7 @@ public class PiecePresenter {
 	private void save() {
 		VolatilePiece piece = new VolatilePiece();
 		piece.setComposer(composerPresenter.getSelectedItem());
-		piece.setCatalog(catalogPresenter.getSelectedItem());
+		piece.setCatalog(catalogPresenter.getEnteredItem());
 		piece.musicKey = musicKeyPresenter.getSelectedItem();
 		piece.ordinal = ordinalPresenter.getSelectedItem();
 		piece.subtitle = subtitlePresenter.getSelectedItem();

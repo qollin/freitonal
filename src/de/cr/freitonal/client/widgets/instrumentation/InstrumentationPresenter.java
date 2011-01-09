@@ -52,6 +52,8 @@ public class InstrumentationPresenter extends CompositePresenter {
 		addInstrumentPresenter();
 		bind();
 		initializeDFA();
+
+		view.setAddInstrumentButtonVisible(false);
 	}
 
 	private void initializeDFA() {

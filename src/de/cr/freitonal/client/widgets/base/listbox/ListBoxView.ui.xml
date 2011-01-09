@@ -4,16 +4,21 @@
  
  <ui:style>
  	.overlay {
-	    position: relative;
-    	top: -100%;
-    	right: -10%;
-    	z-index: 5;
+	    position: absolute;
+    	top: 0px;
+    	right: 0px;
     }
+    .labelPanel {
+		position:relative;
+		display:block;
+	}
  </ui:style>
    
   <g:HTMLPanel>
   	<g:ListBox ui:field="list"/>
-	<g:Label ui:field="label"/>
-	<g:Image ui:field="closeImage" url="X.png" width="12px" height="12px" addStyleNames='{style.overlay}'/>
+	<g:HTMLPanel ui:field="labelPanel" addStyleNames='{style.labelPanel}'>
+		<g:Label ui:field="label"/>
+		<g:Image ui:field="closeImage" url="X.png" width="12px" height="12px" addStyleNames='{style.overlay}'/>
+	</g:HTMLPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

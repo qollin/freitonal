@@ -2,14 +2,21 @@
  xmlns:ui='urn:ui:com.google.gwt.uibinder'
  xmlns:g='urn:import:com.google.gwt.user.client.ui'>
   
+   <ui:style>
+ 	.fieldButton {
+		float: right;
+     }
+  </ui:style>
+  
   <g:HTMLPanel>
     <div class="fieldWrapper">
       <div class="fieldLabel">
         <g:Label ui:field="label"/>
       </div>
-      <div id="piece-instrumentation-instruments" class="fieldContents">
+      <div class="fieldContents">
+	      <div id="piece-instrumentation-instruments" class="fieldLabel"/>
+	      <g:Button ui:field="addInstrumentButton" addStyleNames='{style.fieldButton}'>+</g:Button>
       </div>
-      <g:Button ui:field="addInstrumentButton">+</g:Button>
     </div>
   </g:HTMLPanel>
 </ui:UiBinder>

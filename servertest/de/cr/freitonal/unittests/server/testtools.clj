@@ -59,16 +59,15 @@
 
 (defmacro dbtest [description & body]
   `(sql/with-connection db
-     (sql/transaction
-       (sql/set-rollback-only)
-       (let [~'opus (insert-catalogname TestData/Opus)
-             ~'opus27-1 (insert-catalog TestData/Opus27_1)
-             ~'beethoven (insert-composer TestData/Beethoven)
-             ~'mozart (insert-composer TestData/Mozart)
-             ~'piano (insert-instrument TestData/Piano)
-             ~'violin (insert-instrument TestData/Violin)
-             ~'piano-solo (insert-instrumentation "solo piano" ~'piano)]
-         ~@body))))
+     (delete-all-tables)
+     (let [~'opus (insert-catalogname TestData/Opus)
+           ~'opus27-1 (insert-catalog TestData/Opus27_1)
+           ~'beethoven (insert-composer TestData/Beethoven)
+           ~'mozart (insert-composer TestData/Mozart)
+           ~'piano (insert-instrument TestData/Piano)
+           ~'violin (insert-instrument TestData/Violin)
+           ~'piano-solo (insert-instrumentation "solo piano" ~'piano)]
+       ~@body)))
 
 (defn item-vector [#^Item item]
   (vector (Integer/valueOf (.getID item)) (.getValue item)))

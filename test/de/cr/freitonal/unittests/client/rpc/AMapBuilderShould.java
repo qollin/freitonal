@@ -2,6 +2,7 @@ package de.cr.freitonal.unittests.client.rpc;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class AMapBuilderShould {
 		ItemSet numbers = catalogSet.getNumbers();
 		names.setSelected(names.getItem(0));
 
-		Map<String, String> map = new MapBuilder(searchMask).getMap();
-		assertEquals(names.getItem(0).getID(), map.get("piece-catalog__name"));
+		Map<String, ArrayList<String>> map = new MapBuilder(searchMask).getMap();
+		assertEquals(names.getItem(0).getID(), map.get("piece-catalog__name").get(0));
 	}
 }

@@ -5,8 +5,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class VolatileItem implements IsSerializable {
 	private String value;
 
+	/**
+	 * needed because of GWT serialization: DO NO USE
+	 */
 	protected VolatileItem() {
-
 	}
 
 	public VolatileItem(String value) {

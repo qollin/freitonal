@@ -16,21 +16,24 @@ import de.cr.freitonal.client.event.dfa.Trigger;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.widgets.base.CompositePresenter;
 import de.cr.freitonal.client.widgets.base.SearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.EditableSearchFieldPresenter;
+import de.cr.freitonal.client.widgets.base.listbox.IEditableListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.VolatileCatalog;
 
 public class CatalogPresenter extends CompositePresenter {
 	private final View view;
 	private final ListBoxPresenter nameListBoxPresenter;
-	private final ListBoxPresenter numberListBoxPresenter;
+	private final EditableSearchFieldPresenter numberListBoxPresenter;
 	private final DFA dfa = new DFA();
 
 	public interface View {
 		public IListBoxView getNameListBoxView();
 
-		public IListBoxView getNumberListBoxView();
+		public IEditableListBoxView getNumberListBoxView();
 	}
 
 	public CatalogPresenter(EventBus eventBus, View view) {
@@ -39,7 +42,7 @@ public class CatalogPresenter extends CompositePresenter {
 
 		nameListBoxPresenter = new SearchFieldPresenter(eventBus, view.getNameListBoxView());
 		addPresenter(nameListBoxPresenter);
-		numberListBoxPresenter = new SearchFieldPresenter(eventBus, view.getNumberListBoxView());
+		numberListBoxPresenter = new EditableSearchFieldPresenter(eventBus, view.getNumberListBoxView());
 		addPresenter(numberListBoxPresenter);
 
 		numberListBoxPresenter.setEnabled(false);
@@ -96,22 +99,32 @@ public class CatalogPresenter extends CompositePresenter {
 		return numberListBoxPresenter.getItemCount();
 	}
 
-	public ListBoxPresenter getNumberListBoxPresenter() {
+	public EditableSearchFieldPresenter getNumberListBoxPresenter() {
 		return numberListBoxPresenter;
 	}
 
 	public void fireOnNewItemSelected(Catalog catalog) {
 		nameListBoxPresenter.fireOnNewItemSelected(catalog.getCatalogName());
-		numberListBoxPresenter.fireOnNewItemSelected(catalog.getCatalogNumber());
+		numberListBoxPresenter.setEnteredText(catalog.getCatalogNumber().getValue());
 	}
 
 	public Catalog getSelectedItem() {
+		if (getDisplayMode() == Create) {
+			throw new IllegalStateException("in create mode only a volatile catalog is available; call getEnteredItem");
+		}
+
 		ArrayList<Item> items = getSelectedItems();
 
 		Item name = items.get(0);
 		Item number = items.get(1);
 
 		return new Catalog(name, number);
+	}
+
+	public VolatileCatalog getEnteredItem() {
+		Item catalogName = nameListBoxPresenter.getSelectedItem();
+		String ordinal = numberListBoxPresenter.getText();
+		return new VolatileCatalog(catalogName, ordinal);
 	}
 
 	@Override

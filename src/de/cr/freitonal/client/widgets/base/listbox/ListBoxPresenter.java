@@ -269,5 +269,4 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 		DisplayMode mode = getDisplayMode();
 		return mode == View || mode == DependendView;
 	}
-
 }

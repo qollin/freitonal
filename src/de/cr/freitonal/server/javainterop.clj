@@ -9,7 +9,4 @@
 
 (defn java-to-clojure [dataStructure]
   (let [clojureMap (into {} dataStructure)]
-    (reduce #(assoc %1 %2 (into [] (%1 %2))) clojureMap (keys clojureMap))))
-
-
-
+    (reduce #(assoc %1 %2 (into [] ((str %1) (str %2)))) clojureMap (keys clojureMap))))

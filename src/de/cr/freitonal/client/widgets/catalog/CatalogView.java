@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 
 import de.cr.freitonal.client.widgets.base.listbox.EditableListBoxView;
+import de.cr.freitonal.client.widgets.base.listbox.IEditableListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.IListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxView;
 
@@ -40,7 +41,7 @@ public class CatalogView extends Composite implements CatalogPresenter.View {
 		return nameList;
 	}
 
-	public IListBoxView getNumberListBoxView() {
+	public IEditableListBoxView getNumberListBoxView() {
 		return numberList;
 	}
 }

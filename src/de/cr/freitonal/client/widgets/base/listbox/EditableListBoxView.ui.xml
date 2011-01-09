@@ -4,7 +4,12 @@
   <g:HTMLPanel>
   	<g:ListBox ui:field="list"/>
   	<g:TextBox ui:field="entry"/>
-	<g:Label ui:field="label"/>
-	<g:Image ui:field="closeImage" url="X.png" width="12px" height="12px"/>
+	<g:HTMLPanel ui:field="labelPanel">
+	  	<div class="bl"><div class="br"><div class="tl"><div class="tr">
+			<g:Label ui:field="label"/>
+		</div></div></div></div>
+		<div class="clear"> </div>
+		<g:Image ui:field="closeImage" url="X.png" width="12px" height="12px"/>
+	</g:HTMLPanel>
   </g:HTMLPanel>
 </ui:UiBinder>

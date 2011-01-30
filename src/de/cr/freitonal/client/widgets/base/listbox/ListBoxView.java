@@ -150,9 +150,6 @@ public class ListBoxView extends Composite implements IListBoxView {
 	}
 
 	protected void switchToViewMode() {
-		if (getSelectedItem() == null) {
-			throw new IllegalArgumentException("you may not switch to view mode without a selected item");
-		}
 		switchToDependedViewMode();
 		closeImage.setVisible(true);
 	}

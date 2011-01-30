@@ -32,6 +32,15 @@
                            (conj new-sequ elem))]
       (remove-duplicates (rest sequ) new-new-sequ new-acc)))))
 
+(defn run-once [function]
+  (let [sentinel (Object.)
+        result (atom sentinel)]
+    (fn [& args]
+      (locking sentinel 
+        (if (= @result sentinel)
+          (reset! result (apply function args)) 
+          @result)))))
+
 (defn debug []
   false)
       

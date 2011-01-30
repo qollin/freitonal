@@ -13,7 +13,9 @@ public class Instrumentation extends VolatileInstrumentation implements UID, IsS
 	private String id;
 	private HashMap<Item, Integer> instrumentCounts;
 
+	@SuppressWarnings("unused")
 	private Instrumentation() {
+		//needed because of GWT serialization
 	}
 
 	public Instrumentation(String id, String nickname, Item... instruments) {

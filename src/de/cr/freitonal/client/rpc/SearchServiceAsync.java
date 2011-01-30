@@ -4,4 +4,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface SearchServiceAsync {
 	public void search(PieceSearchMask pieceSearchMask, AsyncCallback<SearchResult> callback);
+
+	public void search(AsyncCallback<SearchResult> callback);
 }

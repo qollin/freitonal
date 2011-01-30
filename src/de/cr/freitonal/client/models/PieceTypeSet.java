@@ -6,18 +6,24 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 import de.cr.freitonal.shared.models.Item;
 
-public class PieceTypeSet implements IsSerializable {
+public class PieceTypeSet implements IsSerializable, Set {
 	private ItemSet pieceTypes;
 	private ItemSet piecePlusInstrumentationTypes;
 	private MultiSourceItemSet allTypes;
 
+	@SuppressWarnings("unused")
 	private PieceTypeSet() {
+		//needed because of GWT serialization
+	}
+
+	public PieceTypeSet(ItemSet pieceTypes, ItemSet piecePlusInstrumentationTypes) {
+		this.pieceTypes = pieceTypes;
+		this.piecePlusInstrumentationTypes = piecePlusInstrumentationTypes;
+		this.allTypes = new MultiSourceItemSet(this.piecePlusInstrumentationTypes, this.pieceTypes);
 	}
 
 	public PieceTypeSet(ArrayList<Item> pieceTypes, ArrayList<Item> piecePlusInstrumentationTypes) {
-		this.pieceTypes = new ItemSet(pieceTypes);
-		this.piecePlusInstrumentationTypes = new ItemSet(piecePlusInstrumentationTypes);
-		this.allTypes = new MultiSourceItemSet(this.piecePlusInstrumentationTypes, this.pieceTypes);
+		this(new ItemSet(pieceTypes), new ItemSet(piecePlusInstrumentationTypes));
 	}
 
 	/**
@@ -46,4 +52,9 @@ public class PieceTypeSet implements IsSerializable {
 		return allTypes;
 	}
 
+	@Override
+	public boolean contains(Object o) {
+		Item item = (Item) o;
+		return pieceTypes.contains(item) || piecePlusInstrumentationTypes.contains(item);
+	}
 }

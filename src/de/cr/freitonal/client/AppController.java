@@ -24,6 +24,7 @@ public class AppController {
 	public AppController(PiecePresenter.View pieceView, final RPCService rpcService) {
 		this.rpcService = rpcService;
 		piecePresenter = new PiecePresenter(pieceView, eventBus, rpcService);
+
 		createDFA();
 	}
 

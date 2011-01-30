@@ -16,7 +16,9 @@ import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
+import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class TestData {
 	public static int NumberOfComposers = 3;
@@ -48,7 +50,7 @@ public class TestData {
 	public static final Catalog Opus27_1 = new Catalog(Opus, CatalogOrdinal27_1);
 
 	public static final Item Quartett = new Item("1", "Quartett");
-	public static final Item Sonate = new Item("3", "Sonate");
+	public static final Item Sonata = new Item("3", "Sonate");
 	public static final Item Symphonie = new Item("8", "Symphonie");
 
 	public static final Item Year1799 = new Item("1799", "1799");
@@ -56,6 +58,20 @@ public class TestData {
 	public static Item Eroica = new Item("Eroica", "Eroica");
 
 	public static final VolatileInstrumentation VolatileInstrumentationPianoSolo = new VolatileInstrumentation("", Piano);
+
+	public static VolatilePiece createVolatilePiece() {
+		VolatilePiece vPiece = new VolatilePiece(Beethoven, InstrumentationPiano, Sonata, Opus27_1, AMajor);
+		vPiece.setOrdinal(Ordinal4a);
+		vPiece.setPieceType(Symphonie);
+		vPiece.setPublicationDate(Year1799);
+		vPiece.setSubtitle(Eroica);
+
+		return vPiece;
+	}
+
+	public static Piece createPiece() {
+		return new Piece("1", createVolatilePiece());
+	}
 
 	public static PieceSearchMask createPieceMask() {
 		PieceSearchMask pieceMask = new PieceSearchMask();
@@ -104,7 +120,7 @@ public class TestData {
 	}
 
 	public static PieceTypeSet createPieceTypeSet() {
-		return new PieceTypeSet(new ArrayList<Item>(Arrays.asList(new Item[] { Quartett, Sonate, Symphonie })), new ArrayList<Item>());
+		return new PieceTypeSet(new ArrayList<Item>(Arrays.asList(new Item[] { Quartett, Sonata, Symphonie })), new ArrayList<Item>());
 	}
 
 	public static PublicationDateSet createPublicationDateSet() {

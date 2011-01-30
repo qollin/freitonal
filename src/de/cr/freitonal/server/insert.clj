@@ -1,8 +1,11 @@
 (ns de.cr.freitonal.server.insert
   (:use [de.cr.freitonal.server.tools])
   (:use [de.cr.freitonal.server.render])
+  (:use [de.cr.freitonal.server.tables :as table :only ()])
 
   (:use [clojure.contrib.sql :as sql :only ()])
+  
+  (:use clojureql.core)
   
   (:import (de.cr.freitonal.shared.models VolatileInstrumentation Instrumentation 
                                           VolatileItem Item 
@@ -23,10 +26,6 @@
     (Item. (str id) instrument)))
 (defmethod #^Item insert-instrument VolatileItem [instrument]
   (insert-instrument (.getValue instrument)))
-
-(defn doCreateInstrument [conf-file #^VolatileItem instrument]
-  (sql/with-connection (load-file conf-file)
-    (insert-instrument instrument)))
 
 (defn insert-instrumentation* [nickname]
   (insert-simple-object :classical_instrumentation {:nickname nickname}))
@@ -49,25 +48,13 @@
             (recur (rest instruments) (inc counter)))))
       (Instrumentation. (str id) instrumentation))))
 
-(defn doCreateInstrumentation [conf-file #^VolatileInstrumentation instrumentation]
-  (sql/with-connection (load-file conf-file)
-    (insert-instrumentation instrumentation)))
-
 (defn insert-composer [#^VolatileItem composer]
   (let [id (insert-simple-object :classical_composer {:first_name "" :middle_name "" :last_name (.getValue composer)})]
     (Item. (str id) composer)))
 
-(defn doCreateComposer [conf-file #^VolatileItem composer]
-  (sql/with-connection (load-file conf-file)
-    (insert-composer composer)))
-
 (defn insert-piecetype [#^VolatileItem piecetype]
   (let [id (insert-simple-object :classical_piecetype {:name (.getValue piecetype)})]
     (Item. (str id) piecetype)))
-
-(defn doCreatePieceType [conf-file #^VolatileItem piecetype]
-  (sql/with-connection (load-file conf-file)
-    (insert-piecetype piecetype)))
 
 (defmulti insert-catalogname class)
 (defmethod #^Item insert-catalogname String [catalogname]
@@ -75,10 +62,6 @@
     (Item. (str id) catalogname)))
 (defmethod #^Item insert-catalogname VolatileItem [catalog]
   (insert-catalogname (.getValue catalog)))
-
-(defn doCreateCatalogName [conf-file #^VolatileItem catalogName]
-  (sql/with-connection (load-file conf-file)
-    (insert-catalogname catalogName)))
 
 (defmulti insert-catalog (fn [param & _] (class param)))
 (defmethod #^Catalog insert-catalog VolatileItem [catalogname ordinal sub-ordinal]
@@ -88,28 +71,45 @@
   (let [[ordinal sub-ordinal] (create-ordinal-and-subordinal-from-string (.getOrdinal catalog))]
     (insert-catalog (.getCatalogName catalog) ordinal sub-ordinal)))
 
-(defn doCreateCatalog [conf-file #^VolatileCatalog catalog]
-  (sql/with-connection (load-file conf-file)
-    (insert-catalog catalog)))
+(defn #^Catalog create-catalog-from-volatile-catalog [#^VolatileCatalog vcatalog]
+  (if (nil? vcatalog)
+    nil
+    (let [[ordinal sub-ordinal] (create-ordinal-and-subordinal-from-string (.getOrdinal vcatalog))
+          res @(select table/catalog (where (and (= :name_id (.getID (.getCatalogName vcatalog)))
+                                              (= :ordinal ordinal)
+                                              (= :sub_ordinal sub-ordinal))))]
+      (if (not (empty? res))
+        (Catalog. (str (:id (first res))) vcatalog)
+        (insert-catalog vcatalog)))))
 
-(defn create-structure-for-volatile-piece [#^VolatilePiece piece]
-  (let [mandatoryStructure {:composer_id (.getID (.getComposer piece))}
-        struct1 (if (not (nil? (.getPieceType piece)))
-                  (assoc mandatoryStructure :piece_type_id (.getID (.getPieceType piece)))
-                  mandatoryStructure)
-        struct2 (if (not (nil? (.getCatalog piece)))
-                  (assoc struct1 :catalog_id (.getID (.getCatalog piece)))
-                  struct1)
-        struct3 (if (not (nil? (.getParent piece)))
-                  (assoc struct2 :parent_id (.getID (.getParent piece)))
-                  struct2)]
-        struct3))
+(defn create-structure-for-volatile-piece
+  ([#^VolatilePiece piece]
+    (create-structure-for-volatile-piece piece (create-catalog-from-volatile-catalog (.getCatalog piece))))
+  ([#^VolatilePiece piece #^Catalog catalog]
+    (let [mandatoryStructure {:composer_id (.getID (.getComposer piece))}
+          struct1 (if (not (nil? (.getPieceType piece)))
+                    (assoc mandatoryStructure :piece_type_id (.getID (.getPieceType piece)))
+                    mandatoryStructure)
+          struct2 (if (not (nil? catalog))
+                    (assoc struct1 :catalog_id (.getID catalog))
+                    struct1)
+          struct3 (if (not (nil? (.getParent piece)))
+                    (assoc struct2 :parent_id (.getID (.getParent piece)))
+                    struct2)]
+      struct3)))
 
 (defn #^Piece insert-piece [#^VolatilePiece piece]
-  (let [id (insert-simple-object :classical_piece (create-structure-for-volatile-piece piece))]
+  (let [catalog (create-catalog-from-volatile-catalog (.getCatalog piece))
+        id (insert-simple-object :classical_piece (create-structure-for-volatile-piece piece catalog))
+        instrumentation (if (.hasNonVolatileInstrumentation piece)
+                          (.getInstrumentationAsNonVolatile piece)
+                          (insert-instrumentation (.getInstrumentation piece)))]
     (sql/insert-records :classical_piece_instrumentations {:piece_id id
-                                                           :instrumentation_id (.getID (.getInstrumentationAsNonVolatile piece))})
-    (Piece. (str id) piece)))
+                                                           :instrumentation_id (.getID instrumentation)})
+    (let [result (Piece. (str id) piece)]
+      (.setInstrumentation result instrumentation) ;update the instrumentation, because it became non-volatile
+      (.setCatalog result catalog) ;update the catalog, because it became non-volatile
+      result)))
 
 (defn insert-piece+instrumentation-type [#^VolatilePiecePlusInstrumentationType piece+instrumentation-type]
   (let [id (insert-simple-object :classical_typeplusinstrumentation {:type_id (.getID (.getPieceType piece+instrumentation-type))

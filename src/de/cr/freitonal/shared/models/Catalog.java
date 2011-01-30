@@ -19,10 +19,15 @@ public class Catalog extends VolatileCatalog implements IsSerializable {
 		this(number.getID(), name, number.getValue());
 	}
 
+	public Catalog(String id, VolatileCatalog catalog) {
+		this(id, catalog.getCatalogName(), catalog.getOrdinal());
+	}
+
 	public String getID() {
 		return id;
 	}
 
+	@Override
 	public Item getCatalogNumber() {
 		return new Item(id, getOrdinal());
 	}

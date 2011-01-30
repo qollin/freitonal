@@ -1,7 +1,7 @@
 package de.cr.freitonal.unittests.client.widgets.piecetype;
 
 import static de.cr.freitonal.usertests.client.test.data.TestData.Quartett;
-import static de.cr.freitonal.usertests.client.test.data.TestData.Sonate;
+import static de.cr.freitonal.usertests.client.test.data.TestData.Sonata;
 import static de.cr.freitonal.usertests.client.test.data.TestData.Symphonie;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -33,7 +33,7 @@ public class PieceTypePresenterTest extends PresenterTest {
 
 		ArrayList<Item> pieceTypes = new ArrayList<Item>();
 		pieceTypes.add(Quartett);
-		pieceTypes.add(Sonate);
+		pieceTypes.add(Sonata);
 		pieceTypes.add(Symphonie);
 
 		PieceTypeSet pieceTypeSet = new PieceTypeSet(pieceTypes, piecePlusInstrumentationTypes);

@@ -10,7 +10,6 @@ public class CreateComposerTest extends APITestCase {
 			@Override
 			public void run(Object... parameters) {
 				assertEquals("Mozart", ((Item) parameters[0]).getValue());
-				finishTest();
 			}
 		});
 	}

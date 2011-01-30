@@ -29,3 +29,8 @@
   (is (= '[1 2 3 4] (remove-duplicates '(1 1 2 2 3 3 4 4))))
   (is (= '[1 2 3 4] (remove-duplicates '(1 2 3 4 1 2 3 4))))
   (is (= '[1 2 3 4] (remove-duplicates '(1 2 3 4)))))
+
+(deftest test-runonce []
+  (let [f (run-once (fn [x] x))]
+    (is (= 6 (f 6)))
+    (is (= 6 (f 5)))))

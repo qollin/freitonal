@@ -10,6 +10,7 @@ import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatileCatalog;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.shared.models.VolatileItem;
@@ -26,16 +27,14 @@ public class RPCServiceMock implements RPCService {
 		this.trace = trace;
 	}
 
+	@Override
 	public void search(PieceSearchMask searchMask, AsyncCallback<SearchResult> callback) {
 		trace.add("RPCServiceMock: search");
 	}
 
+	@Override
 	public void search(AsyncCallback<SearchResult> callback) {
 		trace.add("RPCServiceMock: search");
-	}
-
-	public void save(VolatilePiece piece) {
-		trace.add("RPCServiceMock: save");
 	}
 
 	@Override
@@ -66,6 +65,11 @@ public class RPCServiceMock implements RPCService {
 	@Override
 	public void createPieceType(VolatileItem pieceType, AsyncCallback<Item> callback) {
 		trace.add("RPCServiceMock: createPieceType");
+	}
+
+	@Override
+	public void createPiece(VolatilePiece piece, AsyncCallback<Piece> callback) {
+		trace.add("RPCServiceMock: createPiece");
 	}
 
 }

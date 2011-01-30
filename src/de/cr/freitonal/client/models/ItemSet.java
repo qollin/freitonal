@@ -5,19 +5,24 @@ import java.util.HashSet;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+import de.cr.freitonal.client.utils.StringUtils;
 import de.cr.freitonal.shared.models.Item;
 
-public class ItemSet implements IsSerializable {
+public class ItemSet implements IsSerializable, Set {
 	private ArrayList<Item> items;
 	private Item selected;
 
+	@SuppressWarnings("unused")
 	private ItemSet() {
+		//needed for GWT serialization
 	}
 
 	public ItemSet(Item... items) {
 		this.items = new ArrayList<Item>(items.length);
 		for (Item item : items) {
-			this.items.add(item);
+			if (item != null) {
+				this.items.add(item);
+			}
 		}
 	}
 
@@ -63,11 +68,20 @@ public class ItemSet implements IsSerializable {
 		return getItems().contains(item);
 	}
 
+	public boolean contains(Object o) {
+		return contains((Item) o);
+	}
+
 	public Item getItem(int index) {
 		return getItems().get(index);
 	}
 
 	public void removeSelection() {
 		selected = null;
+	}
+
+	@Override
+	public String toString() {
+		return "[" + StringUtils.join(items, ", ") + "]";
 	}
 }

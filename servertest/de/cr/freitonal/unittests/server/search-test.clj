@@ -135,7 +135,7 @@
 
 (deftest check-that-instruments-not-referenced-by-any-piece-are-returned-from-initial-loading []
   (dbtest ""
-    (let [baryton (insert-instrument (VolatileItem. "Baryton"))
+    (let [baryton (insert-instrument "Baryton")
           baryton-solo (insert-instrumentation "baryton-solo" baryton)
           fullSearchResult (read-json (search {}) false)]
       (is (containing? baryton-solo (fullSearchResult "piece-instrumentations") #(% "id"))))))

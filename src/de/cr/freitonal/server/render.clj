@@ -3,7 +3,7 @@
 (defn create-string-from-ordinal-and-subordinal [ordinal sub-ordinal] 
   (str 
     ordinal 
-    (if (re-matches #"[^ ]" sub-ordinal) 
+    (if (and (not (nil? sub-ordinal)) (re-matches #"[^ ]" sub-ordinal)) 
       (str "-" sub-ordinal))))
 
 (defn create-ordinal-and-subordinal-from-string [string]

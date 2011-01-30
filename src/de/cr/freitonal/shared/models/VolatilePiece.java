@@ -1,14 +1,17 @@
 package de.cr.freitonal.shared.models;
 
-public class VolatilePiece {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class VolatilePiece implements IsSerializable {
 	private Item composer;
 	private VolatileCatalog volatileCatalog;
-	public Item musicKey;
+	private Item musicKey;
 	private Item type;
-	public Item subtitle;
-	public Item ordinal;
+	private Item subtitle;
+	private Item ordinal;
 	private Piece parent;
 	private VolatileInstrumentation instrumentation;
+	private Item publicationDate;
 
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation) {
 		this.composer = composer;
@@ -20,17 +23,23 @@ public class VolatilePiece {
 		this.type = pieceType;
 	}
 
-	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, Catalog catalog) {
+	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, VolatileCatalog catalog) {
 		this(composer, instrumentation);
 		this.setCatalog(catalog);
 	}
 
-	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, Catalog catalog, Piece parent) {
+	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, VolatileCatalog catalog, Piece parent) {
 		this(composer, instrumentation, catalog);
 		this.parent = parent;
 	}
 
 	public VolatilePiece() {
+	}
+
+	public VolatilePiece(Item composer, Instrumentation instrumentation, Item pieceType, VolatileCatalog catalog, Item musicKey) {
+		this(composer, instrumentation, pieceType);
+		this.volatileCatalog = catalog;
+		this.setMusicKey(musicKey);
 	}
 
 	/**
@@ -53,6 +62,10 @@ public class VolatilePiece {
 			throw new IllegalStateException("the current instrumentation is volatile");
 		}
 		return (Instrumentation) instrumentation;
+	}
+
+	public boolean hasNonVolatileInstrumentation() {
+		return instrumentation instanceof Instrumentation;
 	}
 
 	/**
@@ -86,11 +99,47 @@ public class VolatilePiece {
 		return volatileCatalog;
 	}
 
+	public boolean hasNonVolatileCatalog() {
+		return volatileCatalog instanceof Catalog;
+	}
+
 	public void setParent(Piece parent) {
 		this.parent = parent;
 	}
 
 	public Piece getParent() {
 		return parent;
+	}
+
+	public void setMusicKey(Item musicKey) {
+		this.musicKey = musicKey;
+	}
+
+	public Item getMusicKey() {
+		return musicKey;
+	}
+
+	public void setSubtitle(Item subtitle) {
+		this.subtitle = subtitle;
+	}
+
+	public Item getSubtitle() {
+		return subtitle;
+	}
+
+	public void setOrdinal(Item ordinal) {
+		this.ordinal = ordinal;
+	}
+
+	public Item getOrdinal() {
+		return ordinal;
+	}
+
+	public void setPublicationDate(Item publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+
+	public Item getPublicationDate() {
+		return publicationDate;
 	}
 }

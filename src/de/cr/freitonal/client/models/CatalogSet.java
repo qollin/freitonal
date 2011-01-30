@@ -11,7 +11,9 @@ public class CatalogSet implements IsSerializable {
 	private ItemSet names;
 	private ItemSet numbers;
 
+	@SuppressWarnings("unused")
 	private CatalogSet() {
+		//needed for GWT serialization
 	}
 
 	public CatalogSet(ItemSet names, ItemSet numbers) {
@@ -41,4 +43,5 @@ public class CatalogSet implements IsSerializable {
 		names.copyItemSelectionTo(target.names);
 		numbers.copyItemSelectionTo(target.numbers);
 	}
+
 }

@@ -33,6 +33,9 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	private ItemSet completeItemSet;
 	protected final DFA dfa = new DFA();
 	private final ArrayList<HandlerRegistration> viewHandlers = new ArrayList<HandlerRegistration>();
+	private Transition goToDependendView;
+	private Transition goToCreate;
+	private Transition goToView;
 
 	public ListBoxPresenter(EventBus eventBus, IListBoxView view) {
 		super(eventBus);
@@ -61,25 +64,47 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 		}
 	}
 
+	private void createTransitions() {
+		TriggerParam triggerOnItemSetWithZeroOrOneItem = new TriggerParam() {
+			public boolean matches(Object[] transitionParameters) {
+				return ((ItemSet) transitionParameters[0]).size() <= 1;
+			}
+		};
+
+		goToDependendView = new Transition(triggerOnItemSetWithZeroOrOneItem, "DependendView", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				handleItemSetChange((ItemSet) parameters[0]);
+				view.setDisplayMode(DependendView);
+			}
+		});
+
+		goToCreate = new Transition(new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
+			@Override
+			public void onTransition() {
+				itemSet = completeItemSet;
+				view.setItems(completeItemSet.getItems());
+				view.setDisplayMode(Create);
+			}
+		});
+
+		goToView = new Transition(triggerOnItemSetWithZeroOrOneItem, "View", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				handleItemSetChange((ItemSet) parameters[0]);
+				view.setDisplayMode(View);
+			}
+		});
+	}
+
 	protected void initializeDFA() {
+		createTransitions();
 		dfa.addTransition("Init", "setItems", "Select", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
 				ItemSet itemSet = (ItemSet) parameters[0];
 				handleItemSetChange(itemSet);
 				ListBoxPresenter.this.completeItemSet = itemSet;
-			}
-		});
-		TriggerParam triggerOnItemSetWithZeroOrOneItem = new TriggerParam() {
-			public boolean matches(Object[] transitionParameters) {
-				return ((ItemSet) transitionParameters[0]).size() <= 1;
-			}
-		};
-		Transition goToDependendView = new Transition(triggerOnItemSetWithZeroOrOneItem, "DependendView", new AbstractTransitionAction() {
-			@Override
-			public void onTransition(Object[] parameters) {
-				handleItemSetChange((ItemSet) parameters[0]);
-				view.setDisplayMode(DependendView);
 			}
 		});
 		dfa.addTransitionWithTriggerParam(new String[] { "Select", "DependendView" }, "setItems", goToDependendView);
@@ -98,14 +123,6 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 
 				view.setDisplayMode(View);
 				fireListBoxChangedEvent();
-			}
-		});
-		Transition goToCreate = new Transition(new EqualsTriggerParam(Create), "Create", new AbstractTransitionAction() {
-			@Override
-			public void onTransition() {
-				itemSet = completeItemSet;
-				view.setItems(completeItemSet.getItems());
-				view.setDisplayMode(Create);
 			}
 		});
 		dfa.addTransitionWithTriggerParam(new String[] { "Select", "DependendView", "Create", "View" }, "setDisplayMode", goToCreate);
@@ -145,6 +162,7 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 				view.setDisplayMode(Create);
 			}
 		});
+		dfa.addTransitionWithTriggerParam("Create", "setItems", goToView);
 
 		dfa.start("Init");
 	}
@@ -268,5 +286,9 @@ public class ListBoxPresenter extends BasePresenter implements SelectablePresent
 	public boolean isInAViewMode() {
 		DisplayMode mode = getDisplayMode();
 		return mode == View || mode == DependendView;
+	}
+
+	public DFA getDFA() {
+		return dfa;
 	}
 }

@@ -1,6 +1,7 @@
 (ns de.cr.freitonal.unittests.server.testtools
   (:use [de.cr.freitonal.server.tools])
   (:use [de.cr.freitonal.server.insert])
+  (:use [de.cr.freitonal.server.tables :as table :only ()])
   
   (:use [clojure.test])
   (:use [clojure.contrib.java-utils :only (read-properties)])
@@ -59,13 +60,15 @@
 
 (defmacro dbtest [description & body]
   `(sql/with-connection db
+     (table/define-tables db)
      (delete-all-tables)
      (let [~'opus (insert-catalogname TestData/Opus)
-           ~'opus27-1 (insert-catalog TestData/Opus27_1)
+           ~'opus27-1 (insert-catalog ~'opus "27" "1")
            ~'beethoven (insert-composer TestData/Beethoven)
            ~'mozart (insert-composer TestData/Mozart)
            ~'piano (insert-instrument TestData/Piano)
            ~'violin (insert-instrument TestData/Violin)
+           ~'sonata (insert-piecetype TestData/Sonata)
            ~'piano-solo (insert-instrumentation "solo piano" ~'piano)]
        ~@body)))
 
@@ -85,3 +88,4 @@
       (zipmap (map #(str %) (keys summary)) (vals summary))))
 
 (def db (load-file "conf/db-empty.clj"))
+(table/define-tables db)

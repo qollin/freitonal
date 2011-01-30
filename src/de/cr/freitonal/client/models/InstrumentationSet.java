@@ -8,11 +8,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 
-public class InstrumentationSet implements IsSerializable {
+public class InstrumentationSet implements IsSerializable, Set {
 	private ArrayList<Instrumentation> instrumentations;
 	private VolatileInstrumentation searchPattern;
 
+	@SuppressWarnings("unused")
 	private InstrumentationSet() {
+		//needed because of GWT serialization
 	}
 
 	public InstrumentationSet(ArrayList<Instrumentation> instrumentations) {
@@ -38,5 +40,10 @@ public class InstrumentationSet implements IsSerializable {
 
 	public int size() {
 		return instrumentations.size();
+	}
+
+	public boolean contains(Object o) {
+		Instrumentation instrumentation = (Instrumentation) o;
+		return instrumentations.contains(instrumentation);
 	}
 }

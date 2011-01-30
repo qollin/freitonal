@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatileCatalog;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.shared.models.VolatileItem;
@@ -24,8 +25,8 @@ public class RPCServiceImpl implements RPCService {
 		search(null, callback);
 	}
 
-	public void save(VolatilePiece piece) {
-		throw new IllegalStateException("not implemented yet");
+	public void createPiece(VolatilePiece piece, AsyncCallback<Piece> callback) {
+		createService.createPiece(piece, callback);
 	}
 
 	@Override

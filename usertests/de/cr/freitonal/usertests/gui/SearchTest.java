@@ -14,7 +14,7 @@ public class SearchTest extends UserTestCase {
 			@Override
 			public void run(Object... parameters) {
 				assertEquals(0, ((SearchResult) parameters[0]).getPieceSearchMask().getComposers().size());
-				finishTest();
+				runNextScript();
 			}
 		});
 	}

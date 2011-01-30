@@ -1,6 +1,6 @@
 package de.cr.freitonal.usertests.gui;
 
-import de.cr.freitonal.client.rpc.SearchResult;
+import static de.cr.freitonal.client.event.DisplayMode.View;
 import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 
@@ -10,23 +10,23 @@ public class CreatePieceTest extends UserTestCase {
 		return "de.cr.freitonal.FreitonalGUI";
 	}
 
-	private void verifySearchResult() {
+	private void verifyResult() {
 		addScript(new Script() {
 			@Override
 			public void run(Object... parameters) {
-				assertEquals(1, ((SearchResult) parameters[0]).getPieceSearchMask().getComposers().size());
-				finishTest();
+				assertEquals("The catalog presenter should be in view mode, because the just created Piece should be shown", View, appController
+						.getPiecePresenter().getCatalogPresenter().getDisplayMode());
+				runNextScript();
 			}
 		});
 	}
 
 	@SuppressWarnings("unchecked")
-	public void testInitialLoading() {
+	public void testCreatingASimplePiece() {
 		Future<Item> mozart = createComposer("Mozart");
 		Future<Item> piano = createInstrument("Piano");
 		createInstrumentation("solo-piano", piano);
 		Future<Item> opus = createCatalogName("Opus");
-		//Future<Catalog> opus27_1 = createCatalog(opus, "27-1");
 		Future<Item> sonata = createPieceType("Sonata");
 
 		runApplication();
@@ -40,7 +40,7 @@ public class CreatePieceTest extends UserTestCase {
 
 		clickSavePieceButton();
 
-		//verifySearchResult();
+		verifyResult();
 
 		go();
 	}

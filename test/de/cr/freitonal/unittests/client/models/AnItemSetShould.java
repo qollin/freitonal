@@ -31,4 +31,12 @@ public class AnItemSetShould {
 		itemSet.removeSelection();
 		assertNull(itemSet.getSelected());
 	}
+
+	@Test
+	public void filterNullItems() {
+		ItemSet itemSet = new ItemSet(item1, null, item2);
+		assertEquals(2, itemSet.size());
+		assertEquals(item1, itemSet.getItem(0));
+		assertEquals(item2, itemSet.getItem(1));
+	}
 }

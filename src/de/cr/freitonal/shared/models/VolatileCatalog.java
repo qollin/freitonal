@@ -25,4 +25,7 @@ public class VolatileCatalog implements IsSerializable {
 		return ordinal;
 	}
 
+	public Item getCatalogNumber() {
+		throw new IllegalStateException("a volatile catalog does not have number yet. Use getOrdinal()");
+	}
 }

@@ -4,46 +4,29 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  
   <servlet>
     <servlet-name>SearchService</servlet-name>
     <servlet-class>de.cr.freitonal.server.services.SearchServiceImpl</servlet-class>
     <load-on-startup>1</load-on-startup>
-<!--
-    <init-param>
-      <param-name>proxyHost</param-name><param-value>localhost</param-value>
-    </init-param>
-    <init-param>
-      <param-name>proxyPort</param-name><param-value>8000</param-value>
-    </init-param>
--->
   </servlet>
+
+  <servlet>
+    <servlet-name>CreateService</servlet-name>
+    <servlet-class>de.cr.freitonal.server.services.CreateServiceImpl</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
   
   <servlet-mapping>
     <servlet-name>SearchService</servlet-name>
     <url-pattern>/freitonalgui/search</url-pattern>
   </servlet-mapping>
- 
-<!-- 
-  <servlet-mapping>
-    <servlet-name>SearchService</servlet-name>
-    <url-pattern>/de.cr.freitonal.FreitonalGUI.JUnit/search</url-pattern>
-  </servlet-mapping>
- -->
-  
 
-  <!-- Servlets 
-  <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>de.cr.freitonal.gui.server.GreetingServiceImpl</servlet-class>
-  </servlet>
-  
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/freitonalgui/greet</url-pattern>
+    <servlet-name>CreateService</servlet-name>
+    <url-pattern>/freitonalgui/create</url-pattern>
   </servlet-mapping>
-  -->
-  
+ 
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>FreitonalGUI.html</welcome-file>

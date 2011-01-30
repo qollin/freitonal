@@ -69,15 +69,14 @@ public class InstrumentationPresenter extends CompositePresenter {
 				return ((InstrumentationSet) transitionParameters[0]).size() <= 1;
 			}
 		};
-		Transition goToDependendendView = new Transition(triggerOnInstrumentationSetWithZeroOrOneItem, "DependendView",
-				new AbstractTransitionAction() {
-					@Override
-					public void onTransition(Object[] parameters) {
-						setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
-						hideAddInstrumentButton();
-					}
-				});
-		dfa.addTransitionWithTriggerParam("Main", "setInstrumentations", goToDependendendView);
+		Transition goToDependendView = new Transition(triggerOnInstrumentationSetWithZeroOrOneItem, "DependendView", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
+				hideAddInstrumentButton();
+			}
+		});
+		dfa.addTransitionWithTriggerParam("Main", "setInstrumentations", goToDependendView);
 		dfa.addTransition(new String[] { "Main", "DependendView" }, "setInstrumentations", "Main", new AbstractTransitionAction() {
 			@Override
 			public void onTransition(Object[] parameters) {
@@ -116,11 +115,19 @@ public class InstrumentationPresenter extends CompositePresenter {
 		dfa.addTransition("Create", "fireAddInstrumentButtonClicked", "Create", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
-				ListBoxPresenter instrumentPresenter = addInstrumentPresenter();
-				updateItemSetOfInstrument(instrumentPresenter, fullInstrumentationSet);
+				addInstrumentPresenter(fullInstrumentationSet);
 			}
 		});
 		dfa.addTransition("Create", "instrumentSelected", "Create");
+		Transition goToView = new Transition(triggerOnInstrumentationSetWithZeroOrOneItem, "View", new AbstractTransitionAction() {
+			@Override
+			public void onTransition(Object[] parameters) {
+				setDisplayItemOnFirstPresenter((InstrumentationSet) parameters[0]);
+				hideAddInstrumentButton();
+			}
+		});
+		dfa.addTransitionWithTriggerParam("Create", "setInstrumentations", goToView);
+
 		dfa.start("Initial");
 	}
 
@@ -183,6 +190,13 @@ public class InstrumentationPresenter extends CompositePresenter {
 				dfa.transition("instrumentSelected");
 			}
 		});
+
+		return instrumentPresenter;
+	}
+
+	private ListBoxPresenter addInstrumentPresenter(InstrumentationSet instrumentationSet) {
+		ListBoxPresenter instrumentPresenter = addInstrumentPresenter();
+		updateItemSetOfInstrument(instrumentPresenter, instrumentationSet);
 
 		return instrumentPresenter;
 	}

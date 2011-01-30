@@ -9,6 +9,7 @@ import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
 
 public class ScriptSequence {
 	protected static final String DO_NOT_SAVE_RESULT = "doNotSaveResult";
@@ -76,6 +77,20 @@ public class ScriptSequence {
 
 			@Override
 			public void onSuccess(SearchResult result) {
+				originalCallback.onSuccess(result);
+				processResult(result, DO_NOT_SAVE_RESULT);
+			}
+		};
+	}
+
+	public AsyncCallback<Piece> createPieceCallbackWrapper(final AsyncCallback<Piece> originalCallback) {
+		return new AsyncCallback<Piece>() {
+			public void onFailure(Throwable caught) {
+				onFailure.run(caught);
+			}
+
+			@Override
+			public void onSuccess(Piece result) {
 				originalCallback.onSuccess(result);
 				processResult(result, DO_NOT_SAVE_RESULT);
 			}

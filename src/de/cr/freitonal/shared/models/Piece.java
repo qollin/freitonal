@@ -1,11 +1,27 @@
 package de.cr.freitonal.shared.models;
 
-public class Piece extends VolatilePiece implements UID {
-	private final String id;
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class Piece extends VolatilePiece implements UID, IsSerializable {
+	private String id;
 
 	public Piece(String id, VolatilePiece piece) {
-		super(piece.getComposer(), piece.getInstrumentation());
+		super();
+		setComposer(piece.getComposer());
+		setInstrumentation(piece.getInstrumentation());
+		setOrdinal(piece.getOrdinal());
+		setSubtitle(piece.getSubtitle());
+		setMusicKey(piece.getMusicKey());
+		setParent(piece.getParent());
+		setCatalog(piece.getCatalog());
+		setPieceType(piece.getPieceType());
+		setPublicationDate(piece.getPublicationDate());
 		this.id = id;
+	}
+
+	@SuppressWarnings("unused")
+	private Piece() {
+		//needed because of GWT serialization
 	}
 
 	public String getID() {

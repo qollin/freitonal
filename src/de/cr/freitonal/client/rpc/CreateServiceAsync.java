@@ -5,9 +5,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatileCatalog;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.shared.models.VolatileItem;
+import de.cr.freitonal.shared.models.VolatilePiece;
 
 public interface CreateServiceAsync {
 	void createComposer(VolatileItem composer, AsyncCallback<Item> callback);
@@ -21,4 +23,6 @@ public interface CreateServiceAsync {
 	void createCatalog(VolatileCatalog catalog, AsyncCallback<Catalog> callback);
 
 	public void createPieceType(VolatileItem pieceType, AsyncCallback<Item> callback);
+
+	void createPiece(VolatilePiece piece, AsyncCallback<Piece> callback);
 }

@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
@@ -22,6 +23,7 @@ import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
 import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
+import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class PiecePresenter {
@@ -106,7 +108,7 @@ public class PiecePresenter {
 		dfa.addTransition("Create", "fireAddPieceButtonClicked", "Save", new AbstractTransitionAction() {
 			@Override
 			public void onTransition() {
-				save();
+				createPiece();
 			}
 		});
 		dfa.start("Main");
@@ -124,16 +126,32 @@ public class PiecePresenter {
 		dfa.transition("fireAddPieceButtonClicked");
 	}
 
-	private void save() {
+	private void createPiece() {
+		VolatilePiece piece = createVolatilePieceFromSelectedItems();
+		rpcService.createPiece(piece, new AsyncCallback<Piece>() {
+			@Override
+			public void onSuccess(Piece result) {
+				PieceSearchMask pieceSearchMask = new PieceSearchMask(result);
+				setSearchData(pieceSearchMask);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println("creating a piece didn't work: " + caught);
+			}
+		});
+	}
+
+	private VolatilePiece createVolatilePieceFromSelectedItems() {
 		VolatilePiece piece = new VolatilePiece();
 		piece.setComposer(composerPresenter.getSelectedItem());
 		piece.setCatalog(catalogPresenter.getEnteredItem());
-		piece.musicKey = musicKeyPresenter.getSelectedItem();
-		piece.ordinal = ordinalPresenter.getSelectedItem();
-		piece.subtitle = subtitlePresenter.getSelectedItem();
+		piece.setMusicKey(musicKeyPresenter.getSelectedItem());
+		piece.setOrdinal(ordinalPresenter.getSelectedItem());
+		piece.setSubtitle(subtitlePresenter.getSelectedItem());
 		piece.setPieceType(pieceTypePresenter.getSelectedItem());
 		piece.setInstrumentation(instrumentationPresenter.getSelectedItem());
-		rpcService.save(piece);
+		return piece;
 	}
 
 	public void setSearchData(PieceSearchMask pieceSearchMask) {
@@ -141,10 +159,10 @@ public class PiecePresenter {
 		catalogPresenter.setCatalogs(pieceSearchMask.getCatalogs());
 		pieceTypePresenter.setPieceTypes(pieceSearchMask.getPieceTypes());
 		instrumentationPresenter.setInstrumentations(pieceSearchMask.getInstrumentations());
-		subtitlePresenter.setItems(pieceSearchMask.getSubtitles());
 		ordinalPresenter.setItems(pieceSearchMask.getOrdinals());
 		musicKeyPresenter.setItems(pieceSearchMask.getMusicKeys());
 		publicationDatePresenter.setItems(pieceSearchMask.getPublicationDates());
+		subtitlePresenter.setItems(pieceSearchMask.getSubtitles());
 	}
 
 	/**

@@ -11,6 +11,7 @@ import de.cr.freitonal.client.models.OrdinalSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
+import de.cr.freitonal.shared.models.Piece;
 
 public class PieceSearchMask implements IsSerializable {
 	private ComposerSet composers;
@@ -21,6 +22,28 @@ public class PieceSearchMask implements IsSerializable {
 	private OrdinalSet ordinalSet;
 	private MusicKeySet musicKeySet;
 	private PublicationDateSet publicationDateSet;
+
+	public PieceSearchMask(Piece piece) {
+		setComposers(new ComposerSet(piece.getComposer()));
+
+		ItemSet catalogNames = new ItemSet(piece.getCatalog().getCatalogName());
+
+		ItemSet catalogNumbers = new ItemSet(piece.getCatalog().getCatalogNumber());
+		setCatalogs(new CatalogSet(catalogNames, catalogNumbers));
+
+		ItemSet pieceTypes = new ItemSet(piece.getPieceType());
+		setPieceTypes(new PieceTypeSet(pieceTypes, new ItemSet()));
+
+		setInstrumentations(new InstrumentationSet(piece.getInstrumentationAsNonVolatile()));
+
+		setSubtitles(new SubtitleSet(piece.getSubtitle()));
+		setOrdinals(new OrdinalSet(piece.getOrdinal()));
+		setMusicKeys(new MusicKeySet(piece.getMusicKey()));
+		setPublicationDates(new PublicationDateSet(piece.getPublicationDate()));
+	}
+
+	public PieceSearchMask() {
+	}
 
 	/**
 	 * @param composers

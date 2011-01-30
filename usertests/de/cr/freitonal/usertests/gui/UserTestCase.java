@@ -12,6 +12,8 @@ import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
 import de.cr.freitonal.client.widgets.piece.PieceView;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
+import de.cr.freitonal.shared.models.VolatilePiece;
 import de.cr.freitonal.usertests.api.APITestCase;
 import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 
@@ -36,6 +38,12 @@ public class UserTestCase extends APITestCase {
 				AsyncCallback<SearchResult> callbackWrapper = getScriptSequence().createSearchResultCallbackWrapper(callback);
 				super.search(searchMask, callbackWrapper);
 			}
+
+			@Override
+			public void createPiece(VolatilePiece piece, AsyncCallback<Piece> callback) {
+				AsyncCallback<Piece> callbackWrapper = getScriptSequence().createPieceCallbackWrapper(callback);
+				super.createPiece(piece, callbackWrapper);
+			};
 		};
 		appController.setRPCService(rpcService);
 	}
@@ -121,8 +129,17 @@ public class UserTestCase extends APITestCase {
 		});
 	}
 
+	/**
+	 * The same as clickAddPieceButton, but does not run the next script. The
+	 * next script is run by the overriden RPCService (see gwtSetUp)
+	 */
 	protected void clickSavePieceButton() {
-		clickAddPieceButton();
+		addScript(new Script() {
+			@Override
+			public void run(Object... parameters) {
+				appController.getPiecePresenter().fireAddPieceButtonClicked();
+			}
+		});
 	}
 
 }

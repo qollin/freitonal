@@ -11,6 +11,8 @@ import de.cr.freitonal.client.widgets.base.listbox.EditableListBoxView;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
 import de.cr.freitonal.client.widgets.piece.PieceView;
+import de.cr.freitonal.shared.models.Catalog;
+import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatilePiece;
@@ -20,6 +22,12 @@ import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 public class UserTestCase extends APITestCase {
 	protected AppController appController;
 	private PieceView pieceView;
+	protected Future<Item> mozart;
+	protected Future<Item> piano;
+	protected Future<Instrumentation> soloPiano;
+	protected Future<Item> opus;
+	protected Future<Catalog> opus52;
+	protected Future<Item> sonata;
 
 	@Override
 	public String getModuleName() {
@@ -109,11 +117,15 @@ public class UserTestCase extends APITestCase {
 		});
 	}
 
-	protected void enterCatalogNumber(final String number) {
+	private String getCatalogNumber(Future<Catalog> catalog) {
+		return catalog.getObject().getCatalogNumber().getValue();
+	}
+
+	protected void enterCatalogNumber(final Future<Catalog> catalog) {
 		addScript(new Script() {
 			@Override
 			public void run(Object... parameters) {
-				enterText(appController.getPiecePresenter().getCatalogPresenter().getNumberListBoxPresenter(), number);
+				enterText(appController.getPiecePresenter().getCatalogPresenter().getNumberListBoxPresenter(), getCatalogNumber(catalog));
 				runNextScript();
 			}
 		});
@@ -140,6 +152,16 @@ public class UserTestCase extends APITestCase {
 				appController.getPiecePresenter().fireAddPieceButtonClicked();
 			}
 		});
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void createTestObjects() {
+		mozart = createComposer("Mozart");
+		piano = createInstrument("Piano");
+		soloPiano = createInstrumentation("solo-piano", piano);
+		opus = createCatalogName("Opus");
+		opus52 = createCatalog(opus, "52");
+		sonata = createPieceType("Sonata");
 	}
 
 }

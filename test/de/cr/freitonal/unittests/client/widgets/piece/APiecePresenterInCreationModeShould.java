@@ -9,7 +9,7 @@ import static de.cr.freitonal.usertests.client.test.data.TestData.Ordinal4a;
 import static de.cr.freitonal.usertests.client.test.data.TestData.Piano;
 import static de.cr.freitonal.usertests.client.test.data.TestData.Quartett;
 import static de.cr.freitonal.usertests.client.test.data.TestData.VolatileInstrumentationPianoSolo;
-import static de.cr.freitonal.usertests.client.test.data.TestData.createPieceMask;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createSearchResult;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +30,7 @@ public class APiecePresenterInCreationModeShould extends PiecePresenterTest {
 	@Before
 	public void setupPiecePresenterInCreationMode() {
 		piecePresenter = new PiecePresenter(view, eventBus, rpcService);
-		piecePresenter.setSearchData(createPieceMask());
+		piecePresenter.setSearchData(createSearchResult());
 		piecePresenter.fireAddPieceButtonClicked(); //switch to create mode
 	}
 

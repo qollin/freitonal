@@ -34,3 +34,8 @@
   (let [f (run-once (fn [x] x))]
     (is (= 6 (f 6)))
     (is (= 6 (f 5)))))
+
+(deftest test-str-null []
+  (is (= "bla" (str-nil "bla")))
+  (is (= "" (str-nil "")))
+  (is (= nil (str-nil nil))))

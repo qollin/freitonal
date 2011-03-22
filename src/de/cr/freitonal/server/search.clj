@@ -4,7 +4,11 @@
   (:use [de.cr.freitonal.server.render])
   
   (:use [clojure.contrib.sql :as sql :only ()])
-  (:use [clojure.contrib.json :only (json-str)]))
+  (:use [clojure.contrib.json :only (json-str)])
+  
+  (:import 
+    (java.util ArrayList)
+    (de.cr.freitonal.shared.models PieceSkeleton PieceList)))
 
 (defn create-placeholder-string [values]
   (str "(" (apply str (interpose ", " (repeat (count values) "?"))) ")"))
@@ -67,7 +71,7 @@
 (defn combine-search-clauses [searchClauses]
   {:from (vec (set (flatten (map #(% :from) searchClauses))))
    :where (apply str (map #(% :where)  searchClauses))
-   :values (vec (flatten (map #(% :values) (filter #(not (nil? (% :values))) searchClauses))))})
+   :values (vec (flatten (map #(into [] (% :values)) (filter #(not (nil? (% :values))) searchClauses))))})
 
 (defn add-search-clauses [sql searchParams]
   (assoc 
@@ -96,17 +100,20 @@
       (let [extendedSQL (add-search-clauses sql searchParams)]
         (into [(create-sql-string extendedSQL)] (extendedSQL :values))))))
 
-(defn run-search-query [sql render-fn searchParams]
-  (let [query (create-query sql searchParams)]
-    (try
-      ;(d query)
-      (sql/with-query-results res
-        query
-        (doall (map render-fn res)))
-      (catch Exception e
-        (d "something went wrong when executing")
-        (d query)
-        (d (.printStackTrace e))))))
+(defn run-search-query 
+  ([sql render-fn searchParams] (run-search-query sql render-fn searchParams false))
+  ([sql render-fn searchParams debug]
+    (if debug (d searchParams))
+    (let [query (create-query sql searchParams)]
+      (try
+        (if debug (d query))
+        (sql/with-query-results res
+          query
+          (doall (map render-fn res)))
+        (catch Exception e
+          (d "something went wrong when executing")
+          (d query)
+          (d (.printStackTrace e)))))))
 
 (defn process-search-params [searchParams]
   (if (contains? searchParams "piece-instrumentations__instrument")
@@ -341,6 +348,36 @@
                 "recording-label" (search-label processedSearchParams)
                 "recording-type" (search-recording-type processedSearchParams)))))
 
+(defn render-piece-title [rec]
+  (let [piece (PieceSkeleton. (str-nil (:id rec)))]
+    (.setComposerID  piece (str-nil (:composer_id rec)))
+    (.setCatalogID piece (str-nil (:catalog_id rec)))
+    (.setCatalogNameID piece (str-nil (:name_id rec)))
+    (.setMusicKeyID piece (str-nil (:music_key_id rec)))
+    (.setTypeID piece (str-nil (:piece_type_id rec)))
+    (.setSubtitle piece (str-nil (:subtitle rec)))
+    (.setParentID piece (str-nil (:parent_id rec)))
+    (.setInstrumentationID piece (str-nil (:instrumentation_id rec)))
+    (.setPublicationDate piece (str-nil (:pub_date rec)))
+    piece))
+
+(defn list-pieces [searchParams]
+  (let [processedSearchParams (process-search-params searchParams)]
+    (reduce #(do (. %1 add %2) %1) (PieceList.) 
+      (run-search-query 
+        {:select "piece.*, classical_piece_instrumentations.instrumentation_id, classical_catalog.name_id"
+         :from ["classical_piece piece", "classical_piece_instrumentations", "classical_catalog"]
+         :where "classical_piece_instrumentations.piece_id = piece.id
+                   AND piece.catalog_id = classical_catalog.id"
+         :initial-loading-where "classical_piece_instrumentations.piece_id = piece.id
+                                   AND piece.catalog_id = classical_catalog.id"}
+        render-piece-title searchParams true))))
+
 (defn doSearch [conf-file searchParams]
   (sql/with-connection (load-file conf-file)
     (search searchParams)))
+
+(defn doListPieces [conf-file searchParams]
+  (sql/with-connection (load-file conf-file)
+    (list-pieces searchParams)))
+  

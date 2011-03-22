@@ -14,12 +14,14 @@ import de.cr.freitonal.client.event.dfa.AbstractTransitionAction;
 import de.cr.freitonal.client.event.dfa.DFA;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
+import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.client.widgets.base.Presenter;
 import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.client.widgets.musickey.MusicKeyPresenter;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
+import de.cr.freitonal.client.widgets.piecelist.PieceListPresenter;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
 import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
@@ -35,6 +37,7 @@ public class PiecePresenter {
 	private final OrdinalPresenter ordinalPresenter;
 	private final MusicKeyPresenter musicKeyPresenter;
 	private final PublicationDatePresenter publicationDatePresenter;
+	private final PieceListPresenter pieceListPresenter;
 	private final View view;
 	private final DFA dfa = new DFA();
 
@@ -61,6 +64,8 @@ public class PiecePresenter {
 		public void setAddPieceButtonText(String text);
 
 		public PublicationDatePresenter.View getPublicationDateView();
+
+		public PieceListPresenter.View getPieceListView();
 	}
 
 	public PiecePresenter(View view, EventBus eventBus, RPCService rpcService) {
@@ -90,6 +95,8 @@ public class PiecePresenter {
 
 		publicationDatePresenter = new PublicationDatePresenter(eventBus, view.getPublicationDateView());
 		presenters.add(publicationDatePresenter);
+
+		pieceListPresenter = new PieceListPresenter(eventBus, view.getPieceListView());
 
 		bind();
 		initializeDFA();
@@ -132,7 +139,7 @@ public class PiecePresenter {
 			@Override
 			public void onSuccess(Piece result) {
 				PieceSearchMask pieceSearchMask = new PieceSearchMask(result);
-				setSearchData(pieceSearchMask);
+				setPieceSearchMask(pieceSearchMask);
 			}
 
 			@Override
@@ -154,7 +161,7 @@ public class PiecePresenter {
 		return piece;
 	}
 
-	public void setSearchData(PieceSearchMask pieceSearchMask) {
+	private void setPieceSearchMask(PieceSearchMask pieceSearchMask) {
 		composerPresenter.setItems(pieceSearchMask.getComposers());
 		catalogPresenter.setCatalogs(pieceSearchMask.getCatalogs());
 		pieceTypePresenter.setPieceTypes(pieceSearchMask.getPieceTypes());
@@ -163,6 +170,12 @@ public class PiecePresenter {
 		musicKeyPresenter.setItems(pieceSearchMask.getMusicKeys());
 		publicationDatePresenter.setItems(pieceSearchMask.getPublicationDates());
 		subtitlePresenter.setItems(pieceSearchMask.getSubtitles());
+	}
+
+	public void setSearchData(SearchResult searchResult) {
+		PieceSearchMask pieceSearchMask = searchResult.getPieceSearchMask();
+		setPieceSearchMask(pieceSearchMask);
+		pieceListPresenter.setPieceList(searchResult.getPieceList(), pieceSearchMask);
 	}
 
 	/**
@@ -198,5 +211,9 @@ public class PiecePresenter {
 
 	public void setRPCService(RPCService rpcService) {
 		this.rpcService = rpcService;
+	}
+
+	public PieceListPresenter getPieceListPresenter() {
+		return pieceListPresenter;
 	}
 }

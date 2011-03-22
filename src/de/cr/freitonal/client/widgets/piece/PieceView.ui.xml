@@ -11,7 +11,8 @@
  xmlns:subtitle='urn:import:de.cr.freitonal.client.widgets.subtitle'
  xmlns:ordinal='urn:import:de.cr.freitonal.client.widgets.ordinal'
  xmlns:musickey='urn:import:de.cr.freitonal.client.widgets.musickey'
- xmlns:pubdate='urn:import:de.cr.freitonal.client.widgets.pubdate'>
+ xmlns:pubdate='urn:import:de.cr.freitonal.client.widgets.pubdate'
+ xmlns:piecelist='urn:import:de.cr.freitonal.client.widgets.piecelist'>
   
   <g:HTMLPanel>
     <div id="pieceForms">
@@ -30,5 +31,7 @@
     <div id="pieceActions" class="formActions">
       <g:Button ui:field="addPieceButton">add piece</g:Button>
     </div>
+	<hr/>
+  	<piecelist:PieceListView ui:field="pieceList"/>
   </g:HTMLPanel>
 </ui:UiBinder>

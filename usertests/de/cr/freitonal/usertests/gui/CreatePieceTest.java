@@ -1,7 +1,6 @@
 package de.cr.freitonal.usertests.gui;
 
 import static de.cr.freitonal.client.event.DisplayMode.View;
-import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 
 public class CreatePieceTest extends UserTestCase {
@@ -21,13 +20,8 @@ public class CreatePieceTest extends UserTestCase {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testCreatingASimplePiece() {
-		Future<Item> mozart = createComposer("Mozart");
-		Future<Item> piano = createInstrument("Piano");
-		createInstrumentation("solo-piano", piano);
-		Future<Item> opus = createCatalogName("Opus");
-		Future<Item> sonata = createPieceType("Sonata");
+		createTestObjects();
 
 		runApplication();
 		clickAddPieceButton();
@@ -35,7 +29,7 @@ public class CreatePieceTest extends UserTestCase {
 		selectComposer(mozart);
 		selectInstrument(piano);
 		selectCatalogName(opus);
-		enterCatalogNumber("27-1");
+		enterCatalogNumber(opus52);
 		selectPieceType(sonata);
 
 		clickSavePieceButton();

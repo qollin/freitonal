@@ -133,4 +133,18 @@ public class ScriptSequence {
 		};
 	}
 
+	public AsyncCallback<Piece> createPieceCallback(final String id) {
+		return new AsyncCallback<Piece>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				onFailure.run(caught);
+			}
+
+			@Override
+			public void onSuccess(Piece result) {
+				processResult(result, id);
+			}
+		};
+	}
 }

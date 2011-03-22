@@ -1,6 +1,7 @@
 package de.cr.freitonal.unittests.client.widgets.piece;
 
 import static de.cr.freitonal.client.event.DisplayMode.View;
+import static de.cr.freitonal.usertests.client.test.data.TestData.createSearchResult;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class APiecePresenterInCreateModeShould extends PiecePresenterTest {
 	@Before
 	public void setupPiecePresenter() {
 		piecePresenter = new PiecePresenter(view, eventBus, rpcService);
-		piecePresenter.setSearchData(TestData.createPieceMask()); //go to select mode
+		piecePresenter.setSearchData(createSearchResult()); //go to select mode
 		piecePresenter.fireAddPieceButtonClicked(); //go to create mode
 	}
 

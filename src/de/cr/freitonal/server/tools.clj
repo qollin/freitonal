@@ -41,6 +41,9 @@
           (reset! result (apply function args)) 
           @result)))))
 
+(defn str-nil [s]
+  (if (nil? s) nil (str s)))
+
 (defn debug []
   false)
       

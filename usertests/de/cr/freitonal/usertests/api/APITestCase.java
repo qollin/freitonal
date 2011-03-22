@@ -11,9 +11,11 @@ import de.cr.freitonal.client.rpc.RPCServiceImpl;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatileCatalog;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.shared.models.VolatileItem;
+import de.cr.freitonal.shared.models.VolatilePiece;
 import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 
 public class APITestCase extends GWTTestCase {
@@ -67,6 +69,15 @@ public class APITestCase extends GWTTestCase {
 			@Override
 			public Item getObject() {
 				return (Item) scripts.getResult(id);
+			}
+		};
+	}
+
+	private Future<Piece> createPieceFuture(final String id) {
+		return new Future<Piece>() {
+			@Override
+			public Piece getObject() {
+				return (Piece) scripts.getResult(id);
 			}
 		};
 	}
@@ -157,6 +168,31 @@ public class APITestCase extends GWTTestCase {
 			}
 		});
 		return createItemFuture(id);
+	}
+
+	private VolatilePiece createVolatilePiece(final Future<Item> composer, final Future<Instrumentation> instrumentation,
+			final Future<Catalog> catalog, final Future<Item> pieceType) {
+		VolatilePiece vPiece = new VolatilePiece();
+		vPiece.setComposer(composer.getObject());
+		vPiece.setInstrumentation(instrumentation.getObject());
+		vPiece.setCatalog(catalog.getObject());
+		vPiece.setPieceType(pieceType.getObject());
+
+		return vPiece;
+	}
+
+	protected Future<Piece> createPiece(final Future<Item> composer, final Future<Instrumentation> instrumentation, final Future<Catalog> catalog,
+			final Future<Item> pieceType) {
+		final String id = generateID();
+		addScript(new Script() {
+			@Override
+			public void run(Object... parameters) {
+				VolatilePiece vPiece = createVolatilePiece(composer, instrumentation, catalog, pieceType);
+				rpcService.createPiece(vPiece, scripts.createPieceCallback(id));
+			}
+		});
+		return createPieceFuture(id);
+
 	}
 
 	protected Future<Item> createPieceType(String pieceType) {

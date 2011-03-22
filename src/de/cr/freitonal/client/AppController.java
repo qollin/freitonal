@@ -39,6 +39,7 @@ public class AppController {
 	}
 
 	private void search(SearchFieldChangedEvent event) {
+		System.err.println("Selected composer: " + currentPieceSearchMask.getComposers().getSelected());
 		rpcService.search(currentPieceSearchMask, new AsyncCallback<SearchResult>() {
 
 			public void onFailure(Throwable caught) {
@@ -46,8 +47,7 @@ public class AppController {
 			}
 
 			public void onSuccess(SearchResult result) {
-				currentPieceSearchMask = result.getPieceSearchMask();
-				getPiecePresenter().setSearchData(currentPieceSearchMask);
+				onReceivingData(result);
 			}
 		});
 	}
@@ -60,11 +60,15 @@ public class AppController {
 			}
 
 			public void onSuccess(SearchResult result) {
-				currentPieceSearchMask = result.getPieceSearchMask();
-				getPiecePresenter().setSearchData(currentPieceSearchMask);
+				onReceivingData(result);
 			}
 
 		});
+	}
+
+	private void onReceivingData(SearchResult result) {
+		currentPieceSearchMask = result.getPieceSearchMask();
+		getPiecePresenter().setSearchData(result);
 	}
 
 	public void go() {

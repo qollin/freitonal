@@ -1,5 +1,7 @@
 package de.cr.freitonal.unittests.client.widgets.piece;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.HasClickHandlers;
 
 import de.cr.freitonal.client.widgets.base.scalar.ScalarPresenter;
@@ -8,6 +10,7 @@ import de.cr.freitonal.client.widgets.catalog.CatalogPresenter;
 import de.cr.freitonal.client.widgets.composer.ComposerPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 import de.cr.freitonal.client.widgets.piece.PiecePresenter;
+import de.cr.freitonal.client.widgets.piecelist.PieceListPresenter;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
 import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
 import de.cr.freitonal.client.widgets.subtitle.SubtitlePresenter;
@@ -16,6 +19,7 @@ import de.cr.freitonal.unittests.client.widgets.base.BaseViewMock;
 import de.cr.freitonal.unittests.client.widgets.catalog.CatalogViewMock;
 import de.cr.freitonal.unittests.client.widgets.composer.ComposerViewMock;
 import de.cr.freitonal.unittests.client.widgets.instrumentation.InstrumentationViewMock;
+import de.cr.freitonal.unittests.client.widgets.piecelist.PieceListViewMock;
 import de.cr.freitonal.unittests.client.widgets.piecetype.PieceTypeViewMock;
 import de.cr.freitonal.unittests.client.widgets.pubdate.PublicationDateViewMock;
 import de.cr.freitonal.unittests.client.widgets.subtitle.SubtitleViewMock;
@@ -29,7 +33,16 @@ public class PieceViewMock implements PiecePresenter.View {
 	private final PieceTypePresenter.View pieceTypeView = new PieceTypeViewMock();
 	private final SubtitlePresenter.View subtitleView = new SubtitleViewMock();
 	private final PublicationDatePresenter.View publicationDateView = new PublicationDateViewMock();
+
+	private final PieceListPresenter.View pieceListView;
+
 	private final HasClickHandlers addPieceButton = new HasClickHandlersMock();
+	private final ArrayList<String> trace;
+
+	public PieceViewMock(ArrayList<String> trace) {
+		this.trace = trace;
+		pieceListView = new PieceListViewMock(trace);
+	}
 
 	public HasClickHandlers getAddPieceButton() {
 		return addPieceButton;
@@ -68,6 +81,11 @@ public class PieceViewMock implements PiecePresenter.View {
 
 	public View getPublicationDateView() {
 		return publicationDateView;
+	}
+
+	@Override
+	public PieceListPresenter.View getPieceListView() {
+		return pieceListView;
 	}
 
 }

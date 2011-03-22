@@ -13,6 +13,7 @@ import de.cr.freitonal.client.models.PieceTypeSet;
 import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.models.SubtitleSet;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
+import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
@@ -53,6 +54,8 @@ public class TestData {
 	public static final Item Sonata = new Item("3", "Sonate");
 	public static final Item Symphonie = new Item("8", "Symphonie");
 
+	public static final Item StringQuartett = new Item("86", "Streichquartett");
+
 	public static final Item Year1799 = new Item("1799", "1799");
 
 	public static Item Eroica = new Item("Eroica", "Eroica");
@@ -71,6 +74,13 @@ public class TestData {
 
 	public static Piece createPiece() {
 		return new Piece("1", createVolatilePiece());
+	}
+
+	public static SearchResult createSearchResult() {
+		SearchResult searchResult = new SearchResult();
+		searchResult.setPieceSearchMask(createPieceMask());
+
+		return searchResult;
 	}
 
 	public static PieceSearchMask createPieceMask() {
@@ -120,7 +130,9 @@ public class TestData {
 	}
 
 	public static PieceTypeSet createPieceTypeSet() {
-		return new PieceTypeSet(new ArrayList<Item>(Arrays.asList(new Item[] { Quartett, Sonata, Symphonie })), new ArrayList<Item>());
+		ArrayList<Item> pieceTypes = new ArrayList<Item>(Arrays.asList(new Item[] { Quartett, Sonata, Symphonie }));
+		ArrayList<Item> piecePlusInstrumentationTypes = new ArrayList<Item>(Arrays.asList(new Item[] { StringQuartett }));
+		return new PieceTypeSet(pieceTypes, piecePlusInstrumentationTypes);
 	}
 
 	public static PublicationDateSet createPublicationDateSet() {

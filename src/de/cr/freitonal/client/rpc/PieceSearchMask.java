@@ -122,7 +122,7 @@ public class PieceSearchMask implements IsSerializable {
 		publicationDateSet.copyItemSelectionTo(target.publicationDateSet);
 	}
 
-	public ItemSet getPublicationDates() {
+	public PublicationDateSet getPublicationDates() {
 		return publicationDateSet;
 	}
 

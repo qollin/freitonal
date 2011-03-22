@@ -148,5 +148,24 @@
     (is (= 1 (:id (first mergedRecords))))
     (is (= [[5 "piano"] [7 "violin"]] (:instruments (first mergedRecords))))))
 
+(deftest test-list-pieces []
+  (dbtest ""
+    (let [piece (insert-piece (VolatilePiece. mozart piano-solo opus27-1))
+          pieces (list-pieces {})]
+      (is (= 1 (count pieces)))
+      (is (= (.getID piece) (.getID (first pieces))))
+      (is (= (.getComposerID (first pieces)) (.getID mozart)))
+      (is (= (.getCatalogID (first pieces)) (.getID opus27-1)))
+      (is (= (.getCatalogNameID (first pieces)) (.getID (.getCatalogName opus27-1))))
+      (is (= (.getInstrumentationID (first pieces)) (.getID piano-solo)))
+      (is (= nil (.getParentID (first pieces)))))))
+
+(deftest test-list-pieces-with-search-parameter []
+  (dbtest ""
+    (let [piece (insert-piece (VolatilePiece. mozart piano-solo opus27-1))
+          piece2 (insert-piece (VolatilePiece. beethoven piano-solo opus27-1))
+          pieces (list-pieces {"piece-composer" [(.getID mozart)]})]
+      (is (= 1 (count pieces))))))
+
 (comment defn test-ns-hook []
   (check-that-instrumentations-are-returned-in-the-right-format))

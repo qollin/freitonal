@@ -18,6 +18,8 @@ import de.cr.freitonal.client.widgets.musickey.MusicKeyPresenter;
 import de.cr.freitonal.client.widgets.musickey.MusicKeyView;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalPresenter;
 import de.cr.freitonal.client.widgets.ordinal.OrdinalView;
+import de.cr.freitonal.client.widgets.piecelist.PieceListPresenter;
+import de.cr.freitonal.client.widgets.piecelist.PieceListView;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypePresenter;
 import de.cr.freitonal.client.widgets.piecetype.PieceTypeView;
 import de.cr.freitonal.client.widgets.pubdate.PublicationDatePresenter;
@@ -54,6 +56,9 @@ public class PieceView extends Composite implements PiecePresenter.View {
 
 	@UiField
 	PublicationDateView publicationDate;
+
+	@UiField
+	PieceListView pieceList;
 
 	@UiField
 	Button addPieceButton;
@@ -101,6 +106,11 @@ public class PieceView extends Composite implements PiecePresenter.View {
 
 	public PublicationDatePresenter.View getPublicationDateView() {
 		return publicationDate;
+	}
+
+	@Override
+	public PieceListPresenter.View getPieceListView() {
+		return pieceList;
 	}
 
 }

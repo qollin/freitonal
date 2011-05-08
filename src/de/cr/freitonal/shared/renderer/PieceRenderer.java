@@ -3,20 +3,39 @@ package de.cr.freitonal.shared.renderer;
 import de.cr.freitonal.shared.models.Piece;
 
 public class PieceRenderer {
+	private final InstrumentationRenderer instrumentationRenderer = new InstrumentationRenderer();
+	private static final String FOR = " für ";
+	private String title;
+	private Piece piece;
 
 	public String render(Piece piece) {
-		String title = "";
+		this.piece = piece;
+		title = "";
 
-		if (piece.getComposer() != null) {
-			String composer = piece.getComposer().getValue();
-			title += composer;
-		}
-		if (piece.getPieceType() != null) {
-			String pieceType = piece.getPieceType().getValue();
-			title += " - " + pieceType;
-		}
+		renderComposer();
+		renderPieceType();
+		renderInstrumentation();
 
 		return title;
 	}
 
+	private void renderInstrumentation() {
+		if (piece.getInstrumentation() != null) {
+			title += FOR + instrumentationRenderer.render(piece.getInstrumentationAsNonVolatile());
+		}
+	}
+
+	private void renderPieceType() {
+		if (piece.getPieceType() != null) {
+			String pieceType = piece.getPieceType().getValue();
+			title += " - " + pieceType;
+		}
+	}
+
+	private void renderComposer() {
+		if (piece.getComposer() != null) {
+			String composer = piece.getComposer().getValue();
+			title += composer;
+		}
+	}
 }

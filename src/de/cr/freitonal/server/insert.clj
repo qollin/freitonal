@@ -4,19 +4,20 @@
   (:use [de.cr.freitonal.server.tables :as table :only ()])
 
   (:use [clojure.contrib.sql :as sql :only ()])
-  
-  (:use clojureql.core)
+
+  (:use [clojureql.core :as q :only ()])
   
   (:import (de.cr.freitonal.shared.models VolatileInstrumentation Instrumentation 
                                           VolatileItem Item 
                                           VolatilePiece Piece
                                           VolatilePiecePlusInstrumentationType PiecePlusInstrumentationType
-                                          VolatileCatalog Catalog)))
+                                          VolatileCatalog Catalog
+                                          VolatileMusicKey MusicKey)))
 
 (defn insert-simple-object [table object]
   (sql/insert-records table object)
   (sql/with-query-results res 
-    ["SELECT LAST_INSERT_ID() as id"]
+    ["SELECT LAST_INSERT_ID() AS id"]
     (:id (first res))))
 
 (defmulti insert-instrument class)
@@ -56,6 +57,12 @@
   (let [id (insert-simple-object :classical_piecetype {:name (.getValue piecetype)})]
     (Item. (str id) piecetype)))
 
+(defn #^MusicKey insert-musickey [#^VolatileMusicKey musickey]
+  (let [id (insert-simple-object :classical_musickey {:base (.getBase musickey) 
+                                                      :note (.getNote musickey)
+                                                      :note_sort_order 1})]
+    (MusicKey. (str id) musickey)))
+
 (defmulti insert-catalogname class)
 (defmethod #^Item insert-catalogname String [catalogname]
   (let [id (insert-simple-object :classical_catalogtype {:name catalogname})]
@@ -75,28 +82,34 @@
   (if (nil? vcatalog)
     nil
     (let [[ordinal sub-ordinal] (create-ordinal-and-subordinal-from-string (.getOrdinal vcatalog))
-          res @(select table/catalog (where (and (= :name_id (.getID (.getCatalogName vcatalog)))
-                                              (= :ordinal ordinal)
-                                              (= :sub_ordinal sub-ordinal))))]
+          res @(q/select table/catalog (q/where (and (= :name_id (.getID (.getCatalogName vcatalog)))
+                                                  (= :ordinal ordinal)
+                                                  (= :sub_ordinal sub-ordinal))))]
       (if (not (empty? res))
         (Catalog. (str (:id (first res))) vcatalog)
         (insert-catalog vcatalog)))))
+
+(defn -add-attribute-to-structure
+  ([structure piece attribute member-fn]
+    (-add-attribute-to-structure structure (member-fn piece) attribute))
+  ([structure item attribute]
+    (if item
+      (assoc structure attribute (.getID item))
+      structure)))
 
 (defn create-structure-for-volatile-piece
   ([#^VolatilePiece piece]
     (create-structure-for-volatile-piece piece (create-catalog-from-volatile-catalog (.getCatalog piece))))
   ([#^VolatilePiece piece #^Catalog catalog]
-    (let [mandatoryStructure {:composer_id (.getID (.getComposer piece))}
-          struct1 (if (not (nil? (.getPieceType piece)))
-                    (assoc mandatoryStructure :piece_type_id (.getID (.getPieceType piece)))
-                    mandatoryStructure)
-          struct2 (if (not (nil? catalog))
-                    (assoc struct1 :catalog_id (.getID catalog))
-                    struct1)
-          struct3 (if (not (nil? (.getParent piece)))
-                    (assoc struct2 :parent_id (.getID (.getParent piece)))
-                    struct2)]
-      struct3)))
+    (-> {}
+      (-add-attribute-to-structure piece :composer_id (memfn getComposer))
+      (-add-attribute-to-structure piece :piece_type_id (memfn getPieceType))
+      (-add-attribute-to-structure catalog :catalog_id)
+      (-add-attribute-to-structure piece :parent_id (memfn getParent))
+      (-add-attribute-to-structure piece :subtitle (memfn getSubtitle))
+      (-add-attribute-to-structure piece :music_key_id (memfn getMusicKey))
+      (-add-attribute-to-structure piece :pub_date (memfn getPublicationDate))
+      (-add-attribute-to-structure piece :type_ordinal (memfn getOrdinal)))))
 
 (defn #^Piece insert-piece [#^VolatilePiece piece]
   (let [catalog (create-catalog-from-volatile-catalog (.getCatalog piece))

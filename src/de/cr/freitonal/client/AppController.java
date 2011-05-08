@@ -39,7 +39,6 @@ public class AppController {
 	}
 
 	private void search(SearchFieldChangedEvent event) {
-		System.err.println("Selected composer: " + currentPieceSearchMask.getComposers().getSelected());
 		rpcService.search(currentPieceSearchMask, new AsyncCallback<SearchResult>() {
 
 			public void onFailure(Throwable caught) {

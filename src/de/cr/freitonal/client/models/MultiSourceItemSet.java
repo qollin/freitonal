@@ -46,6 +46,6 @@ public class MultiSourceItemSet extends ItemSet {
 			}
 		}
 
-		throw new IllegalStateException("it must not be that a selected item cannot be found in on the itemSets");
+		throw new IllegalStateException("it must not be that a selected item cannot be found in of the itemSets");
 	}
 }

@@ -3,6 +3,8 @@ package de.cr.freitonal.shared.models;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class Item extends VolatileItem implements UID, IsSerializable {
+	public static final Item NOT_AVAILABLE = new Item("", "<n/a>");
+	public static final Item NULL_ITEM = new Item("", "<null>");
 	private String id;
 
 	@SuppressWarnings("unused")

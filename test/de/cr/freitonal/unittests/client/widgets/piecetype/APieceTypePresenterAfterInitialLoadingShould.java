@@ -51,6 +51,6 @@ public class APieceTypePresenterAfterInitialLoadingShould extends PresenterTest 
 		Item pieceType = pieceTypeSet.getPieceTypes().getItem(0);
 		presenter.fireOnNewItemSelected(pieceType);
 		trace.contains("search");
-		assertEquals(pieceType, pieceTypeSet.getPieceTypes().getSelected());
+		assertEquals(pieceType, pieceTypeSet.getAllTypesItemSet().getSelected());
 	}
 }

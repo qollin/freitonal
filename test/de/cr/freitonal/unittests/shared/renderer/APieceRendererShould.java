@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatilePiece;
+import de.cr.freitonal.shared.renderer.InstrumentationRenderer;
 import de.cr.freitonal.shared.renderer.PieceRenderer;
+import de.cr.freitonal.usertests.client.test.data.TestData;
 
 public class APieceRendererShould {
 
@@ -34,5 +36,14 @@ public class APieceRendererShould {
 		vPiece.setPieceType(Sonata);
 		String pieceTitle = pieceRenderer.render(new Piece("1", vPiece));
 		assertTrue(pieceTitle.contains(" - " + Sonata.getValue()));
+	}
+
+	@Test
+	public void IncludeTheInstrumentation() {
+		vPiece.setPieceType(Sonata);
+		vPiece.setInstrumentation(TestData.InstrumentationViolinPlusPiano);
+		String pieceTitle = pieceRenderer.render(new Piece("1", vPiece));
+		String instrumentationTitle = new InstrumentationRenderer().render(TestData.InstrumentationViolinPlusPiano);
+		assertTrue(pieceTitle.contains(" für " + instrumentationTitle));
 	}
 }

@@ -15,14 +15,15 @@
   (:import (de.cr.freitonal.shared.models VolatilePiece 
                                           VolatileItem 
                                           VolatileInstrumentation
-                                          VolatilePiecePlusInstrumentationType)))
+                                          VolatilePiecePlusInstrumentationType))
+  (:import (de.cr.freitonal.usertests.client.test.data TestData)))
 
 (deftest test-add-search-clause []
-  (is (= {:where " AND piece.composer_id IN (?, ?)"
+  (is (= {:where "piece.composer_id IN (?, ?)"
           :from ["classical_piece piece"]
           :values ["1", "2"]}
         (add-search-clause ["piece-composer" ["1", "2"]])))
-  (is (= {:where " AND piece.catalog_id IN (?)" 
+  (is (= {:where "piece.catalog_id IN (?)" 
           :from ["classical_piece piece"]
           :values ["110"]}
         (add-search-clause ["piece-catalog" ["110"]]))))
@@ -35,7 +36,15 @@
                                    :where "a.a = ?"
                                    :values ["1"]}
                                    {:from  ["a" "b"]
-                                    :where " AND b.b = ? AND b.c = ?"
+                                    :where "b.b = ? AND b.c = ?"
+                                    :values ["2" "3"]}))))
+  (is (= {:from ["a" "b"]
+          :where "a.a = ?"
+          :values ["1" "2" "3"]}
+        (combine-search-clauses '({:from ["a"]
+                                   :where "a.a = ?"
+                                   :values ["1"]}
+                                   {:from  ["a" "b"]
                                     :values ["2" "3"]}))))
   (is (= {:from ["a" "b"]
           :where "a.a = ? AND NO values"
@@ -44,12 +53,12 @@
                                    :where "a.a = ?"
                                    :values ["1"]}
                                    {:from  ["a" "b"]
-                                    :where " AND NO values"})))))
+                                    :where "NO values"})))))
 
 (deftest test-add-search-clauses []
   (is (= {:select "a.c1, b.c2"
            :from ["a" "b" "classical_piece piece"]
-           :where "a.b = b.id AND piece.composer_id IN (?)"
+           :where (str (:where global-search-constraint) " AND a.b = b.id AND piece.composer_id IN (?)")
            :values ["1"]}
         (add-search-clauses 
           {:select "a.c1, b.c2"
@@ -58,7 +67,7 @@
            {"piece-composer" ["1"]})))
   (is (= {:select "a.c1, b.c2"
            :from ["a" "b" "classical_piece piece"]
-           :where "a.b = b.id AND piece.composer_id IN (?, ?)"
+           :where (str (:where global-search-constraint) " AND a.b = b.id AND piece.composer_id IN (?, ?)")
            :values ["1", "2"]}
         (add-search-clauses 
           {:select "a.c1, b.c2"
@@ -133,12 +142,42 @@
           fullSearchResult (read-json (search {"piece-catalog" [(.getID opus27-1)]}) false)]
       (is (not (containing? mozart (fullSearchResult "piece-composer")))))))
 
-(deftest check-that-instruments-not-referenced-by-any-piece-are-returned-from-initial-loading []
+(deftest check-that-objects-not-referenced-by-any-piece-are-returned-from-initial-loading []
   (dbtest ""
     (let [baryton (insert-instrument "Baryton")
           baryton-solo (insert-instrumentation "baryton-solo" baryton)
           fullSearchResult (read-json (search {}) false)]
-      (is (containing? baryton-solo (fullSearchResult "piece-instrumentations") #(% "id"))))))
+      (is (containing? baryton-solo (fullSearchResult "piece-instrumentations") #(% "id")))
+      (is (containing? sonata (fullSearchResult "piece-piece_type") #(first %)))
+      (is (containing? opus (fullSearchResult "piece-catalog__name") #(first %))))))
+
+(deftest check-that-empty-fields-are-returned-once []
+  (dbtest ""
+    (let [check-for-empty-field (fn [field #^VolatilePiece piece]
+                                  (let [full-piece (VolatilePiece. beethoven piano-solo sonata)]
+                                    (.setCatalog full-piece opus27-1)
+                                    (.setSubtitle full-piece TestData/Eroica)
+                                    (.setMusicKey full-piece amajor)
+                                    (.setPublicationDate full-piece TestData/Year1799)
+                                    (.setOrdinal full-piece TestData/Ordinal4a)
+                                    (insert-piece full-piece)
+                                    (insert-piece piece)
+                                    (let [fullSearchResult (read-json (search {}) false)]
+                                      (is (= 2 (count (fullSearchResult field))))
+                                      (is (some #{[nil nil]} (fullSearchResult field))))))]
+    (check-for-empty-field "piece-piece_type" (VolatilePiece. mozart piano-solo))
+    (sql/do-commands "DELETE FROM classical_piece")
+    (check-for-empty-field "piece-catalog__name" (VolatilePiece. mozart piano-solo))
+    (sql/do-commands "DELETE FROM classical_piece")
+    (check-for-empty-field "piece-catalog__number" (VolatilePiece. mozart piano-solo))
+    (sql/do-commands "DELETE FROM classical_piece")
+    (check-for-empty-field "piece-subtitle" (VolatilePiece. mozart piano-solo))
+    (sql/do-commands "DELETE FROM classical_piece")
+    (check-for-empty-field "piece-music_key" (VolatilePiece. mozart piano-solo))
+    (sql/do-commands "DELETE FROM classical_piece")
+    (check-for-empty-field "piece-type_ordinal" (VolatilePiece. mozart piano-solo))
+    (sql/do-commands "DELETE FROM classical_piece")
+    (check-for-empty-field "piece-publication_date" (VolatilePiece. mozart piano-solo)))))
 
 (deftest test-merge-instrumentRecords-into-instrumentations []
   (let [mergedRecords (merge-instrumentRecords-into-instrumentations [{:id 1 :nickname "bla" :instruments [[5 "piano"]]},
@@ -158,7 +197,7 @@
       (is (= (.getCatalogID (first pieces)) (.getID opus27-1)))
       (is (= (.getCatalogNameID (first pieces)) (.getID (.getCatalogName opus27-1))))
       (is (= (.getInstrumentationID (first pieces)) (.getID piano-solo)))
-      (is (= nil (.getParentID (first pieces)))))))
+      (is (nil? (.getParentID (first pieces)))))))
 
 (deftest test-list-pieces-with-search-parameter []
   (dbtest ""
@@ -168,4 +207,4 @@
       (is (= 1 (count pieces))))))
 
 (comment defn test-ns-hook []
-  (check-that-instrumentations-are-returned-in-the-right-format))
+  (check-that-empty-fields-are-returned-once))

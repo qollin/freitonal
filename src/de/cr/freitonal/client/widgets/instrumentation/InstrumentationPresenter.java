@@ -136,10 +136,15 @@ public class InstrumentationPresenter extends CompositePresenter {
 	}
 
 	private void setDisplayItemOnFirstPresenter(InstrumentationSet instrumentationSet) {
-		Instrumentation instrumentation = instrumentationSet.getInstrumentations().get(0);
-
-		Item displayItem = new Item(instrumentation.getID(), instrumentation.toString());
+		Item displayItem;
+		if (instrumentationSet.size() > 0) {
+			Instrumentation instrumentation = instrumentationSet.getInstrumentations().get(0);
+			displayItem = new Item(instrumentation.getID(), instrumentation.toString());
+		} else {
+			displayItem = Item.NOT_AVAILABLE;
+		}
 		getPresenter(0).setItemSet(new ItemSet(displayItem));
+
 	}
 
 	private void updateItemSetOfInstrument(SelectablePresenter instrumentPresenter, InstrumentationSet instrumentationSet) {

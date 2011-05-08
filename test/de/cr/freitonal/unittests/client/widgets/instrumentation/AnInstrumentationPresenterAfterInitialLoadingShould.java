@@ -8,6 +8,7 @@ import static junit.framework.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.cr.freitonal.client.models.InstrumentationSet;
 import de.cr.freitonal.client.widgets.base.listbox.ListBoxPresenter;
 import de.cr.freitonal.client.widgets.instrumentation.InstrumentationPresenter;
 
@@ -29,6 +30,17 @@ public class AnInstrumentationPresenterAfterInitialLoadingShould extends Instrum
 	@Test
 	public void SwitchItsListBoxPresentersToDependendViewModeWhenGivenAOneElementItemSet() {
 		instrumentationPresenter.setInstrumentations(createInstrumentationSet(1));
+		assertAllInstrumentPresentersAreInDependendViewMode();
+	}
+
+	@Test
+	public void BeAbleToDealWithAnEmptyInstrumentationSet() {
+		InstrumentationSet emptyInstrumentationSet = new InstrumentationSet();
+		instrumentationPresenter.setInstrumentations(emptyInstrumentationSet);
+		assertAllInstrumentPresentersAreInDependendViewMode();
+	}
+
+	private void assertAllInstrumentPresentersAreInDependendViewMode() {
 		for (int i = 0; i < instrumentationPresenter.getNumberOfInstrumentPresenters(); i++) {
 			ListBoxPresenter instrumentPresenter = instrumentationPresenter.getInstrumentPresenter(i);
 			assertEquals(DependendView, instrumentPresenter.getDisplayMode());

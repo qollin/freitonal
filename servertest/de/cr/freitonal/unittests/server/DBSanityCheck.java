@@ -11,7 +11,7 @@ public class DBSanityCheck {
 	public void checkIfConnectionToDBIsPossible() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/freitonal-test", "freitonal", "atonalistdoof");
+			DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/freitonaltest", "freitonal", "atonalistdoof");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

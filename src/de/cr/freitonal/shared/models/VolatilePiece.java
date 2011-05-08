@@ -6,12 +6,15 @@ public class VolatilePiece implements IsSerializable {
 	private Item composer;
 	private VolatileCatalog volatileCatalog;
 	private Item musicKey;
-	private Item type;
+	private Item pieceType;
 	private Item subtitle;
 	private Item ordinal;
 	private Piece parent;
 	private VolatileInstrumentation instrumentation;
 	private Item publicationDate;
+
+	public VolatilePiece() {
+	}
 
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation) {
 		this.composer = composer;
@@ -20,7 +23,7 @@ public class VolatilePiece implements IsSerializable {
 
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, Item pieceType) {
 		this(composer, instrumentation);
-		this.type = pieceType;
+		this.pieceType = pieceType;
 	}
 
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, VolatileCatalog catalog) {
@@ -31,9 +34,6 @@ public class VolatilePiece implements IsSerializable {
 	public VolatilePiece(Item composer, VolatileInstrumentation instrumentation, VolatileCatalog catalog, Piece parent) {
 		this(composer, instrumentation, catalog);
 		this.parent = parent;
-	}
-
-	public VolatilePiece() {
 	}
 
 	public VolatilePiece(Item composer, Instrumentation instrumentation, Item pieceType, VolatileCatalog catalog, Item musicKey) {
@@ -84,11 +84,11 @@ public class VolatilePiece implements IsSerializable {
 	}
 
 	public Item getPieceType() {
-		return type;
+		return pieceType;
 	}
 
 	public void setPieceType(Item pieceType) {
-		this.type = pieceType;
+		this.pieceType = pieceType;
 	}
 
 	public void setCatalog(VolatileCatalog volatileCatalog) {

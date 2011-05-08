@@ -14,23 +14,33 @@ public abstract class AbstractFactory {
 		} else if (value.isNumber() != null) {
 			return String.valueOf((int) value.isNumber().doubleValue());
 		}
-		throw new IllegalArgumentException(value + " is neither a string nor a number");
+		return null;
 	}
 
 	protected ArrayList<Item> createItemListFromRPCArray(DTOArray rpcArray) {
 		ArrayList<Item> items = new ArrayList<Item>();
-
 		if (rpcArray == null) {
 			return items;
 		}
 
 		for (int i = 0; i < rpcArray.size(); i++) {
-			String id = forceString(rpcArray.get(i).isArray().get(0));
-			String name = rpcArray.get(i).isArray().get(1).isString().stringValue();
-			items.add(new Item(id, name));
+			Item item = createItemFromTuplet(rpcArray.get(i).isArray());
+			items.add(item);
 		}
 
 		return items;
+	}
+
+	private Item createItemFromTuplet(DTOArray tuplet) {
+		String id = forceString(tuplet.get(0));
+		Item item;
+		if (id == null) {
+			item = Item.NULL_ITEM;
+		} else {
+			String name = tuplet.get(1).isString().stringValue();
+			item = new Item(id, name);
+		}
+		return item;
 	}
 
 }

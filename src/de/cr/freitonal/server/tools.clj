@@ -1,4 +1,5 @@
-(ns de.cr.freitonal.server.tools)
+(ns de.cr.freitonal.server.tools
+  (:use [clojure.contrib.str-utils :only (re-gsub)]))
 
 (defn d [text]
   (if (seq? text)
@@ -43,6 +44,9 @@
 
 (defn str-nil [s]
   (if (nil? s) nil (str s)))
+
+(defn normalize-whitespace [string]
+  (re-gsub #"\s+" " " string))
 
 (defn debug []
   false)

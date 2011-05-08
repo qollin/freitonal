@@ -21,6 +21,7 @@ public abstract class AbstractBuilder {
 		subtitleToHTTPParameter();
 		ordinalToHTTPParameter();
 		musicKeyToHTTPParameter();
+		pieceTypeToHTTPParameter();
 	}
 
 	private void instrumentationsToHTTPParameter() {
@@ -52,6 +53,10 @@ public abstract class AbstractBuilder {
 
 	private void musicKeyToHTTPParameter() {
 		itemSetToHTTPParameter(searchMask.getMusicKeys(), "piece-music_key");
+	}
+
+	private void pieceTypeToHTTPParameter() {
+		itemSetToHTTPParameter(searchMask.getPieceTypes().getAllTypesItemSet(), "piece-piece_type");
 	}
 
 	private void itemSetToHTTPParameter(ItemSet itemSet, String parameterName) {

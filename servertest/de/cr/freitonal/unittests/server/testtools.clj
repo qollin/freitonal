@@ -13,7 +13,6 @@
 
   (:import (de.cr.freitonal.usertests.client.test.data
              TestData))
-
   (:import (de.cr.freitonal.shared.models 
              Item 
              UID
@@ -69,6 +68,7 @@
            ~'piano (insert-instrument TestData/Piano)
            ~'violin (insert-instrument TestData/Violin)
            ~'sonata (insert-piecetype TestData/Sonata)
+           ~'amajor (insert-musickey (.getVolatileMusicKey TestData/AMajor))
            ~'piano-solo (insert-instrumentation "solo piano" ~'piano)]
        ~@body)))
 

@@ -31,74 +31,82 @@
   (cond 
     (= searchParam "piece-composer")                     
     {:from ["classical_piece piece"]
-     :where (str " AND piece.composer_id IN " (create-placeholder-string values))
+     :where (str "piece.composer_id IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-instrumentations__instrument")
     {:from ["classical_piece piece", "classical_piece_instrumentations", "classical_instrumentation"
             "classical_instrumentationmember"]
-     :where (str " AND classical_piece_instrumentations.piece_id = piece.id
+     :where (str "classical_piece_instrumentations.piece_id = piece.id
        AND classical_piece_instrumentations.instrumentation_id = classical_instrumentation.id
        AND classical_instrumentation.id IN (" (create-subselect-for-instrumentations values) ")")
      :values (flatten (seq values))}
     (= searchParam "piece-piece_type")
     {:from ["classical_piece piece"]
-     :where (str " AND piece.piece_type_id IN " (create-placeholder-string values))
+     :where (str "piece.piece_type_id IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-catalog__name")
     {:from ["classical_piece piece", "classical_catalog"]
-     :where (str " AND piece.catalog_id = classical_catalog.id 
+     :where (str "piece.catalog_id = classical_catalog.id 
        AND classical_catalog.name_id IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-catalog")
     {:from ["classical_piece piece"]
-     :where (str " AND piece.catalog_id IN " (create-placeholder-string values))
+     :where (str "piece.catalog_id IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-subtitle")
     {:from ["classical_piece piece"]
-     :where (str " AND piece.subtitle IN " (create-placeholder-string values))
+     :where (str "piece.subtitle IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-type_ordinal")
     {:from ["classical_piece piece"]
-     :where (str " AND piece.type_ordinal IN " (create-placeholder-string values))
+     :where (str "piece.type_ordinal IN " (create-placeholder-string values))
      :values values}
     (= searchParam "piece-music_key")
     {:from ["classical_piece piece", "classical_musickey"]
-     :where (str " AND piece.music_key_id = classical_musickey.id 
+     :where (str "piece.music_key_id = classical_musickey.id 
         AND classical_musickey.id IN " (create-placeholder-string values))
      :values values}
     :default (throw (new IllegalArgumentException (str searchParam " is not implemented yet as a search parameter")))))
 
 (defn combine-search-clauses [searchClauses]
-  {:from (vec (set (flatten (map #(% :from) searchClauses))))
-   :where (apply str (map #(% :where)  searchClauses))
+  {:from (vec (set (flatten (filter #(not (nil? %)) (map #(% :from) searchClauses)))))
+   :where (apply str (interpose " AND " (filter #(not (nil? %)) (map #(% :where) searchClauses))))
    :values (vec (flatten (map #(into [] (% :values)) (filter #(not (nil? (% :values))) searchClauses))))})
+
+(def global-search-constraint {:where "piece.parent_id IS NULL"})
 
 (defn add-search-clauses [sql searchParams]
   (assoc 
-    (combine-search-clauses (conj (map add-search-clause searchParams) sql))
+    (combine-search-clauses (conj (map add-search-clause searchParams) sql global-search-constraint))
     :select (sql :select)))
 
 (defn create-sql-string [sql]
-  (str "SELECT " (sql :select)
-    (if (or (sql :where) (not (sql :initial-loading-from))) ;where clause is given nor initial loading clause is present
-      (str " FROM " (apply str (interpose ", " (sql :from))))
-      (str " FROM " (apply str (interpose ", " (sql :initial-loading-from)))))
-    (if (sql :where)
-      (str " WHERE " (sql :where))
-      (if (sql :initial-loading-where)
-        (str " WHERE " (sql :initial-loading-where))))
-    (if (sql :order)
-      (str " ORDER BY " (sql :order)))))
-
-(defn add-global-search-constraints [sql]
-  (assoc sql :where (str (sql :where) " AND piece.parent_id IS NULL")))
-
+  (if (sql :full-outer-join)
+    (str "(" (create-sql-string (-> sql (dissoc :full-outer-join) (assoc :left-outer-join (sql :full-outer-join)))) ") "
+      "UNION"
+      " (" (create-sql-string (-> sql (dissoc :full-outer-join) (assoc :right-outer-join (sql :full-outer-join)))) ")")
+    (str "SELECT " (sql :select)
+      (if (or (sql :where) (not (sql :initial-loading-from))) ;where clause is given nor initial loading clause is present
+        (str " FROM " (apply str (interpose ", " (sql :from))))
+        (str " FROM " (apply str (interpose ", " (sql :initial-loading-from)))))
+      (if (sql :right-outer-join)
+        (str " RIGHT OUTER JOIN " (sql :right-outer-join)))
+      (if (sql :left-outer-join)
+        (str " LEFT OUTER JOIN " (sql :left-outer-join)))
+      (if (sql :on)
+        (str " ON " (sql :on)))
+      (if (sql :where)
+        (str " WHERE " (sql :where))
+        (if (sql :initial-loading-where)
+          (str " WHERE " (sql :initial-loading-where))))
+      (if (sql :order)
+        (str " ORDER BY " (sql :order))))))
+  
 (defn create-query [sql searchParams]
-  (let [sql (add-global-search-constraints sql)]
-    (if (empty? searchParams)
-      (vector (create-sql-string (dissoc sql :where)))
-      (let [extendedSQL (add-search-clauses sql searchParams)]
-        (into [(create-sql-string extendedSQL)] (extendedSQL :values))))))
+  (if (empty? searchParams)
+    (vector (create-sql-string (dissoc sql :where)))
+    (let [extendedSQL (add-search-clauses sql searchParams)]
+      (into [(create-sql-string extendedSQL)] (extendedSQL :values)))))
 
 (defn run-search-query 
   ([sql render-fn searchParams] (run-search-query sql render-fn searchParams false))
@@ -106,7 +114,7 @@
     (if debug (d searchParams))
     (let [query (create-query sql searchParams)]
       (try
-        (if debug (d query))
+        (if debug (d (normalize-whitespace (first query))))
         (sql/with-query-results res
           query
           (doall (map render-fn res)))
@@ -157,9 +165,7 @@
 (defn search-subtitle [searchParams]
   (run-search-query 
     {:select "DISTINCT piece.subtitle"
-     :from ["classical_piece piece"]
-     :where "piece.subtitle IS NOT NULL AND piece.subtitle <> ''"
-     :initial-loading-where "piece.subtitle IS NOT NULL AND piece.subtitle <> ''"}
+     :from ["classical_piece piece"]}
     render-subtitle searchParams))
 
 (defn search-recording-type [searchParams]
@@ -207,17 +213,15 @@
 (defn search-piece-type_ordinal [searchParams]
   (run-search-query
     {:select "DISTINCT piece.type_ordinal"
-     :from ["classical_piece piece"]
-     :where "piece.type_ordinal IS NOT NULL AND piece.type_ordinal <> ''"
-     :initial-loading-where "piece.type_ordinal IS NOT NULL AND piece.type_ordinal <> ''"}
+     :from ["classical_piece piece"]}
     render-piece-type_ordinal searchParams))
 
 (defn search-piece-piece_type [searchParams]
   (run-search-query
     {:select "DISTINCT type.id, type.name"
-     :from ["classical_piecetype type", "classical_piece piece"]
-     :initial-loading-from ["classical_piecetype type"]
-     :where "piece.piece_type_id = type.id"}
+     :from ["classical_piecetype type"]
+     :full-outer-join "classical_piece piece"
+     :on "piece.piece_type_id = type.id"}
     render-name searchParams))
 
 (defn search-performance-performers [searchParams]
@@ -276,18 +280,21 @@
 (defn search-piece-music-key [searchParams]
   (run-search-query
     {:select "DISTINCT classical_musickey.id, classical_musickey.generated_title AS name"
-     :from ["classical_musickey", "classical_piece piece"]
-     :initial-loading-from ["classical_musickey"]
-     :where "piece.music_key_id = classical_musickey.id"}
+     :from ["classical_musickey"]
+     :right-outer-join "classical_piece piece"
+     :on "piece.music_key_id = classical_musickey.id"}
     render-name searchParams))
 
 (defn search-piece-catalog-name [searchParams]
   (run-search-query
-    {:select "DISTINCT type.id, type.name"
-     :from ["classical_catalog", "classical_piece piece", "classical_catalogtype type"]
-     :initial-loading-from ["classical_catalogtype type"]
-     :where "piece.catalog_id = classical_catalog.id
-       AND classical_catalog.name_id = type.id"}
+    {:select "DISTINCT catalog.id, catalog.name"
+     :from ["(SELECT classical_catalogtype.id AS id, 
+                     classical_catalogtype.name AS name, 
+                     classical_catalog.id AS catalog_id 
+              FROM classical_catalogtype, classical_catalog 
+              WHERE classical_catalog.name_id = classical_catalogtype.id) AS catalog"]
+     :full-outer-join "classical_piece piece"
+     :on "piece.catalog_id = catalog.catalog_id"}
     render-name searchParams))
 
 (defn render-catalog-number [rec]
@@ -298,12 +305,9 @@
 (defn search-piece-catalog-number [searchParams]
   (run-search-query
     {:select "DISTINCT classical_catalog.id, classical_catalog.ordinal, classical_catalog.sub_ordinal"
-     :from ["classical_catalog", "classical_piece piece"]
-     :initial-loading-from ["classical_catalog"]
-     :where "piece.catalog_id = classical_catalog.id
-       AND classical_catalog.ordinal IS NOT NULL
-       AND classical_catalog.ordinal <> ''"
-     :initial-loading-where "classical_catalog.ordinal IS NOT NULL AND classical_catalog.ordinal <> ''"
+     :from ["classical_catalog"]
+     :right-outer-join "classical_piece piece"
+     :on "piece.catalog_id = classical_catalog.id"
      :order "classical_catalog.ordinal, classical_catalog.sub_ordinal"}
     render-catalog-number searchParams))
 
@@ -322,9 +326,7 @@
 (defn search-piece-publication-date [searchParams]
   (run-search-query 
     {:select "DISTINCT piece.pub_date"
-     :from ["classical_piece piece"]
-     :where "piece.pub_date IS NOT NULL AND piece.pub_date <> ''"
-     :initial-loading-where "piece.pub_date IS NOT NULL AND piece.pub_date <> ''"}
+     :from ["classical_piece piece"]}
     render-publication-date searchParams))
 
 (defn search [searchParams]
@@ -371,7 +373,7 @@
                    AND piece.catalog_id = classical_catalog.id"
          :initial-loading-where "classical_piece_instrumentations.piece_id = piece.id
                                    AND piece.catalog_id = classical_catalog.id"}
-        render-piece-title searchParams true))))
+        render-piece-title searchParams))))
 
 (defn doSearch [conf-file searchParams]
   (sql/with-connection (load-file conf-file)

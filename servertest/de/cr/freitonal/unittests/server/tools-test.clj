@@ -4,6 +4,10 @@
   (:use [clojure.test])
   (:import (de.cr.freitonal.shared.models Item)))
 
+(deftest test-normalize-whitespace []
+  (is (= " " (normalize-whitespace "  ")))
+  (is (= " " (normalize-whitespace " \n "))))
+
 (deftest creating-a-simple-countmap []
   (let [countMap (create-countmap ["a", "a", "b"])]
     (is (= 2 (get countMap "a")))

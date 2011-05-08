@@ -17,8 +17,10 @@ import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.shared.models.Catalog;
 import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
+import de.cr.freitonal.shared.models.MusicKey;
 import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
+import de.cr.freitonal.shared.models.VolatileMusicKey;
 import de.cr.freitonal.shared.models.VolatilePiece;
 
 public class TestData {
@@ -43,7 +45,7 @@ public class TestData {
 
 	public static final Item Ordinal4a = new Item("4a", "4a");
 
-	public static final Item AMajor = new Item("31", "A-Dur");
+	public static final MusicKey AMajor = new MusicKey("31", new VolatileMusicKey("A", "Dur"));
 
 	public static final Item Opus = new Item("1", "Opus");
 	public static final Item KV = new Item("2", "KV");

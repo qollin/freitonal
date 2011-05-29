@@ -11,14 +11,15 @@ import de.cr.freitonal.shared.models.VolatileCatalog;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.shared.models.VolatileItem;
 import de.cr.freitonal.shared.models.VolatilePiece;
+import de.cr.freitonal.shared.parameters.SearchParameters;
 
 public class RPCServiceImpl implements RPCService {
 	private final SearchServiceAsync searchService = (SearchServiceAsync) GWT.create(SearchService.class);
 	private final CreateServiceAsync createService = (CreateServiceAsync) GWT.create(CreateService.class);
 
 	@Override
-	public void search(PieceSearchMask searchMask, AsyncCallback<SearchResult> callback) {
-		searchService.search(searchMask, callback);
+	public void search(SearchParameters searchParameters, AsyncCallback<SearchResult> callback) {
+		searchService.search(searchParameters, callback);
 	}
 
 	public void search(AsyncCallback<SearchResult> callback) {

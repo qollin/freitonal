@@ -18,63 +18,6 @@
                                           VolatilePiecePlusInstrumentationType))
   (:import (de.cr.freitonal.usertests.client.test.data TestData)))
 
-(deftest test-add-search-clause []
-  (is (= {:where "piece.composer_id IN (?, ?)"
-          :from ["classical_piece piece"]
-          :values ["1", "2"]}
-        (add-search-clause ["piece-composer" ["1", "2"]])))
-  (is (= {:where "piece.catalog_id IN (?)" 
-          :from ["classical_piece piece"]
-          :values ["110"]}
-        (add-search-clause ["piece-catalog" ["110"]]))))
-
-(deftest test-combine-search-clauses []
-  (is (= {:from ["a" "b"]
-          :where "a.a = ? AND b.b = ? AND b.c = ?"
-          :values ["1" "2" "3"]}
-        (combine-search-clauses '({:from ["a"]
-                                   :where "a.a = ?"
-                                   :values ["1"]}
-                                   {:from  ["a" "b"]
-                                    :where "b.b = ? AND b.c = ?"
-                                    :values ["2" "3"]}))))
-  (is (= {:from ["a" "b"]
-          :where "a.a = ?"
-          :values ["1" "2" "3"]}
-        (combine-search-clauses '({:from ["a"]
-                                   :where "a.a = ?"
-                                   :values ["1"]}
-                                   {:from  ["a" "b"]
-                                    :values ["2" "3"]}))))
-  (is (= {:from ["a" "b"]
-          :where "a.a = ? AND NO values"
-          :values ["1"]}
-        (combine-search-clauses '({:from ["a"]
-                                   :where "a.a = ?"
-                                   :values ["1"]}
-                                   {:from  ["a" "b"]
-                                    :where "NO values"})))))
-
-(deftest test-add-search-clauses []
-  (is (= {:select "a.c1, b.c2"
-           :from ["a" "b" "classical_piece piece"]
-           :where (str (:where global-search-constraint) " AND a.b = b.id AND piece.composer_id IN (?)")
-           :values ["1"]}
-        (add-search-clauses 
-          {:select "a.c1, b.c2"
-           :from ["a" "b"]
-           :where "a.b = b.id"}
-           {"piece-composer" ["1"]})))
-  (is (= {:select "a.c1, b.c2"
-           :from ["a" "b" "classical_piece piece"]
-           :where (str (:where global-search-constraint) " AND a.b = b.id AND piece.composer_id IN (?, ?)")
-           :values ["1", "2"]}
-        (add-search-clauses 
-          {:select "a.c1, b.c2"
-           :from ["a" "b"]
-           :where "a.b = b.id"}
-           {"piece-composer" ["1", "2"]}))))
-
 (deftest search-for-violin-and-violin []
   (dbtest "test that searching for two violins does not find an instrumentation with one violin"
     (let [violin (insert-instrument "Violin")
@@ -163,7 +106,7 @@
                                     (insert-piece full-piece)
                                     (insert-piece piece)
                                     (let [fullSearchResult (read-json (search {}) false)]
-                                      (is (= 2 (count (fullSearchResult field))))
+                                      (is (= 2 (count (fullSearchResult field))) (str "did not find 2 entries for " field))
                                       (is (some #{[nil nil]} (fullSearchResult field))))))]
     (check-for-empty-field "piece-piece_type" (VolatilePiece. mozart piano-solo))
     (sql/do-commands "DELETE FROM classical_piece")
@@ -207,4 +150,4 @@
       (is (= 1 (count pieces))))))
 
 (comment defn test-ns-hook []
-  (check-that-empty-fields-are-returned-once))
+  (check-that-objects-not-referenced-by-any-piece-are-returned-from-initial-loading))

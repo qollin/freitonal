@@ -11,8 +11,10 @@ import de.cr.freitonal.client.event.State;
 import de.cr.freitonal.client.event.TransitionHandler;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
+import de.cr.freitonal.client.rpc.SearchParameterBuilder;
 import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.client.widgets.piece.PiecePresenter;
+import de.cr.freitonal.shared.parameters.SearchParameters;
 
 public class AppController {
 	private final PiecePresenter piecePresenter;
@@ -39,7 +41,8 @@ public class AppController {
 	}
 
 	private void search(SearchFieldChangedEvent event) {
-		rpcService.search(currentPieceSearchMask, new AsyncCallback<SearchResult>() {
+		SearchParameters searchParameters = generateSearchParameters();
+		rpcService.search(searchParameters, new AsyncCallback<SearchResult>() {
 
 			public void onFailure(Throwable caught) {
 				// TODO Auto-generated method stub
@@ -49,6 +52,16 @@ public class AppController {
 				onReceivingData(result);
 			}
 		});
+	}
+
+	private SearchParameters generateSearchParameters() {
+		SearchParameters searchParameters;
+		if (currentPieceSearchMask != null) {
+			searchParameters = new SearchParameterBuilder(currentPieceSearchMask).getSearchParameters();
+		} else {
+			searchParameters = new SearchParameters();
+		}
+		return searchParameters;
 	}
 
 	private void loadInitialData() {
@@ -66,6 +79,9 @@ public class AppController {
 	}
 
 	private void onReceivingData(SearchResult result) {
+		if (currentPieceSearchMask != null) {
+			currentPieceSearchMask.copyItemSelectionTo(result.getPieceSearchMask());
+		}
 		currentPieceSearchMask = result.getPieceSearchMask();
 		getPiecePresenter().setSearchData(result);
 	}

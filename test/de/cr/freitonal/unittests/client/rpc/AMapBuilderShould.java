@@ -11,7 +11,7 @@ import org.junit.Test;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
-import de.cr.freitonal.client.rpc.MapBuilder;
+import de.cr.freitonal.client.rpc.SearchParameterBuilder;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.usertests.client.test.data.TestData;
 
@@ -38,7 +38,7 @@ public class AMapBuilderShould {
 		ItemSet names = searchMask.getCatalogs().getNames();
 		names.setSelected(names.getItem(0));
 
-		Map<String, ArrayList<String>> map = new MapBuilder(searchMask).getMap();
+		Map<String, ArrayList<String>> map = new SearchParameterBuilder(searchMask).getSearchParameters();
 		assertEquals(names.getItem(0).getID(), map.get("piece-catalog__name").get(0));
 	}
 
@@ -47,7 +47,7 @@ public class AMapBuilderShould {
 		PieceTypeSet pieceTypes = searchMask.getPieceTypes();
 		pieceTypes.getAllTypesItemSet().setSelected(pieceTypes.getAllTypesItemSet().getItem(0));
 
-		Map<String, ArrayList<String>> map = new MapBuilder(searchMask).getMap();
+		Map<String, ArrayList<String>> map = new SearchParameterBuilder(searchMask).getSearchParameters();
 		assertEquals(pieceTypes.getAllTypesItemSet().getItem(0).getID(), map.get("piece-piece_type").get(0));
 	}
 

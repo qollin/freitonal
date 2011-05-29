@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
 import de.cr.freitonal.client.rpc.SearchResult;
 import de.cr.freitonal.shared.models.Catalog;
@@ -15,6 +14,7 @@ import de.cr.freitonal.shared.models.VolatileCatalog;
 import de.cr.freitonal.shared.models.VolatileInstrumentation;
 import de.cr.freitonal.shared.models.VolatileItem;
 import de.cr.freitonal.shared.models.VolatilePiece;
+import de.cr.freitonal.shared.parameters.SearchParameters;
 
 public class RPCServiceMock implements RPCService {
 	private final ArrayList<String> trace;
@@ -28,7 +28,7 @@ public class RPCServiceMock implements RPCService {
 	}
 
 	@Override
-	public void search(PieceSearchMask searchMask, AsyncCallback<SearchResult> callback) {
+	public void search(SearchParameters searchParameters, AsyncCallback<SearchResult> callback) {
 		trace.add("RPCServiceMock: search");
 	}
 

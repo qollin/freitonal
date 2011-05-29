@@ -3,7 +3,6 @@ package de.cr.freitonal.usertests.gui;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import de.cr.freitonal.client.AppController;
-import de.cr.freitonal.client.rpc.PieceSearchMask;
 import de.cr.freitonal.client.rpc.RPCService;
 import de.cr.freitonal.client.rpc.RPCServiceImpl;
 import de.cr.freitonal.client.rpc.SearchResult;
@@ -16,10 +15,13 @@ import de.cr.freitonal.shared.models.Instrumentation;
 import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.shared.models.Piece;
 import de.cr.freitonal.shared.models.VolatilePiece;
+import de.cr.freitonal.shared.parameters.SearchParameters;
 import de.cr.freitonal.usertests.api.APITestCase;
 import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 
 public class UserTestCase extends APITestCase {
+	protected static final boolean RUN_NEXT_SCRIPT = true;
+	protected static final boolean DO_NO_RUN_NEXT_SCRIPT = false;
 	protected AppController appController;
 	private PieceView pieceView;
 	protected Future<Item> mozart;
@@ -42,9 +44,9 @@ public class UserTestCase extends APITestCase {
 
 		RPCService rpcService = new RPCServiceImpl() {
 			@Override
-			public void search(PieceSearchMask searchMask, AsyncCallback<SearchResult> callback) {
+			public void search(SearchParameters searchParameters, AsyncCallback<SearchResult> callback) {
 				AsyncCallback<SearchResult> callbackWrapper = getScriptSequence().createSearchResultCallbackWrapper(callback);
-				super.search(searchMask, callbackWrapper);
+				super.search(searchParameters, callbackWrapper);
 			}
 
 			@Override
@@ -71,6 +73,7 @@ public class UserTestCase extends APITestCase {
 
 	private void setSelectedItem(ListBoxPresenter listBoxPresenter, Future<Item> item) {
 		listBoxPresenter.getView().setSelectedItem(item.getObject());
+		listBoxPresenter.fireOnNewItemSelected(item.getObject());
 	}
 
 	private void enterText(ListBoxPresenter listBoxPresenter, String text) {
@@ -78,11 +81,17 @@ public class UserTestCase extends APITestCase {
 	}
 
 	protected void selectComposer(final Future<Item> composer) {
+		selectComposer(composer, RUN_NEXT_SCRIPT);
+	}
+
+	protected void selectComposer(final Future<Item> composer, final boolean runNextScript) {
 		addScript(new Script() {
 			@Override
 			public void run(Object... parameters) {
 				setSelectedItem(appController.getPiecePresenter().getComposerPresenter(), composer);
-				runNextScript();
+				if (runNextScript) {
+					runNextScript();
+				}
 			}
 		});
 	}

@@ -7,6 +7,7 @@ import com.google.gwt.junit.tools.GWTTestSuite;
 
 import de.cr.freitonal.usertests.gui.CreatePieceTest;
 import de.cr.freitonal.usertests.gui.PieceListTest;
+import de.cr.freitonal.usertests.gui.SearchForComposerTest;
 import de.cr.freitonal.usertests.gui.SearchOnEmptyDatabaseTest;
 
 public class UserTestSuite extends GWTTestSuite {
@@ -15,6 +16,7 @@ public class UserTestSuite extends GWTTestSuite {
 		suite.addTestSuite(SearchOnEmptyDatabaseTest.class);
 		suite.addTestSuite(CreatePieceTest.class);
 		suite.addTestSuite(PieceListTest.class);
+		suite.addTestSuite(SearchForComposerTest.class);
 
 		return suite;
 	}

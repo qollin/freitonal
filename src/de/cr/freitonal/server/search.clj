@@ -29,7 +29,7 @@
      :from ["classical_composer composer", "classical_piece piece"]
      :initial-loading-from ["classical_composer composer"]
      :where "piece.composer_id = composer.id"}
-    render-composer searchParams))
+    render-composer searchParams true))
 
 (defn render-name [rec] 
   (vector (:id rec) (:name rec)))

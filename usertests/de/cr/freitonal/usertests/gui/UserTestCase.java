@@ -21,7 +21,7 @@ import de.cr.freitonal.usertests.api.ScriptSequence.Script;
 
 public class UserTestCase extends APITestCase {
 	protected static final boolean RUN_NEXT_SCRIPT = true;
-	protected static final boolean DO_NO_RUN_NEXT_SCRIPT = false;
+	protected static final boolean DO_NOT_RUN_NEXT_SCRIPT = false;
 	protected AppController appController;
 	private PieceView pieceView;
 	protected Future<Item> mozart;

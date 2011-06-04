@@ -88,8 +88,14 @@ public class ListBoxView extends Composite implements IListBoxView {
 			return null;
 		}
 
-		if ("-1".equals(list.getValue(index))) {
+		String value = list.getValue(index);
+
+		if ("-1".equals(value)) {
 			return null;
+		}
+
+		if ("".equals(value)) {
+			return Item.NULL_ITEM;
 		}
 
 		return new Item(list.getValue(index), list.getItemText(index));

@@ -1,6 +1,7 @@
 package de.cr.freitonal.unittests.client.rpc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,11 +12,13 @@ import org.junit.Test;
 import de.cr.freitonal.client.models.CatalogSet;
 import de.cr.freitonal.client.models.ItemSet;
 import de.cr.freitonal.client.models.PieceTypeSet;
-import de.cr.freitonal.client.rpc.SearchParameterBuilder;
+import de.cr.freitonal.client.models.PublicationDateSet;
 import de.cr.freitonal.client.rpc.PieceSearchMask;
+import de.cr.freitonal.client.rpc.SearchParameterBuilder;
+import de.cr.freitonal.shared.models.Item;
 import de.cr.freitonal.usertests.client.test.data.TestData;
 
-public class AMapBuilderShould {
+public class ASearchParameterBuilderShould {
 
 	private PieceSearchMask searchMask;
 
@@ -49,6 +52,16 @@ public class AMapBuilderShould {
 
 		Map<String, ArrayList<String>> map = new SearchParameterBuilder(searchMask).getSearchParameters();
 		assertEquals(pieceTypes.getAllTypesItemSet().getItem(0).getID(), map.get("piece-piece_type").get(0));
+	}
+
+	@Test
+	public void NotAddEmptySelectionsToTheSearchParameters() {
+		PublicationDateSet publicationDateSet = new PublicationDateSet(Item.NULL_ITEM);
+		publicationDateSet.setSelected(Item.NULL_ITEM);
+		searchMask.setPublicationDates(publicationDateSet);
+
+		Map<String, ArrayList<String>> map = new SearchParameterBuilder(searchMask).getSearchParameters();
+		assertFalse(map.containsKey("piece-publication_date"));
 	}
 
 }

@@ -19,6 +19,7 @@ public abstract class AbstractBuilder {
 		catalogToHTTPParameter();
 		instrumentationsToHTTPParameter();
 		subtitleToHTTPParameter();
+		publicationDateToHTTPParameter();
 		ordinalToHTTPParameter();
 		musicKeyToHTTPParameter();
 		pieceTypeToHTTPParameter();
@@ -47,6 +48,10 @@ public abstract class AbstractBuilder {
 		itemSetToHTTPParameter(searchMask.getSubtitles(), "piece-subtitle");
 	}
 
+	private void publicationDateToHTTPParameter() {
+		itemSetToHTTPParameter(searchMask.getPublicationDates(), "piece-publication_date");
+	}
+
 	private void ordinalToHTTPParameter() {
 		itemSetToHTTPParameter(searchMask.getOrdinals(), "piece-type_ordinal");
 	}
@@ -61,7 +66,7 @@ public abstract class AbstractBuilder {
 
 	private void itemSetToHTTPParameter(ItemSet itemSet, String parameterName) {
 		Item item = itemSet.getSelected();
-		if (item != null) {
+		if (item != null && !item.getID().equals("")) { //hack! Somehow item != Item.NULL_ITEM didn't work... GWT issue?
 			addHTTPParameter(parameterName, item.getID());
 		}
 	}
